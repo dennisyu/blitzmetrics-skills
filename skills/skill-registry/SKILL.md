@@ -7,30 +7,35 @@ description: "Keep every BlitzMetrics / Local Service Spotlight skill centrally 
 
 **Use this whenever a new capability gets built.** A method that lives in a chat thread, a Google Doc, or a loose `.skill` file is not part of the framework — nothing propagates it, no agent can find it, and no scheduled job can activate it. This skill is the intake gate that prevents that.
 
-## The five places a skill can live
+## The five states and systems to audit
 
 Know which one you are touching. They propagate very differently.
 
-| # | Registry | Scope | Propagates to | Who can write to it |
+| # | System | What it proves | What it does not prove | Who can write to it |
 |---|---|---|---|---|
-| 1 | **Plugin** (`.plugin` file → marketplace) | Whole team | Everyone who installs it, on every device, in every session | Anyone who can publish the plugin |
-| 2 | **Account skills** (claude.ai) | One person | That person's sessions only | Only the account owner, by accepting a delivered `.skill` file |
-| 3 | **Cloud scheduled tasks** | One account | Fresh cloud session per firing | Anyone with the account, via the scheduled-task tools |
-| 4 | **Local Cowork scheduled jobs** (desktop) | One machine | That machine only. **Invisible to cloud sessions** — they do not appear in a cloud `list_triggers` call | The desktop app |
-| 5 | **Canonical pack + Monday sync** | Whole team | Rebuilds each person's skill plugin when the pack changes | Whoever maintains the pack |
+| 1 | **Canonical GitHub marketplace** | A skill is available in a validated commit | Any account installed or synced it | Maintainers, by reviewed pull request |
+| 2 | **Installed plugins and account skills** | A named account can see the capability | A fresh chat can activate it correctly | The account/workspace owner |
+| 3 | **Cloud scheduled tasks** | A schedule exists for one cloud account | A firing succeeded | Authorized scheduler tools |
+| 4 | **Local Cowork scheduled jobs** | A schedule exists on one machine | Cloud health or another machine's state | The desktop app on that machine |
+| 5 | **Fleet copies and run receipts** | A site has a version and a run left evidence | The rest of the fleet matches it | The deployment job and receipt store |
 
-**Registry 1 is the only one that scales.** Account skills are per-person and cannot be installed by an agent on the user's behalf — the owner has to accept the file. If a capability matters to more than one person, it belongs in the plugin.
+**System 1 is the only canonical source.** The member install guide is the front
+door, while `https://github.com/dennisyu/blitzmetrics-skills` is the source Claude
+subscribes to. Account skills are per-person. If a capability matters to more than
+one person, put it in the marketplace and verify each target environment with a
+receipt.
 
 ## Intake gate — run this for every new skill
 
-Do not consider a skill "done" until all six pass.
+Do not consider a skill "done" until all seven pass.
 
 1. **Does it exist as a `SKILL.md` with valid frontmatter?** `name` (kebab-case, matching the directory) and a third-person `description` containing the literal phrases someone would actually type.
-2. **Is it inside a plugin's `skills/` directory** — not a loose file, not only a chat attachment?
-3. **Is the plugin packaged and delivered** as a `.plugin` file, so the team can install it?
-4. **Is it in the canonical pack**, so the Monday sync propagates it instead of silently skipping it?
-5. **Can a scheduled job activate it?** Write the trigger prompt that would invoke it, and confirm the skill's description contains the phrases that prompt uses. A skill whose description does not match its own trigger prompt will not load.
-6. **Is it in the inventory** — `references/inventory.md` in this skill — with its registry, owner, and cadence?
+2. **Is it under the canonical repository's `skills/` directory** — not a loose file or chat attachment?
+3. **Is it listed in `blitzmetrics-everything`** and every appropriate topical bundle?
+4. **Did repository and official marketplace validation pass on a pull request?** Never publish from `/upload/main`.
+5. **Can a fresh chat activate it?** Test a literal trigger phrase from the description and save the receipt.
+6. **Can a scheduled job activate it?** Name the exact skill in a complete standalone prompt and verify the first firing, not just the schedule definition.
+7. **Is its state recorded accurately** in `references/inventory.md` and the operational register — Available, Installed, Enabled, Tested, Scheduled, or Observed?
 
 If a step cannot be completed in this session, **say so explicitly and name who has to do it.** Reporting a skill as "shipped" when it is sitting in a chat thread is the specific failure this gate exists to prevent.
 
@@ -42,12 +47,14 @@ not an install. → `references/distribution.md`
 
 The short version:
 
-- **Ship `.plugin`, not `.zip`.** A `.plugin` file renders an Install button in
-  the chat. A `.zip` is just a download with no install path from there. Same
-  bytes, completely different outcome. Convert with `scripts/pack2plugin.py`.
+- **Use the GitHub marketplace for groups.** Send members to the install guide,
+  then give Claude the canonical repository URL. Use `.plugin` instead of `.zip`
+  only for direct-file fallback. Convert legacy packs with
+  `scripts/pack2plugin.py`.
 - **Say the install step out loud every time you deliver one.** "This is
   delivered, not installed — accept the card above."
-- **Report delivered, never installed.** You get no signal that they accepted.
+- **Report only the state evidenced.** Delivered, installed, enabled, tested,
+  scheduled, and observed are separate states.
 - **Link the install guide** from every place a file can be downloaded.
 
 ## Wiring a skill into a scheduled job
@@ -58,22 +65,30 @@ A scheduled task starts a **fresh session with no memory of the conversation tha
 - Name the skill explicitly in the prompt (`Use the geo-visibility-audit skill.`). Do not rely on implicit triggering in an unattended run.
 - Name the client, the properties, and where the output goes — the fresh session knows none of it.
 - State the deliverable and its destination (post to thread X, save to folder Y). An unattended run with no destination produces nothing anyone sees.
+- Give every firing a stable run ID and require a durable success or failure receipt. A schedule object is not a successful run.
+- Add a watchdog for a missing receipt after the expected time plus a grace period. Explicit failures are not the only failure mode.
 - Use the **scheduled-task tools** (`create_trigger`, `send_later`, `list_triggers`, `update_trigger`, `delete_trigger`). Never use the in-process cron tools — anything they schedule dies when the session ends and the job silently never runs.
 
 Cron is UTC. Convert from the owner's local time, and shift the day fields if the conversion crosses midnight.
 
 ## Wiring a skill into an agent
 
-Put an agent definition in the plugin's `agents/` directory when the skill should run as a delegated, self-contained job — a weekly audit, a fan-out across clients, anything a person would otherwise babysit. The agent's `description` needs `<example>` blocks showing the triggering conditions, and its body is the system prompt. See `agents/geo-auditor.md` in this plugin as the working model.
+Put an agent definition in the plugin's `agents/` directory when the skill should
+run as a delegated, self-contained job — a weekly audit, a fan-out across clients,
+or anything a person would otherwise babysit. Keep execution and audit separate:
+Claude writes the production receipt; Codex checks the source, receipt, output
+assertions, and error on a separate branch; a human approves merges and production
+schedule or credential changes.
 
 ## Reconciliation — run monthly, or when something feels missing
 
-1. List what is actually installed: account skills, and the skills inside each installed plugin.
-2. List what the canonical pack claims to contain.
-3. Diff them. **Every skill in the pack but not installed is a propagation failure; every skill installed but not in the pack is an orphan that will be wiped by the next sync rebuild.**
+1. List the canonical marketplace commit and all 26 available skills.
+2. List what each target account and fleet site actually reports as its commit/version and installed skills.
+3. Diff them. **Every target behind the canonical commit is a propagation failure; every untracked local skill is an orphan.**
 4. For each recurring scheduled job, confirm the skill it names still exists under that exact name. Renaming a skill silently breaks every job that calls it.
 5. Check the local desktop scheduled jobs separately. They do not appear in a cloud listing, so a cloud-only audit will report them as absent when they are running fine — and will miss them entirely when they are broken.
-6. Record the result in `references/inventory.md` and report the diff, not just the totals.
+6. Reconcile each scheduled job's last attempted, succeeded, failed, and next expected timestamps against its durable receipts.
+7. Record canonical facts in `references/inventory.md`, private client facts in the operational register, and report failed assertions and diffs rather than totals alone.
 
 ## Field lessons
 

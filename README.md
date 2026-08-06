@@ -1,61 +1,78 @@
 # BlitzMetrics Skills for Claude
 
-Every skill we use, installable in one click.
+The canonical marketplace for the 26 BlitzMetrics and Local Service Spotlight
+skills used across authority, content, client operations, and quality assurance.
 
-## Install (about 60 seconds, once)
+## Install
 
-1. Open Claude on a computer — web, desktop app, or Cowork.
-2. Go to **Customize → Plugins → Add from repository**.
-3. Paste this address:
+Members should start with the illustrated guide:
+[localservicespotlight.com/install](https://localservicespotlight.com/install/).
+When Claude asks for the marketplace repository, paste:
 
-```
+```text
 https://github.com/dennisyu/blitzmetrics-skills
 ```
 
-4. Click **Install** on **`blitzmetrics-everything`**.
+Then install `blitzmetrics-everything`.
 
-That's it. You now have all 26 skills, and you'll get every future update
-automatically — you never download anything again.
+The guide and repository have different jobs:
 
-Never done this before? Step-by-step with screenshots:
-**https://localservicespotlight.com/install/**
+- The **install guide** tells a nontechnical member where to click and how to test.
+- This **GitHub repository** is the source Claude reads and maintainers review.
+- GitHub's `/upload/main` page is for maintainers and is not an install link.
 
-## What you just installed
+The repository is one update channel, so members do not need a new ZIP for every
+release. Sync behavior varies by Claude surface and settings: third-party
+marketplace auto-update may need to be enabled, or a member may need to choose
+**Sync** or **Update**. An update is verified only after the account shows the new
+commit/version and a fresh chat passes an activation test.
 
-Start a new chat and say what you want in plain language. You don't type
-commands — the right skill loads itself.
+## What was installed
 
-> "Harvest my positive mentions."
-> "Run my weekly brand MAA."
-> "How do I show up in ChatGPT?"
+Start a new chat and ask in plain language. For example:
 
-## Want just one area instead of everything?
+> “Harvest my positive mentions.”
+>
+> “Run my weekly brand MAA.”
+>
+> “How do I show up in ChatGPT?”
 
-Same address, different pick. Most people should take `blitzmetrics-everything`.
+Claude should select the relevant skill. Seeing the plugin in a list proves it is
+installed; a successful fresh-chat trigger proves that skill is working.
+
+## Bundles
+
+Most people should install `blitzmetrics-everything`.
 
 | Bundle | What it covers |
 |---|---|
-| `blitzmetrics-everything` | All 26 skills. **Start here.** |
-| `authority-and-reputation` | Knowledge Panel, AI search, reviews, proof |
-| `content-engine` | Articles, video, repurposing, distribution |
-| `client-operations` | Cadence, access, reporting, audits |
-| `quality-and-standards` | Verification, QA, judgment, the skill registry |
+| `blitzmetrics-everything` | All 26 skills |
+| `authority-and-reputation` | Knowledge Panel, AI search, reviews, and proof |
+| `content-engine` | Articles, video, repurposing, and distribution |
+| `client-operations` | Cadence, access, reporting, and audits |
+| `quality-and-standards` | Verification, QA, judgment, and the registry |
 
-## Want it to run without you?
+## Skills, agents, and scheduled jobs
 
-Skills wait for you to ask. **Agents** and **scheduled jobs** run on their own —
-the weekly report that posts itself, the daily monitor. That's Cowork, and it's
-covered at the install link above.
+- A **skill** is a written recipe Claude can use when asked.
+- An **agent** carries out a multi-step assignment using skills and tools.
+- A **scheduled job** tells an agent when to run.
+- A **receipt** is timestamped evidence that a run succeeded or failed.
+
+Creating a schedule is not proof that it ran. See [ACCEPTANCE.md](ACCEPTANCE.md)
+for installation, update, and fleet-job checks.
 
 ## For maintainers
 
-One `skills/` folder is the single source of truth. Bundles in
-`.claude-plugin/marketplace.json` are just *selections* over it — a skill is
-never duplicated.
+The `skills/` folder is the single source of truth. Bundles in
+`.claude-plugin/marketplace.json` are selections over it; skills are not copied
+between bundles.
 
-**Adding a skill:** drop `skills/<name>/SKILL.md`, add `"./skills/<name>"` to
-`blitzmetrics-everything` and to any topical bundle. Push. Everyone gets it on
-their next sync.
+Never commit from GitHub's `/upload/main` page. Create a branch and pull request,
+then let the validation workflow check the manifest, local references, converter,
+and Claude marketplace format. Full instructions are in
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Never rename a skill or a bundle.** Installs are keyed by name — a rename
-installs a second copy alongside the old one instead of upgrading it.
+Do not rename an existing skill or bundle without a migration. Installed copies
+and scheduled prompts are keyed by name, so a rename can create a duplicate and
+silently break jobs that call the old name.

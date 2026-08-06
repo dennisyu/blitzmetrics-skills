@@ -1,78 +1,97 @@
-# Distribution — getting a skill from built to actually installed
+# Distribution — from source to working capability
 
-Most of the loss in this system is not in building skills. It is in the last
-inch: someone downloads a pack and never installs it, because nothing told them
-a download is not an install.
+Most failures happen after a skill is written. A repository can be valid while a
+member never installed it, a schedule can exist without firing, and an agent can
+report success without checking the expected artifact.
 
-## The file extension decides whether one-click install is possible
+## Preferred path for groups
 
-| Extension | What happens when it lands in a chat | Use it for |
-|---|---|---|
-| `.plugin` | Renders a rich preview card with an **Install** button. One click. | Any pack. This is the default. |
-| `.skill` | Offers to save it to the person's account skills. | A single standalone skill. |
-| `.zip` | Just a download. No button, no prompt, no install path from the chat. | Only as the fallback for the manual `Customize → Skills → Upload` route. |
+Use the GitHub marketplace for shared skills:
 
-**Same bytes, different conversion rate.** A pack served only as `.zip` requires
-the recipient to already know about a settings menu they have probably never
-opened. Serve `.plugin` first and keep `.zip` as the secondary link.
-
-Convert an existing pack with `scripts/pack2plugin.py` in this plugin:
-
+```text
+Member-facing instructions: https://localservicespotlight.com/install/
+Marketplace source for Claude: https://github.com/dennisyu/blitzmetrics-skills
+Maintainer changes: branch → pull request → checks → merge
 ```
+
+Do not send members to GitHub's `/upload/main` URL. It is a maintainer upload form,
+not an installer, and it encourages direct writes to the canonical branch.
+
+The marketplace gives every member the same update channel. Do not promise that
+every third-party update applies unattended: that depends on Claude surface and
+settings. Record **manual sync verified** and **auto-update verified** separately.
+
+## File delivery fallback
+
+Use marketplace installation for a group. When a marketplace is unavailable, the
+file extension determines the fallback experience:
+
+| Extension | What it does | Use it for |
+|---|---|---|
+| `.plugin` | Installable plugin package | A pack delivered directly |
+| `.skill` | Standalone account skill | One person's one-off skill |
+| `.zip` | Download only | Manual fallback, not the primary member path |
+
+Convert legacy pack directories or ZIPs with the repository's converter:
+
+```bash
 python3 scripts/pack2plugin.py PACK.zip --out ./dist
 python3 scripts/pack2plugin.py ./packs/*.zip --out ./dist --dry-run
 ```
 
-It finds every `SKILL.md` at any depth, repairs frontmatter whose `name` does not
-match its directory, strips version suffixes so the plugin name stays stable
-across releases (`DealCon-Skills-v3-11` → `dealcon-skills`), drops `__MACOSX`
-cruft, carries over `agents/` and `commands/`, and writes the manifest. It leaves
-the original `.zip` alone.
+It finds `SKILL.md` files at any depth, repairs names to match their normalized
+directories, strips release suffixes from plugin names, excludes common macOS
+cruft, copies top-level `agents/` and `commands/`, and writes a `.plugin` archive.
+It rejects unsafe ZIP traversal paths and never modifies the input.
 
-> **Why the stable name matters:** if the plugin name changes between versions,
-> installing v2 does not upgrade v1 — it installs a second copy alongside it.
+## The evidence ladder
 
-## Say the install step out loud, every time
+Use exactly these terms in reports:
 
-When delivering a plugin or skill file, never stop at "here it is." State plainly:
+| State | Required proof |
+|---|---|
+| Available | File is in a merged, validated marketplace commit |
+| Delivered | Link or file reached the recipient |
+| Installed | Named account/workspace shows the bundle |
+| Enabled | Named account/workspace permits its use |
+| Tested | Fresh chat triggers the expected skill behavior |
+| Scheduled | Job definition exists with an owner and next run |
+| Observed | Timestamped firing has an output or an unedited failure |
 
-> This is delivered, not installed. Accept the card above to install it — the
-> download on its own does nothing.
+Do not report `Delivered` as `Installed`, `Scheduled` as `Observed`, or a passing
+repository check as a passing account test.
 
-And afterwards, report it as **delivered**, never as installed. You get no signal
-whether the person accepted. Claiming otherwise puts a false entry in the
-inventory, and the next audit inherits it.
+## What an install guide must answer
 
-## What a distribution page has to answer
+A nontechnical member needs, in this order:
 
-The library page that lists packs is not the install guide. A person arriving
-cold needs, in this order:
+1. One-sentence definitions of skill, plugin, agent, schedule, and receipt.
+2. The plan/surface requirements and any workspace admin setting.
+3. One recommended marketplace path with the exact repository URL.
+4. The exact current menu labels and clicks.
+5. A fresh-chat trigger test and the expected result.
+6. How to sync an update and confirm commit/version.
+7. Which features are desktop/Cowork-only.
+8. Symptom-based troubleshooting and a human escalation route.
 
-1. **What these words mean** — skill, pack, plugin, agent, in one line each, no jargon.
-2. **What they need first** — plan tier, and the admin toggles a Team/Enterprise owner has to flip.
-3. **Which path they are on** — decided by the extension of the file they have, not by what they know.
-4. **The exact clicks**, with the real menu labels.
-5. **The usual mistake** for that path, called out. (Download-and-close for `.plugin`; unzip-first for `.zip`.)
-6. **How to tell it worked** — where to look, plus a real trigger phrase to test with.
-7. **Where it does not work** — mobile cannot install; agents and scheduled jobs are Cowork-only.
-8. **Troubleshooting**, phrased as symptoms the person would actually type.
+The guide is not accepted until a first-time member completes it without private
+coaching and produces an acceptance receipt.
 
-Reference implementation: `localservicespotlight.com/install/`.
+## Safe ownership between agents
 
-## Per-person vs team
+- Claude runs the production task and writes an immutable run receipt.
+- Codex audits source, receipts, assertions, and failures on a separate branch.
+- A human approves merges and production schedule/credential changes.
+- Only one actor may hold a lock for a production job or canonical file at a time.
 
-Uploaded skills are private to one account and cannot be installed on someone
-else's behalf. A plugin installs for whoever installs it; a **marketplace** added
-once by URL then serves updates to everyone without another download.
+This makes the auditor independent without allowing two agents to overwrite the
+same state. Detailed checks are in the repository root `ACCEPTANCE.md`.
 
-Order of preference for anything more than one person needs:
-**marketplace → plugin file → account skill upload.**
+## Definition of done
 
-## Definition of done for a distribution change
-
-- Every pack has a `.plugin` link, with `.zip` retained as the secondary option.
-- Every pack row links to the install guide.
-- The guide names the exact menus, and has been checked against the live product
-  this month — Claude's menu labels move.
-- Someone who has never installed one has followed it end to end without asking a
-  question. Until that has happened, the guide is untested.
+- Repository and official marketplace validators pass.
+- Pull request is reviewed; no direct-to-main upload was used.
+- Fresh-account install and fresh-chat activation have receipts.
+- Update propagation is tested on the relevant Claude surface.
+- Every recurring job has an owner, runtime, exact skill version, next expected
+  run, durable receipt, and missed-run alert.
