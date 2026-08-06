@@ -1,0 +1,20 @@
+name: Unpack skills marketplace
+on: push
+permissions:
+  contents: write
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack if the bundle is present
+        run: |
+          if [ ! -f blitzmetrics-skills.zip ]; then echo "nothing to unpack"; exit 0; fi
+          unzip -o blitzmetrics-skills.zip -d _unpack
+          cp -R _unpack/blitzmetrics-skills/. .
+          rm -rf _unpack blitzmetrics-skills.zip
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Unpack skills marketplace" || exit 0
+          git push
