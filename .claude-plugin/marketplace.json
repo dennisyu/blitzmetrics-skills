@@ -1,0 +1,105 @@
+{
+  "name": "blitzmetrics",
+  "owner": {
+    "name": "Dennis Yu",
+    "email": "dennis@blitzmetrics.com"
+  },
+  "metadata": {
+    "description": "BlitzMetrics / Local Service Spotlight skills for Claude \u2014 personal brand, authority, content, and client operations.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "blitzmetrics-everything",
+      "description": "Everything we use, in one install \u2014 all 26 BlitzMetrics / Local Service Spotlight skills. Start here; this is what most people want.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/ai-search-visibility",
+        "./skills/boil-the-ocean",
+        "./skills/business-brand-strategist",
+        "./skills/business-website-agent",
+        "./skills/client-access-checklist",
+        "./skills/client-relationship-cadence",
+        "./skills/content-agent",
+        "./skills/content-factory",
+        "./skills/definitive-article-writer",
+        "./skills/dollar-a-day-strategist",
+        "./skills/evidence-verification",
+        "./skills/geo-visibility-audit",
+        "./skills/grokipedia-authority",
+        "./skills/knowledge-panel-entity-seo",
+        "./skills/measurement-analytics",
+        "./skills/model-judgment",
+        "./skills/positive-mentions-harvester",
+        "./skills/recursive-self-improvement-qa",
+        "./skills/reputation-gap-analyzer",
+        "./skills/sales-every-day",
+        "./skills/security-audit",
+        "./skills/seo-audit",
+        "./skills/skill-registry",
+        "./skills/software-subscription-audit",
+        "./skills/video-repurposing-agent",
+        "./skills/weekly-brand-maa"
+      ]
+    },
+    {
+      "name": "authority-and-reputation",
+      "description": "Get found and trusted \u2014 Knowledge Panel, AI search, reviews, proof. (7 skills)",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/business-brand-strategist",
+        "./skills/positive-mentions-harvester",
+        "./skills/reputation-gap-analyzer",
+        "./skills/knowledge-panel-entity-seo",
+        "./skills/ai-search-visibility",
+        "./skills/grokipedia-authority",
+        "./skills/geo-visibility-audit"
+      ]
+    },
+    {
+      "name": "content-engine",
+      "description": "Turn one idea into everything \u2014 articles, video, repurposing, distribution. (6 skills)",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/content-factory",
+        "./skills/definitive-article-writer",
+        "./skills/content-agent",
+        "./skills/video-repurposing-agent",
+        "./skills/dollar-a-day-strategist",
+        "./skills/business-website-agent"
+      ]
+    },
+    {
+      "name": "client-operations",
+      "description": "Run the account \u2014 cadence, access, reporting, audits. (8 skills)",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/client-relationship-cadence",
+        "./skills/client-access-checklist",
+        "./skills/weekly-brand-maa",
+        "./skills/measurement-analytics",
+        "./skills/sales-every-day",
+        "./skills/seo-audit",
+        "./skills/security-audit",
+        "./skills/software-subscription-audit"
+      ]
+    },
+    {
+      "name": "quality-and-standards",
+      "description": "Keep the work honest \u2014 verification, QA, judgment, the registry. (5 skills)",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/evidence-verification",
+        "./skills/recursive-self-improvement-qa",
+        "./skills/model-judgment",
+        "./skills/boil-the-ocean",
+        "./skills/skill-registry"
+      ]
+    }
+  ]
+}

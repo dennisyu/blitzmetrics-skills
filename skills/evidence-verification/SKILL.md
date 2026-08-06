@@ -1,0 +1,441 @@
+---
+name: evidence-verification
+description: Establish what is actually TRUE about a client and prove it with records a stranger can check. Find the hard anchors hiding in public registries (Secretary of State, bar admission, ISBN, patents, ORCID, authority files), verify identity by matching a second fact rather than a matching name, and never let "we haven't looked yet" render as "they scored badly." The upstream skill every authority skill depends on — knowledge-panel-entity-seo, grokipedia-authority and ai-search-visibility all fail the same way when the underlying facts are wrong.
+---
+
+# Evidence Verification
+
+**Use this when** you are about to assert something about a client in public — a schema field, an encyclopedia submission, an audit score, a bio, a Knowledge Panel claim — and you want to be certain it is true, and provable by someone who does not trust you.
+
+This skill exists because of a specific, repeatable failure. In July 2026 our records described a client as a *style and image coach in Austria*. She is a *sewing author in South Tyrol, Italy*. The error had been flagged in a research note five weeks earlier and never actioned. It was one submission away from putting a false description of a real person into an encyclopedia — which would then be scraped by every AI assistant that reads it.
+
+Nothing about that failure was exotic. A field was wrong, a note said so, nobody carried it through, and the next system downstream treated the field as fact.
+
+## The one idea
+
+**A fact about a client is not established until a stranger can check it without asking you.**
+
+Your client's own website is not evidence of anything except what your client wants to say. A testimonial is not evidence. A follower count is not evidence. What counts is a record held by someone with no stake in the outcome: a government registry, a national library, a court, a standards body, a publisher, a newsroom.
+
+Everything below is machinery for finding those records and refusing to fake them.
+
+---
+
+## Part 1 — Find the anchors nobody looked up
+
+Most clients already have hard, verifiable public records. Nobody has searched for them. Work this list in order of how cheap the win is.
+
+### The business registry — the anchor almost every client has
+Every LLC, corporation and partnership is registered with a state or national authority, and those records are **free, public, and name the officers**. In the US it is the Secretary of State (or Corporation Commission); in the UK, Companies House; most countries have an equivalent.
+
+What you get: legal entity name, charter or company number, formation date, status, registered address, and — the part that matters — **named officers, managers and registered agents**.
+
+Worked example. A client was known to us only as "Roland." No surname in eleven email threads, none in the client tracker. His business was a registered Louisiana company:
+
+> JUNKS ABOVE LLC · charter 42116285K · filed 30 December 2015 · Active, in good standing ·
+> Officer: **ROLAND LEBLANC**, title Manager · domicile 4626 D'Hemecourt St, New Orleans
+
+Two minutes in a public database produced a surname, a title, a formation date, and a verifiable charter number. **Nearly every local-service client on a roster is an LLC owner**, which means most clients sitting at zero corroboration have an anchor like this waiting, unclaimed.
+
+### The rest of the ladder, by profession
+| If the client is… | Look here | What it proves |
+|---|---|---|
+| Any business owner | Secretary of State / Companies House | Legal name, role, entity, formation date |
+| An attorney | State bar admission; reported case citations | Licensure, jurisdiction, practice history |
+| A doctor, dentist, therapist | State licensing board; NPI registry | Credential, specialty, standing |
+| Any author | ISBN; national library (Library of Congress, DNB, BnF) | Authorship, publisher, date |
+| An academic | ORCID, Google Scholar, institutional page | Publications, citations, affiliation |
+| An inventor | Patent office (USPTO, EPO) | Named inventor, filing date |
+| A contractor or tradesperson | State contractor licence board | Licence number, class, standing |
+| A restaurateur or retailer | Health permits, liquor licence, local press | Operating record |
+| A speaker | Conference programmes and archives | Named role at a named event |
+| A nonprofit officer | IRS Form 990 (public) | Named officer, compensation, role |
+| Anyone with a Wikipedia article | Wikidata QID + authority files (GND, VIAF, ISNI) | Everything, instantly |
+
+### Weighting: not all anchors are equal
+A registration proves someone **runs a business**. It does not prove anyone independent found them **notable**. Weight accordingly, and say so out loud when you report:
+
+1. **Strongest** — Wikipedia article, national-library authority record, book with an ISBN from a real publisher, sustained national press where they are the subject
+2. **Strong** — a single national press piece as subject, a named award, an academic publication record, a patent
+3. **Real but modest** — business registration with a charter number, professional licence, named speaking role
+4. **Not an anchor** — their own website, their own bio, follower counts, testimonials, directory listings they submitted themselves, press releases
+
+Never let a category-3 anchor alone trigger a public submission. It is enough to establish identity; it is not enough to establish notability.
+
+---
+
+## Part 2 — Verify identity with a second fact
+
+A matching name is not a match. This is the single most expensive mistake in entity work, because the output looks completely normal when it is wrong.
+
+**Rule: confirm on a second, independent attribute** — an address, a formation date, a brand name, a co-founder, a licence number, a photograph.
+
+In the Roland example the identity proof was not the name. It was that the registry's domicile address and the address on the shop's website were the same street address. Same name in the same city would have been a guess. Same name *and* same address is an identification.
+
+The inverse error is just as costly. A client was filed as a "namesake trap" — the Wikidata item matching her name was assumed to be somebody else. Five weeks later the record was followed properly through its authority file to the national library, which showed it was **her own item all along**. The stale warning had been suppressing her score and excluding her from work for over a month. **A warning that has been disproved is worse than no warning**, because nobody re-examines someone the file says is unsafe to touch.
+
+So:
+- Two identifiers agreeing = identified.
+- One identifier = a hypothesis, and it must be labelled as one.
+- A namesake flag must carry the evidence and the date it was established, so it can be re-tested rather than inherited forever.
+
+---
+
+## Part 3 — Read negation
+
+Research prose records absence as often as presence. Your own notes will say:
+
+> "Confirmed to have NO Knowledge Panel, NO Wikipedia, NO Wikidata and NO Grokipedia."
+
+A keyword matcher scanning that sentence finds *Wikipedia*, *Wikidata* and *Knowledge Panel* and records three anchors the client does not have. That is exactly what happened to a client audit in August 2026: the sentence documenting that he had nothing was read as proof that he had everything, and it promoted him to "ready to submit."
+
+Any automated anchor detection **must check for negation before the match** — `no`, `not`, `never`, `without`, `lacks`, `missing`, `zero`, `none`, `absent`. Scan a short window to the left and stop at a clause break so a negation in one sentence cannot suppress a real anchor in the next.
+
+And when you add a new anchor type later, add it to the negation guard **in the same edit**. This is the kind of check that silently stops applying the moment someone extends the system.
+
+---
+
+## Part 4 — "Not researched" is not "failing"
+
+This is the rule that protects the client relationship, and it is easy to get wrong in a way nobody notices until a client sees the report.
+
+If nobody has researched a client yet, that is a gap in **our** knowledge. It is not a judgement about them. A system that scores unresearched entities as zero produces a report where "we never looked" and "we looked and they have nothing" are visually identical — and the client cannot tell which one you meant.
+
+Build the distinction into the data model, not the wording:
+
+- **UNKNOWN** — no research done. No score at all, not a zero. Goes to a research queue with the specific questions to answer.
+- **BUILD** — researched, no anchor found yet. A real, honest finding.
+- **NEARLY / READY** — researched, anchors found.
+
+Then enforce it with a test that fails if any scored entity has a score of zero, and another that checks the UNKNOWN action text describes *our* next step rather than the client's deficiency. Wording drifts; tests do not.
+
+---
+
+## Part 5 — Carry the evidence into the artifact
+
+Research that stays in a research file is wasted. Whatever you produce at the end — a submission, an audit, a schema block, a pitch — must carry the specific verifiable anchors, not a summary of them.
+
+A generator that says *"active professional presence; any press, podcast appearances, books"* has thrown away everything that mattered and produced filler that reads as unsourced. Compare:
+
+> **Before:** "Documented independently; entity home with structured data; active professional presence."
+>
+> **After:** "Independently verifiable: published by Springer Nature; ISBN 978-3-662-62443-2; authority records GND 130452106, VIAF, ISNI; Wikidata Q108866818; existing German Wikipedia article."
+
+The second one a reviewer can check in four clicks. The first one is a shrug.
+
+And when there is **no** hard anchor, say so loudly in the artifact rather than dressing up the absence. A package that admits "no third-party anchor found — expect rejection, surface one proof first" is more useful than one that bluffs and gets bounced.
+
+---
+
+## Part 6 — Fix at the source, in the same run
+
+Every failure in this document has the same shape: someone found the problem, wrote it down, and moved on.
+
+- The wrong niche was recorded in a research note five weeks before it nearly shipped.
+- The disproved namesake trap was resolved in one file and left standing in another.
+- The "does this have any hard anchor?" check existed in two places; adding a new anchor type updated one and not the other.
+
+So:
+1. **Fix the source record**, not just the output. If the roster is wrong, fix the roster.
+2. **Make the contradiction self-detecting.** If two records disagree about the same identifier, that is a testable condition. Write the test; do not rely on someone noticing.
+3. **One authoritative definition.** If a rule is expressed in two places, they will diverge — usually at the moment someone extends the system, which is the worst possible time.
+4. **A note saying "X is wrong and should be corrected" is not a correction.** Either fix it in the same run or file it somewhere that fails until it is fixed.
+
+---
+
+## How to run it
+
+1. **Inventory** — list every client, partner and entity. Mark active/inactive from the authoritative source, and record a *reason* for every inactive one.
+2. **Probe what already exists** — before researching anything, check whether the entity already has a Wikipedia page, Wikidata item, Knowledge Panel or Grokipedia page. Run controls first: a known-good lookup and a deliberately nonsense one. **A check that cannot fail is not a check.** (Our first fleet run found pages already existed for a client and for one of our own companies — nobody knew, and nobody was checking them for accuracy.)
+3. **Hunt anchors** — work Part 1's ladder, cheapest first. Business registry before anything else.
+4. **Verify identity** — second attribute, always. Record which two facts agreed.
+5. **Score honestly** — UNKNOWN where you have not looked.
+6. **Carry evidence into the artifact** — specific records, and a loud warning where there are none.
+7. **Report the corrections you made**, not just the findings. A run that fixed two wrong records delivered more value than one that found three new anchors.
+
+## What good looks like
+- Every assertion traces to a record a stranger can pull up.
+- Every identification names the two facts that agreed.
+- Nobody is scored on evidence they do not have, in either direction.
+- The count of unresearched entities is stated plainly and never disguised as a low score.
+- Corrections to source records are reported in the same run they were found.
+
+## Related skills
+- **knowledge-panel-entity-seo** — consumes these verified facts as schema. Wrong facts here become wrong structured data there, which Google then believes.
+- **grokipedia-authority** — the encyclopedia submission. Its "Insufficient Citations" rejections are this skill's absence, showing up downstream.
+- **ai-search-visibility** — what ChatGPT and Perplexity say about a client is assembled from exactly these records.
+- **positive-mentions-harvester** — finds the press; this skill decides which of it is a real anchor.
+- **client-access-checklist** — access is the precondition for measuring; verified identity is the precondition for publishing.
+- **recursive-self-improvement-qa** — the discipline in Part 6 is that skill applied to facts instead of code.
+
+## Learned in the field
+
+*Appended automatically by the self-improvement loop (Skill-Learnings/): dated lessons from real runs. Newest at the bottom.*
+
+<!-- learning:2026-08-02-a-row-in-a-table-is-not-a-page -->
+**August 2, 2026** (from: grokipedia-fleet)
+
+**August 2, 2026** (from: grokipedia-fleet)
+
+We had 24 skills and nowhere to send someone who asked what one of them was.
+
+Each skill existed in three places — a markdown file in the repo, a file inside every pack
+zip, and a single row in a table on `/skill-packs/`. All three are real. None of them is a
+page. There was no URL for "what is evidence-verification and why would I run it," which
+means there was nothing for a search engine to rank, nothing for an AI assistant to cite,
+and nothing to link to in a client email.
+
+That is the same mistake we diagnose in clients every week. A capability that exists but has
+no citable address does not exist to anything that reads the web.
+
+Fixed by generating one page per skill from the master `.md` files — 24 pages at
+`/skills-<slug>/`, each carrying the same five-rung ladder block as the rest of the system
+tree, each linking up to the pack directory and across to the Task Library.
+
+Three things worth carrying forward:
+
+**Generate, never hand-write.** The pages are built from the skill files that already exist,
+so a skill and its page cannot describe different things. The moment someone edits a page in
+wp-admin, the next run overwrites it and nobody finds out for weeks. Say GENERATOR-OWNED in
+the file header, and mean it.
+
+**A new tier of pages needs a new line in the verifier, the same day.** Twenty-four pages went
+live at once, entirely outside the daily link-graph check. That is precisely how
+`aibuilderspotlight.com/skill-pack` linked to nothing for weeks inside green reports. The
+verifier now checks that every master skill on disk has a page linked from the directory, and
+samples three live pages per run on a rotating index so all of them get covered over time.
+
+**A page tier needs a line in the runner too, or it becomes a slower clock than its source.**
+The daily job rewrites the master skill files every morning. Without a regeneration step the
+published pages would keep describing whatever the skill said the day they were generated,
+while the directory printed a fresh "last updated" date next to them — a stale page wearing a
+current timestamp, which is worse than an obviously old one. This is the third time the same
+defect has appeared in this system (Dorine's mirror pack, the cloud runtime mirror, now the
+skill pages). **Any artifact derived from a source that changes daily needs its own step in
+the daily job.** Look for the pattern rather than waiting to be bitten by it a fourth time.
+
+One smaller thing, worth its own note: the page generator imported `propagate_all_packs` just
+to read its `MANDATED` list. That module parses `sys.argv` at import time, so the generator's
+own argument errors came out under the propagator's name and usage text. **Never import a
+module that acts at import time in order to read one constant from it** — parse the constant
+out of the source instead.
+
+<!-- learning:2026-08-02-a-placeholder-that-reads-as-a-sentence-will-be-printed-as-one -->
+**August 2, 2026** (from: SOMBA audit-cover regeneration, second pass — 30 live audits still carried the placeholder nine hours after the fix was declared closed)
+
+# A placeholder that reads as a sentence will eventually be printed as one
+
+**2026-08-02 (second pass, same day)**
+
+## What happened
+
+Earlier on 2 Aug we found that `gct.py`'s keyword archetypes had been printing invented
+positioning lines on audit covers — "personal auth**ority**" → author → "helps aspiring authors
+finish their book" — and that 27 members whose niche matched nothing were shown the raw
+fill-in-the-blank: *"Helping your ideal client a specific, nameable result."*
+
+We fixed the cover, regenerated all 104 audits, verified every cover line was distinct and
+grounded, added `tools/test_audit_grounding.py` to block a recurrence, and told the client it
+was closed.
+
+It was not closed. Nine hours later, while browser-testing an unrelated new feature on
+Claudius Krucker's dashboard, the same string appeared on screen. **Thirty of the live audits
+still contained it** — in the "a sharper version to try" card and on the agent-team page. It
+was also one build away from Jane Omorogbe's personal-brand *website*, because `site.py` reads
+the same triple, and Agnieszka Figielek's site was set to go live describing her zero-emission
+building academy as helping "families planning a build or renovation" — the same substring
+collision that mislabelled Claudius, on a public site rather than a PDF.
+
+Three of the thirty unmatched members are Sigrun's mentors: Ina, Jagoda, Katrin. So the three
+people who raised the complaint would have opened their own audits and found the complaint
+still true.
+
+## Why the first fix missed it
+
+The test asserted the right property (`no fabricated line`) against the wrong scope (`the cover
+element`). It parsed `<h1 class="mission serif">` out of each audit and checked that one string.
+That is exactly where we had been looking when we found the bug, and looking there again is not
+verification — it is re-reading your own patch.
+
+`grep -c "a specific, nameable result" audits/*.html` would have taken four seconds and returned
+30. Nobody ran it, because the fix felt complete.
+
+## The two lessons
+
+**1. Scope a regression test to the string, not to the place you found it.**
+If the defect is "this text must never describe a member", the test is a scan of every built
+document — audits, dashboard, team board, member websites — not an assertion about one element.
+`tools/test_receipts.py` now scans 113 built files for four forbidden strings.
+
+**2. A placeholder that reads as a sentence will be rendered as a sentence.**
+The deeper mistake was ever having a fallback value that is grammatical, first-person and
+member-shaped. Every caller was supposed to check `matched(p)` first. Callers forget; that is
+what callers do. The durable fix is for the value itself to be harmless:
+
+- `UNMATCHED` is now ordinary English that asserts nothing and reads naturally in every
+  sentence template we own — `("the people you serve", "get the result you're known for",
+  "your method")`.
+- `gct()` returns `suggested=None` when nothing matched, so "here is a better line for you"
+  cannot be fabricated at all. A forgetful caller now gets a `None` — loud — rather than a
+  plausible sentence about a person who does not exist.
+
+Design rule to carry forward: **make the unsafe value unusable, not merely conditional.** A
+guard you must remember is a guard that will be forgotten. This is the same shape as the
+`git_askpass` bug from this morning (a branch that could never fire) and the frozen team-board
+roster (a hand-maintained list beside a generated one) — in all three, correctness depended on
+a human remembering something at the call site.
+
+## Related
+
+- `receipts.py` — every claim now carries its inputs and its rule; a claim with no basis is not
+  returned at all, so "unsourceable" is a structural impossibility rather than a test finding.
+- `tools/test_receipts.py` — the whole-document scan, plus a check that receipts.py's restated
+  score arithmetic still equals `score.py` for all 104 members.
+
+<!-- learning:2026-08-03-a-compromised-site-must-not-outscore-a-clean-one -->
+**August 3, 2026** (from: weekly-fleet-hub-audit v2, fleet-wide proof enrichment)
+
+### Rankings are evidence about *someone's* work — check whose before you score them
+
+The fleet scoreboard rates every site on PROVE: Domain Rating, organic traffic, and the
+breadth of keywords it ranks for. On August 3, 2026 the two sites whose keyword breadth
+looked strongest were **philmershon.com (15 ranking keywords)** and
+**theathletespotlight.com (5)**. Both readings were the attacker's, not the client's.
+
+Pulling the keywords themselves rather than the count showed philmershon.com — a speaker
+coach — ranking for `hollymoviehd`, `borat thong`, `nintendo store`, `jupiter 125 black
+colour`, `silver aranjanam for baby boy`. Fourteen of its fifteen keywords were junk. On
+theathletespotlight.com it was five of five: `activa 6g best colour`, `bici decathlon`,
+`charola de unicel`. Selecting `best_position_url` alongside the keyword named the cause —
+every junk term ranked on an injected path:
+
+    /product-similar-image/?<digits>
+    /product/category/<digits>
+    /shop/manufacturer-site?&transition=top<digits>
+
+with a per-site numeric suffix (`…1310` on one, `…1760` on the other): one kit, two of our
+sites. Uncorrected, philmershon.com scored **impact 40**; netting the injected rankings out
+drops it to **21** — an eight-point BIS swing. A compromised site was being rewarded for
+being compromised, and would have been reported as a fleet-best performer.
+
+**Rules:**
+
+1. **Never score a ranking you have not attributed to a URL.** `org_keywords` is a count of
+   things Google associates with the domain, not a count of the client's wins. Select
+   `best_position_url` and read the paths before any keyword number reaches a score or a
+   report.
+2. **Net hostile rankings out of the score and raise them as an action instead.** Traffic
+   attributed to injected URLs gets discounted in the same proportion. Infection is a
+   dispatch item, never a credit.
+3. **Judge the keywords by fit with the person, not by how spammy they look.** `nintendo
+   store` is a fine keyword — for a games retailer. The tell is a *speaker coach* ranking
+   for it. The GCT already states who each site is for; compare against that.
+4. **A clean sitemap and a clean REST API do not mean a clean site.** Both sites' sitemaps
+   and post lists were entirely legitimate, and their real content is real. The injection
+   lives beside WordPress, in URL space the CMS never enumerates — so any check that walks
+   the sitemap or `/wp-json/wp/v2/posts` is structurally unable to find it. What Google has
+   indexed is a separate source of truth from what the CMS will admit to.
+5. **404 today does not mean clean.** These URLs now return 404 to human and Googlebot
+   alike from a datacenter IP, while still ranking. That is consistent with cleaned-but-
+   still-indexed *and* with a cloak keyed to something the probe can't reproduce. Say which
+   of those you have ruled out; removal still has to be requested in Search Console either
+   way, because the junk keeps ranking after the files are gone.
+
+Companion to the same day's `classify-the-metric-dont-just-count-it` (referring domains,
+same disease one metric over): fleet median referring domains is 368 against a median of
+**26 dofollow**, because a `.shop`/`.store` link-spam blast hits every site daily. Report
+`refdomains_dofollow`; `refdomains` is noise. billybatt.com reads as 324 referring domains
+and is actually **2 dofollow, both of them ours** — the authority problem the number
+appears to have solved is entirely intact. Ahrefs exposes an `is_spam` flag; use it.
+
+Learned August 3, 2026.
+
+<!-- learning:2026-08-03-buckets-must-partition-the-thing-they-explain -->
+**August 3, 2026** (from: weekly-fleet-hub-audit v2, phase 1 down-site triage)
+
+### If a report splits a set into buckets, assert that the buckets add up
+
+The fleet audit deliberately splits unreachable sites two ways so a WAF block is never
+reported as an outage: `genuinely_down` (DNS/TLS/connection failure) and `waf_suspect`
+(403 from our crawler's IP). The runbook says to read those two lists rather than the raw
+"Homepage NOT reachable" line, because the raw line conflates them.
+
+On August 3, 2026 the raw line said **4** and the two buckets said **1 + 2**.
+
+The missing site was **owenhemsath.com, returning a real HTTP 500** — a genuine outage on
+our own AWS fleet host, up and healthy the week before. The classifier had always produced
+a third kind, `http_NNN`, for real 4xx/5xx; nothing ever consumed it. So a site could be
+hard-down and appear in *no* dispatch list, while every summary line in the report stayed
+true. Following the runbook exactly would have made a live outage invisible for a week.
+
+Fixed in `audit_fleet.py` and `_combine_batches.py`: an `http_error` bucket plus an
+explicit `down_unclassified = down − (genuinely_down ∪ waf_suspect ∪ http_error)` that
+prints a loud warning when non-empty. Proven able to fail before being trusted — injecting
+a bogus `_home_kind` into a scratch copy put the site in `down_unclassified` and printed
+the warning.
+
+**Rules:**
+
+1. **Every partition gets a residual bucket and an assertion.** Whenever a report explains
+   a total by splitting it into categories, compute `total − Σ(categories)` and surface it
+   loudly. Categories that came from an enum will silently drop members the day the enum
+   grows a value.
+2. **A value the producer emits and no consumer reads is a latent hole**, not dead code.
+   Grep the consumer for every value the producer can return.
+3. **The conflated line is the honest one.** When a summary offers both a raw total and a
+   nicer breakdown, treat any disagreement between them as the finding.
+4. **Read deltas for artifacts before narrating them.** The same run's `needs_hub` went
+   84 → 85 with "1 resolved: owenhemsath.com" — which reads as progress and was the outage:
+   `needs_hub` requires `homepage_up == yes`, so a site leaves the list by going *down*.
+   Any queue gated on reachability shrinks when sites break. State that in the report rather
+   than counting it as work completed.
+
+Learned August 3, 2026.
+
+<!-- learning:2026-08-03-a-timed-out-tool-call-is-not-a-stopped-process -->
+**August 3, 2026** (from: skill-pack-propagation daily run, August 3, 2026 — the runner was launched twice against live production sites)
+
+A timeout is a fact about the observer, never about the observed. When a tool call that
+started a long job returns "Request timed out", the job is still running; what ended was
+the wait, not the work. On August 3, 2026 the daily propagation runner was started, its
+tool call timed out mid-step-3, the session's process list showed no active sessions
+because the *wrapper* had detached, and the run was relaunched as though it had died. It
+had not: the original was three minutes in and already uploading zips. For ninety seconds
+two copies of a pipeline that publishes to eight live WordPress sites ran concurrently,
+interleaving their output into one log — one at step 3 rebuilding agent pages while the
+other at step 4 swapped the zip URLs underneath it. The duplicate was killed by PID and
+the original finished clean, but nothing in the tool's error had said which was true.
+
+Before relaunching anything that mutates shared state, confirm the previous attempt is
+actually dead — by process table (`ps -eo pid,ppid,etime,command | grep <script>`), by
+lock file, or by a heartbeat the job itself writes. A session-level "no active sessions"
+answers only whether *this session* is still attached, which is a different question. The
+same discipline applies to any probe: a fetch that times out means the request did not
+complete, not that the site is down; a publish call that times out means the response was
+lost, not that the write was — re-read the target's state before retrying, or an idempotent
+retry becomes a double write. Vary time before you vary anything else, and prove the prior
+run is stopped before you start another.
+
+<!-- learning:2026-08-03-a-check-that-can-quietly-not-check-reports-green-either-way -->
+**August 3, 2026** (from: skill-pack-propagation, August 3, 2026 — adding a concurrency gate exposed two ways a gate can disable itself)
+
+A guard that can silently decline to run is worse than no guard, because it still prints
+the green line. Adding one concurrency gate to the daily runner on August 3, 2026 exposed
+two instances within ten minutes. First, the runner invoked it as `[[ -x ./tools/x.sh ]]
+&& run it` — so a lost executable bit, from a zip round-trip or a clone or a copy that
+did not preserve mode, would skip the gate and say nothing. Gate on existence, invoke
+through the interpreter (`zsh ./tools/x.sh`), and make ABSENT a hard failure, not a skip.
+Second, the runtime-completeness test derived its required-file list by scanning the
+runner for `python3 <path>.py` invocations — correct, and blind to the `./tools/x.sh` the
+runner had just gained. It printed "COMPLETE — all 31 referenced paths are present" while
+the new gate was absent from the cloud runtime entirely. A derivation that understands
+only one of the languages its source is written in is a hand-maintained list wearing a
+derivation's clothes; it drifts exactly like one, but with more credibility.
+
+The general form: for every automated check, ask what makes it a no-op — a missing file,
+a permission bit, a resource already held, an empty input, a regex that matches nothing —
+and make each of those loud and distinguishable from a pass. The self-test added that day
+correctly declines to run against a live lock, which is right; the runner then reported
+"guard OK ()" with an empty count, which was not. "NOT CHECKED" and "PASSED" must never
+render the same. When you extend a pipeline, extend the thing that verifies the pipeline
+in the same change, and confirm the verifier actually fails before you trust it passing.
