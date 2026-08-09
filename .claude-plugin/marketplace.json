@@ -6,12 +6,12 @@
   },
   "metadata": {
     "description": "BlitzMetrics / Local Service Spotlight skills for Claude \u2014 personal brand, authority, content, and client operations.",
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "plugins": [
     {
       "name": "blitzmetrics-everything",
-      "description": "Everything we use, in one install \u2014 all 26 BlitzMetrics / Local Service Spotlight skills. Start here; this is what most people want.",
+      "description": "Everything we use, in one install \u2014 all 27 BlitzMetrics / Local Service Spotlight skills. Start here; this is what most people want.",
       "source": "./",
       "strict": false,
       "skills": [
@@ -31,6 +31,7 @@
         "./skills/knowledge-panel-entity-seo",
         "./skills/measurement-analytics",
         "./skills/model-judgment",
+        "./skills/nine-triangles",
         "./skills/positive-mentions-harvester",
         "./skills/recursive-self-improvement-qa",
         "./skills/reputation-gap-analyzer",
@@ -90,7 +91,7 @@
     },
     {
       "name": "quality-and-standards",
-      "description": "Keep the work honest \u2014 verification, QA, judgment, the registry. (5 skills)",
+      "description": "Keep the work honest \u2014 canonical frameworks, verification, QA, judgment, the registry. (6 skills)",
       "source": "./",
       "strict": false,
       "skills": [
@@ -98,7 +99,8 @@
         "./skills/recursive-self-improvement-qa",
         "./skills/model-judgment",
         "./skills/boil-the-ocean",
-        "./skills/skill-registry"
+        "./skills/skill-registry",
+        "./skills/nine-triangles"
       ]
     }
   ]
