@@ -2,10 +2,16 @@
 
 Operational version: **2026-08-06**
 
-Acceptance status: **Candidate — owner acceptance receipt pending.** This file is
-the proposed operating decision used to reconcile conflicting first-party pages.
-It must not be described as a canonical or authorized release until the framework
-owner accepts it in a reviewed pull request and the acceptance is recorded here.
+Acceptance status: **Accepted by framework owner Dennis Yu.**
+
+- Decision date: **2026-08-09** (`America/Los_Angeles`)
+- Decision: approve this operational reference and deploy it through PR #1
+- Evidence: explicit owner instruction in the Codex production task
+- Accepting commit: recorded in the follow-up receipt commit on PR #1
+
+This is the accepted operating decision for reconciling conflicting first-party
+pages. Later changes still require a new reviewed pull request and acceptance
+receipt.
 
 ## Authority order
 
@@ -18,9 +24,9 @@ When wording conflicts, use this order and report the conflict:
 4. Older checklist, course landing, and historical article pages.
 5. Third-party summaries and reconstructed packs only as evidence of drift.
 
-Until this candidate has an acceptance receipt, report its names as **proposed
-operating names**, disclose the unresolved source conflict, and do not infer that
-Task Library wording has been verified unless the current run actually accessed it.
+Report these as the accepted operating names while still disclosing relevant
+source conflicts. Do not infer that Task Library wording has been verified unless
+the current run actually accessed it.
 
 This is an operational summary, not a reproduction of paid course lessons.
 
@@ -42,9 +48,9 @@ This is an operational summary, not a reproduction of paid course lessons.
 
 - **ACC — Awareness · Consideration · Conversion** appears on older BlitzMetrics
   checklist/course pages. The August 2026 definitive article uses the operating
-  language **Audience · Engagement · Conversion**. This candidate treats ACC as
-  the legacy funnel alias and AEC as the proposed operational label; disclose that
-  decision until the owner accepts it.
+  language **Audience · Engagement · Conversion**. This accepted reference treats
+  ACC as the legacy funnel alias and AEC as the current operational label; disclose
+  the legacy alias when reconciling older material.
 - **ABP — Analyst · Business · Partner** appears in historical material. Use SBP in
   current work and retain ABP only when explaining lineage.
 - Newer narrative may describe the Triad's result as vision, people, and reputation.
@@ -62,5 +68,4 @@ This is an operational summary, not a reproduction of paid course lessons.
   review; do not claim its current wording without an access receipt.
 
 If these sources change, update this file through a reviewed pull request and add
-an acceptance receipt. Do not patch downstream copies independently. Once accepted,
-replace the status above with the accepting commit, reviewer, and date.
+a new acceptance receipt. Do not patch downstream copies independently.
