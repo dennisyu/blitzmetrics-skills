@@ -21,7 +21,7 @@ Do not record passwords, tokens, or private client data here.
 2. Add `https://github.com/dennisyu/blitzmetrics-skills` as a marketplace.
 3. Confirm all five bundles appear.
 4. Install `blitzmetrics-everything`.
-5. Confirm all 26 expected skills are listed and enabled.
+5. Confirm all 27 expected skills are listed and enabled.
 6. Start a fresh chat and use a literal trigger phrase from one selected skill.
 7. Confirm the selected skill activates and its output matches its contract.
 8. Restart Claude, return to a fresh chat, and repeat the activation check.

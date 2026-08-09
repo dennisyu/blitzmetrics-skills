@@ -21,6 +21,10 @@ Instead:
 6. If behavior or distribution changed, complete the relevant checks in
    [ACCEPTANCE.md](ACCEPTANCE.md).
 
+For recurring distribution, follow
+`skills/skill-registry/references/update-contract.md`. The GitHub commit is the
+release identity; a ZIP filename or modification date is not.
+
 ## Adding a skill
 
 1. Add `skills/<skill-name>/SKILL.md`. The directory and frontmatter `name` must
@@ -54,3 +58,10 @@ marketplace validator.
 
 Never substitute one state for another. In particular, `Scheduled` does not mean
 `Observed`, and `Available` does not mean `Installed`.
+
+## Release notes for members
+
+Every member-facing notice must name the source commit/version, changed skills,
+required sync action, a fresh-chat verification phrase, and the failure route. If a
+legacy ZIP is supplied, label it as a snapshot and include the source commit. Never
+call a reconstructed or article-derived pack canonical.

@@ -1,51 +1,117 @@
 ---
 name: measurement-analytics
-description: The Measurement & Analytics Agent — YOUR agent reads YOUR numbers. Connects to your CRM (HighLevel etc.), your ad accounts and your Google Analytics, then measures every stage of your funnel weekly - visits, opt-in rate, low-ticket sales, cost per lead, and the verdict that matters: is your front-end revenue paying for your ads? Feeds your weekly MAA and tells your $1/day agent when to scale.
+description: Collect and validate calls, leads, bookings, revenue, rankings, traffic, and ad spend for a weekly Metrics-Analysis-Action report. Use when connecting a local-service client's data sources, deciding API versus export, automating MAA across many clients, defining what a lead or call means, reconciling conflicting dashboards, or troubleshooting a scheduled metrics job that looks healthy but produced missing or unreliable numbers.
 ---
 
 # Measurement & Analytics Agent
 
-**The rule this agent enforces: no number, no verdict.** A healthy funnel passes a simple economic test — front-end sales pay for the ads, so leads are free. You cannot know that without measuring every stage, and "I think it's working" is not a measurement. This agent switches the numbers on — and because it's YOUR agent with YOUR access, you own the whole loop.
+**The rule this agent enforces: no traceable number, no verdict.** A number is
+traceable only when it has a source, definition, client/account, period, timezone,
+collection time, and run ID. “The dashboard says” and “the agent says it ran” are
+not measurements.
 
-> **Read these first, every run:** your links file (funnel page URLs), your offers + prices, your latest tracking sheet if one exists, and the benchmarks below. Numbers come ONLY from connected sources or files you provide — never estimated, never invented. A metric you can't verify is reported as "not connected yet."
+> **Read these first, every run:** the client/source registry, metric definitions,
+> funnel URLs, offers and prices, prior accepted snapshot, and
+> `references/source-contracts.md`. Numbers come only from tested sources or named
+> files. Report everything else as `not connected`.
 
-## What it connects to (each one is optional — more access = sharper verdicts)
-1. **Your CRM / funnel platform (HighLevel, etc.)** — page visits, form submissions, contacts, tags, email opens/clicks, payments. In HighLevel: Settings → Private Integrations → create one named `my-agent`, read-only scopes (contacts, funnels/pages stats, payments) → copy the token → tell Claude: *"Add a custom connector: URL `https://services.leadconnectorhq.com/mcp/` with my Private Integration Token."* Two minutes, revocable any time, scoped to YOUR account only.
-2. **Meta Ads / Google Ads** — spend, reach, clicks, cost per result. Easiest v1 path: export the campaign table (last 7/28 days) as CSV into your project folder; your agent reads it. The CSV takes 60 seconds and always works; API connection is a later upgrade.
-3. **Google Analytics 4** — traffic sources and landing-page behavior. Same v1 path: the standard Traffic acquisition + Landing pages exports, or grant viewer access if your agent runs in a browser-capable setup.
-4. **Your email platform** (if separate) — subscriber count and growth. **Local businesses:** add your Google Business Profile insights export (calls, direction requests, bookings) — for many local funnels GBP is the real front door.
+## Source the funnel without conflating it
 
-## The weekly measurement (steps)
-1. **Pull the stage numbers** for the last 7 days (and the 7 before, for deltas): landing-page visits (organic page vs ads twin page — that split IS your attribution) · opt-ins → **opt-in rate** · low-ticket checkouts (or paid diagnostics / booked estimates) → **take-rate** · front-end revenue · ad spend (campaigns + boosts) · list size + growth · email opens/clicks if available.
-2. **Compute the five verdicts:**
-   - **Opt-in rate** vs 25% target (35% excellent) — below target after 100+ visits → the landing page is the weakest stage.
-   - **Take-rate** vs 3% target (10–15% possible) — below → the low-ticket offer/page is the weakest stage.
+Use the source matrix in `references/source-contracts.md`.
+
+1. **Calls and GBP intent:** use the Business Profile Performance API for
+   `CALL_CLICKS`, direction requests, website clicks, and impressions. A call click
+   is not a connected call or lead. Use the phone/call-tracking provider for actual
+   calls, answers, duration, and disposition.
+2. **Leads, bookings, and sales:** use the CRM's tested REST API, connector, webhook,
+   or export. HighLevel Private Integration tokens are scoped API credentials for
+   contacts, opportunities, appointments, payments, conversations, and other
+   documented resources. Do not promise funnel/page statistics from a generic
+   connector: enumerate and test the exact tools/endpoints first. Use GA4 and ad
+   landing-page data for page traffic.
+3. **Rankings:** use Search Console for owned-site clicks, impressions, CTR, and
+   average position. Use DataForSEO or another named SERP vendor for external/local
+   ranking observations and cohort comparison. Never blend the two definitions.
+4. **Ads:** use Google Ads and Meta reporting APIs when configured; otherwise accept
+   a dated, account-scoped CSV for the pilot. Preserve attribution windows and
+   conversion-action names.
+5. **Traffic:** use the GA4 Data API or a dated export. Preserve property timezone,
+   landing page, source/medium, and event names.
+
+Start a pilot with reliable exports if necessary. Promote a source to API automation
+only after the required metric, permissions, pagination, latency, and failure path
+have been tested.
+
+## Weekly measurement
+
+1. **Open a run:** create one immutable `run_id`; acquire the client lock; record the
+   expected sources and periods. A second agent waits rather than collecting into
+   the same run.
+2. **Collect raw snapshots:** pull the last complete seven days and the comparable
+   prior period. Store the raw response/export and a success or failure receipt per
+   source. Do not overwrite last week's data.
+3. **Normalize without relabeling:** write the normalized rows defined in the source
+   contract. Keep GBP call clicks, connected calls, leads, qualified leads, bookings,
+   sales, and revenue separate.
+4. **Run QA:** assert expected-source coverage, timezone and period boundaries,
+   pagination, duplicates, units, latency, attribution settings, and surprising
+   movements. A missing receipt is a failed run even when no API returned an error.
+5. **Pull the funnel numbers:** landing-page visits · unique leads · qualified leads
+   · booked estimates · sales · collected/recognized revenue · ad spend · tracked
+   calls · GBP intent · search performance and external rankings.
+6. **Compute the five verdicts.** Treat the rates below as starting hypotheses,
+   not universal facts; replace them with the client's accepted vertical-specific
+   targets when those exist.
+   - **Opt-in rate** vs 25% default hypothesis (35% stretch) — below the accepted target after enough traffic → investigate the landing page.
+   - **Take-rate** vs 3% default hypothesis (10–15% stretch) — below the accepted target → investigate the offer and page.
    - **Cost per lead** = spend ÷ ad-page opt-ins.
-   - **Self-liquidation** = front-end revenue ÷ ad spend. ≥1.0 → "your leads are FREE — scale is allowed." <1.0 → name the leaking stage; scaling is NOT allowed yet.
+   - **Self-liquidation** = attributed front-end revenue ÷ measured ad spend. ≥1.0 means attributed front-end revenue covered measured ad spend; it does not make acquisition, fulfillment, overhead, or attribution risk free. Treat scale as a proposal requiring the client's guardrails. <1.0 → name the likely leaking stage and hold scale.
    - **Cost per buyer** = spend ÷ front-end buyers (watch the trend, not the single week).
-3. **Respect data discipline:** no verdict on any page with under 100 visits — flag "collecting data" instead. Compare like periods. One-line note when a number moved >30% week-over-week.
-4. **Write the weekly report** (format below) and **hand off**: the weakest-stage verdict goes to your sales-every-day agent (it becomes tomorrow's action); the self-liquidation verdict goes to your dollar-a-day agent (scale / hold / fix first); the three headline numbers pre-fill your weekly MAA.
-5. **Log the run.** Never send anything anywhere — the report is a file (and a draft if your email is connected). You decide what travels.
+7. **Respect data discipline:** use the client's accepted minimum sample. If none
+   exists, use 100 visits as a conservative default and label smaller samples
+   `collecting data`. Compare like periods and definitions. Explain every >30%
+   change or flag it for investigation.
+8. **Write MAA:** show the metric and source, analysis, action, owner, deadline, and
+   success measure. Hand scale/hold to `dollar-a-day-strategist` and the weakest
+   stage to `sales-every-day`, but stage changes for human approval.
+9. **Close the run:** write the report, validation assertions, raw-artifact paths,
+   source receipts, and next expected run. Release the lock. Never send or modify ads
+   from this measurement run.
 
 ## The report (one page, every week)
 ```
 WEEK OF <date> — <your name>'s funnel
-TRAFFIC   LP visits: organic ___ / ads ___   (Δ vs last week)
-LEADS     opt-ins: ___  ·  opt-in rate: ___%  [target 25%+]  ·  cost/lead: $___
-REVENUE   front-end sales: ___ = $___  ·  take-rate: ___%  [target 3%+]
+RUN       <run_id> · period/timezone · source receipts passed/expected · data quality PASS/WARN/FAIL
+TRAFFIC   LP visits: organic ___ / ads ___ · Search Console clicks ___ · external rank scope ___
+CALLS     GBP call clicks ___ · tracked calls ___ · answered ___
+LEADS     unique ___ · qualified ___ · bookings ___ · cost/qualified lead $___
+REVENUE   sales ___ · collected/recognized $___ · take-rate ___%
 VERDICT   self-liquidation: $___ revenue vs $___ spend = ___  → SCALE / HOLD / FIX <stage>
-WEAKEST STAGE: <stage> → handed to your Sales Every Day agent for tomorrow's action
-NOT CONNECTED YET: <list — each one makes the next report sharper>
+MAA       metric/source → analysis → action/owner/deadline/success measure
+GAPS      not connected · failed assertions · missing receipts · attribution caveats
 ```
 
-## Run it scheduled
-*"Create a scheduled task: every Friday at 6am, run my measurement-analytics skill and leave the weekly report in my Outputs folder."* You own the access, the tokens, and the report. The weekly MAA stops being an opinion the first Friday this runs.
+## Schedule it safely
+
+Use a complete instruction such as:
+
+> Every Friday at 6am Eastern, run `measurement-analytics` for client `<id>`
+> using the client/source registry. Store raw snapshots and the MAA report under
+> run ID `<pattern>`. Require receipts from every expected source, alert `<owner>`
+> if a receipt or assertion is missing by 7am, and make no changes to ads, CRM,
+> or client sites.
+
+Schedule existence means `Scheduled`. The job becomes `Observed` only after the
+first firing leaves its receipts and expected report.
 
 ## Definition of done
 - Every number traces to a connected source or a named file; everything else says "not connected yet."
-- The five verdicts are stated with benchmarks, and under-100-visit pages are never judged.
+- Calls, call clicks, leads, bookings, sales, and revenue remain distinct.
+- Every expected source produced a success or failure receipt for the same run ID.
+- Period, timezone, metric definition, vendor, account, and attribution settings are visible.
+- The five verdicts name whether their benchmarks are client-accepted or default hypotheses, and insufficient samples are never judged.
 - Weakest stage handed to sales-every-day; scale verdict handed to dollar-a-day; weekly MAA pre-filled.
-- Zero actions taken on ads or funnels — this agent measures; its siblings act; you approve.
+- Zero actions taken on ads, CRM, or funnels — this agent measures; its siblings propose; a human approves.
 
 ## Pairs with
 → sales-every-day (acts on the weakest stage) → dollar-a-day-strategist (scales only on a green verdict) → weekly-brand-maa (the report becomes the MAA) → content-agent (feeds the traffic) → recursive-self-improvement-qa

@@ -1,6 +1,6 @@
 # BlitzMetrics Skills for Claude
 
-The canonical marketplace for the 26 BlitzMetrics and Local Service Spotlight
+The canonical marketplace for the 27 BlitzMetrics and Local Service Spotlight
 skills used across authority, content, client operations, and quality assurance.
 
 ## Install
@@ -46,11 +46,11 @@ Most people should install `blitzmetrics-everything`.
 
 | Bundle | What it covers |
 |---|---|
-| `blitzmetrics-everything` | All 26 skills |
+| `blitzmetrics-everything` | All 27 skills |
 | `authority-and-reputation` | Knowledge Panel, AI search, reviews, and proof |
 | `content-engine` | Articles, video, repurposing, and distribution |
 | `client-operations` | Cadence, access, reporting, and audits |
-| `quality-and-standards` | Verification, QA, judgment, and the registry |
+| `quality-and-standards` | Nine Triangles, verification, QA, judgment, and the registry |
 
 ## Skills, agents, and scheduled jobs
 

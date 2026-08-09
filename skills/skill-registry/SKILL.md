@@ -57,6 +57,19 @@ The short version:
   scheduled, and observed are separate states.
 - **Link the install guide** from every place a file can be downloaded.
 
+## Updating packs regularly
+
+Use `references/update-contract.md`. Keep update checking separate from skill
+authoring: a scheduled checker compares the environment's accepted commit with
+GitHub `main`, validates a candidate, and deploys to one canary. It never rewrites a
+skill or commits to `main`.
+
+Promote a candidate only after a fresh-chat activation receipt passes for every
+changed skill. Roll out in small cohorts with one publisher, one environment lock,
+stable release/run IDs, a separate auditor, and the prior accepted commit recorded
+for rollback. A no-change week still writes a receipt so silence cannot be confused
+with a job that failed to run.
+
 ## Wiring a skill into a scheduled job
 
 A scheduled task starts a **fresh session with no memory of the conversation that created it**. So:
@@ -82,7 +95,7 @@ schedule or credential changes.
 
 ## Reconciliation — run monthly, or when something feels missing
 
-1. List the canonical marketplace commit and all 26 available skills.
+1. List the canonical marketplace commit and all 27 available skills.
 2. List what each target account and fleet site actually reports as its commit/version and installed skills.
 3. Diff them. **Every target behind the canonical commit is a propagation failure; every untracked local skill is an orphan.**
 4. For each recurring scheduled job, confirm the skill it names still exists under that exact name. Renaming a skill silently breaks every job that calls it.
@@ -101,3 +114,5 @@ schedule or credential changes.
 
 `skill-creator` (authoring and evals) · `cowork-plugin` (packaging and publishing) · the weekly MAA cadence.
 Inventory and the current gap list: `references/inventory.md`.
+For scheduled marketplace checks, canary rollout, locks, receipts, and rollback:
+`references/update-contract.md`.
