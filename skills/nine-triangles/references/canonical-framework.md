@@ -7,7 +7,7 @@ Acceptance status: **Accepted by framework owner Dennis Yu.**
 - Decision date: **2026-08-09** (`America/Los_Angeles`)
 - Decision: approve this operational reference and deploy it through PR #1
 - Evidence: explicit owner instruction in the Codex production task
-- Accepting commit: recorded in the follow-up receipt commit on PR #1
+- Accepting commit: `3a82b85071e47a9e4ee336cec854d3e004ff0c5f` on PR #1
 
 This is the accepted operating decision for reconciling conflicting first-party
 pages. Later changes still require a new reviewed pull request and acceptance
