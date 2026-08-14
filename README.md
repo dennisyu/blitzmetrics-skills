@@ -62,6 +62,21 @@ Most people should install `blitzmetrics-everything`.
 Creating a schedule is not proof that it ran. See [ACCEPTANCE.md](ACCEPTANCE.md)
 for installation, update, and fleet-job checks.
 
+## Workplace-safe media testing
+
+Every distributed skill carries the same silent-playback guardrail: an agent must
+mute the player and set volume to zero before testing video or audio. The rule
+also applies to delegated agents, reloads, replays, new tabs, and alternate
+players. If mute cannot be controlled and verified, the agent must use captions,
+transcripts, metadata, screenshots, frames, or player state instead of pressing
+Play.
+
+The human-readable source is
+[`standards/silent-media-playback.md`](standards/silent-media-playback.md).
+`scripts/sync_shared_rules.py` embeds that source in every `SKILL.md`, and the
+repository validator rejects a pull request when even one copy is missing or
+stale. That is Content · Checklist · Software in a form anyone can inspect.
+
 ## For maintainers
 
 The `skills/` folder is the single source of truth. Bundles in
