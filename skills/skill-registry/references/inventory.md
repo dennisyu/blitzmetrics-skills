@@ -1,6 +1,6 @@
 # Skill inventory — canonical facts and per-environment evidence
 
-Last canonical repository audit: 6 August 2026.
+Last canonical repository audit: 14 August 2026.
 
 This file separates what the marketplace makes **available** from what is actually
 **installed, enabled, tested, scheduled, or observed**. Never infer one state from
@@ -12,7 +12,7 @@ another.
 |---|---|
 | Repository | `https://github.com/dennisyu/blitzmetrics-skills` |
 | Marketplace manifest | `.claude-plugin/marketplace.json` |
-| Skills in `blitzmetrics-everything` | 27 |
+| Skills in `blitzmetrics-everything` | 28 |
 | Topical bundles | 4 |
 | Validation | Pull-request and main-branch GitHub workflow |
 | Contribution path | Branch → checks → review → merge |
@@ -25,13 +25,13 @@ a competing copy of the skill files.
 
 | Bundle | Skills available |
 |---|---:|
-| `blitzmetrics-everything` | 27 |
-| `authority-and-reputation` | 7 |
+| `blitzmetrics-everything` | 28 |
+| `authority-and-reputation` | 8 |
 | `content-engine` | 6 |
 | `client-operations` | 8 |
 | `quality-and-standards` | 6 |
 
-The topical totals overlap. They are selections over the same 27 directories.
+The topical totals overlap. They are selections over the same 28 directories.
 
 ## Per-account installation register
 
