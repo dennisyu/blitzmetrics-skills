@@ -38,10 +38,16 @@ release identity; a ZIP filename or modification date is not.
 ## Local checks
 
 ```bash
+python3 scripts/sync_shared_rules.py --check
 python3 scripts/validate_marketplace.py
 python3 -m unittest discover -s tests -v
 npx -y @anthropic-ai/claude-code@latest plugin validate .
 ```
+
+Shared agent rules live under `standards/`. After changing one, run
+`python3 scripts/sync_shared_rules.py` to update the self-contained copy inside
+every distributed skill. Never hand-edit a generated block; validation rejects
+missing or stale copies.
 
 The first check catches missing files, duplicate or unlisted skills, bad
 frontmatter, and stale local references. The final check uses Claude's official

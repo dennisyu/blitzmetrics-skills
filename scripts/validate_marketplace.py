@@ -13,6 +13,8 @@ KEBAB = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 LOCAL_REFERENCE = re.compile(
     r"(?<![\w/])((?:references|scripts|assets)/[A-Za-z0-9_.\-/]+)"
 )
+SHARED_RULE_START = "<!-- shared-rule:silent-media-playback:start -->"
+SHARED_RULE_END = "<!-- shared-rule:silent-media-playback:end -->"
 
 
 def _frontmatter(path: Path) -> dict[str, str]:
@@ -94,6 +96,25 @@ def validate(root: Path) -> list[str]:
     for stale in sorted(everything_set - actual_refs):
         errors.append(f"blitzmetrics-everything has a stale skill path: {stale}")
 
+    try:
+        shared_rule = (
+            root / "standards" / "silent-media-playback.md"
+        ).read_text(encoding="utf-8").strip()
+        expected_rule_block = (
+            f"{SHARED_RULE_START}\n{shared_rule}\n{SHARED_RULE_END}"
+        )
+    except OSError as exc:
+        errors.append(f"cannot read shared media rule: {exc}")
+        expected_rule_block = ""
+
+    agents_file = root / "AGENTS.md"
+    if not agents_file.is_file():
+        errors.append("missing AGENTS.md with the shared media rule")
+    elif expected_rule_block and expected_rule_block not in agents_file.read_text(
+        encoding="utf-8"
+    ):
+        errors.append("AGENTS.md has a missing or stale shared media rule")
+
     for skill_dir in skill_dirs:
         skill_file = skill_dir / "SKILL.md"
         if not skill_file.is_file():
@@ -107,6 +128,12 @@ def validate(root: Path) -> list[str]:
             )
         if not metadata.get("description"):
             errors.append(f"{skill_file.relative_to(root)} needs a description")
+        if expected_rule_block and expected_rule_block not in skill_file.read_text(
+            encoding="utf-8"
+        ):
+            errors.append(
+                f"{skill_file.relative_to(root)} has a missing or stale shared media rule"
+            )
 
         for markdown in skill_dir.rglob("*.md"):
             text = markdown.read_text(encoding="utf-8")

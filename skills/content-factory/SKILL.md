@@ -82,3 +82,13 @@ See `boil-the-ocean.md` for the full operating principles.
 **July 20, 2026** (from: Absorption of Daniel Goodrich's Repurposing Suite v0.2 (Basecamp message 9944086092) into the master pack)
 
 The Capture stage now has a daily automated feeder: `video-repurposing-agent` (added to this pack July 20, 2026) watches the client's YouTube channel every day with an incremental watermark (first run inventories the whole uploads playlist; later runs stop at the first already-seen video), triages each new upload SKIP / LIGHT / MODERATE / STRONG against the GCT, and routes the winners through definitive-article-writer → jennifer → publish. Two rules it enforces that this factory inherits: search the site BEFORE writing and enhance the existing article (embed the new video there) when one already owns the topic — never ship a competing page; and when a client runs both a personal-brand site and a company site, one video may become two different articles (first-person cut and third-person cut, cross-linked), never the same article twice. Proven economics from the Escape Fitness validation (May 2026, Daniel Goodrich): a 247-episode channel inventoried and the first A- article cost 251 of 10,000 free daily YouTube API units.
+
+<!-- shared-rule:silent-media-playback:start -->
+## Silent media playback
+
+- Never let audio from browser, video, audio, presentation, or application testing play through the user's speakers unless the user explicitly asks to hear it.
+- Before starting any media playback, mute the player and set its volume to zero. Keep it muted for the full test, including replays, reloads, new tabs, and alternate players.
+- Apply this rule to the primary agent and every delegated agent. Include the mute requirement whenever work that may involve media playback is delegated.
+- If the mute state cannot be controlled and verified before playback, do not start playback. Use metadata, captions, transcripts, frames, screenshots, network state, or player state instead.
+- Only unmute when the user explicitly requests audible playback in the current task.
+<!-- shared-rule:silent-media-playback:end -->

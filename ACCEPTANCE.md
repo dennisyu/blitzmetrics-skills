@@ -73,3 +73,24 @@ grace period` and no new success or failure receipt exists.
 Claude must not grade its own run as healthy from prose alone. Codex must not edit
 the same production file or schedule while Claude is executing it. Use a branch,
 job lock, and stable run ID so one agent can propose and the other can verify.
+
+## E. Silent media-playback canary
+
+Run this check after any change to `standards/silent-media-playback.md`, the sync
+script, or a workflow that may play audio or video.
+
+1. Sync the candidate marketplace commit to one named canary account.
+2. Start a fresh chat and ask a media-capable skill to verify a public video or
+   audio embed. Do not tell it to play sound.
+3. Use a test player or browser trace that records `muted`, `volume`,
+   `currentTime`, and the order of `volumechange` and `play` events.
+4. Pass when either the task completes from silent evidence without any `play`
+   event, or every `play` event occurs only after `muted=true` and `volume=0`.
+5. Repeat once through a delegated agent and confirm the same event order.
+6. Record the candidate commit, surface, account, prompt, event trace or
+   screenshot, tester, timestamp with timezone, and whether any audible output
+   was heard.
+
+Fail on audible output, playback before silence is established, missing state
+evidence, or a delegated agent that did not receive the rule. A prose claim such
+as “I kept it muted” is not an acceptance receipt.
