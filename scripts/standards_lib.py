@@ -65,6 +65,9 @@ Check kinds
                    status. An optional ``within`` regex narrows the document
                    first, so "every URL inside the ``sameAs`` array" and "every
                    outbound ``href``" are the same primitive.
+``require_paths``  every listed path must resolve on the target's own origin.
+                   The only check that tests a URL the page does not link to —
+                   which is exactly what a URL printed on a QR code is.
 
 Every regex check must carry ``examples`` with at least one ``violating`` and
 one ``clean`` sample, and every ``resolve_urls`` check must carry ``extracts``.
@@ -90,7 +93,7 @@ DELIMITER = "---"
 
 SEVERITIES = ("error", "warn")
 SCOPES = ("published-html", "agent-behaviour", "design-review")
-CHECK_KINDS = ("forbid_regex", "require_regex", "resolve_urls")
+CHECK_KINDS = ("forbid_regex", "require_regex", "resolve_urls", "require_paths")
 
 REQUIRED_HEADER = ("title", "severity", "captured", "captured_from")
 ALLOWED_HEADER = REQUIRED_HEADER + ("source", "applies_to", "target_tags", "checks")
@@ -114,6 +117,7 @@ class Check:
     message: str
     pattern: re.Pattern | None = None
     within: re.Pattern | None = None
+    paths: tuple[str, ...] = ()
     exempt_if_near: str | None = None
     allow_status: tuple[int, ...] = ()
     limit: int = 40
@@ -206,6 +210,7 @@ def _parse_check(slug: str, raw: object, index: int, where: str) -> Check:
         "exempt_if_near",
         "extract",
         "within",
+        "paths",
         "allow_status",
         "limit",
         "skip_same_host",
@@ -257,6 +262,43 @@ def _parse_check(slug: str, raw: object, index: int, where: str) -> Check:
             message=message,
             pattern=compiled,
             exempt_if_near=exempt,
+            examples=examples,
+        )
+
+    if kind == "require_paths":
+        paths = raw.get("paths")
+        if not isinstance(paths, list) or not paths:
+            raise StandardError(f"{at}: 'require_paths' needs a non-empty 'paths' list")
+        for path in paths:
+            if not isinstance(path, str) or not path.startswith("/"):
+                raise StandardError(
+                    f"{at}: every path must be a string starting with '/', got {path!r}"
+                )
+        allow = raw.get("allow_status", [200, 301, 302])
+        if not isinstance(allow, list) or not all(isinstance(i, int) for i in allow):
+            raise StandardError(f"{at}: 'allow_status' must be a list of integers")
+
+        builds = examples.get("builds")
+        if not isinstance(builds, list) or not builds:
+            raise StandardError(
+                f"{at}: needs examples.builds — [{{'target': ..., 'urls': [...]}}] — so "
+                f"the origin joining is proven offline"
+            )
+        for sample in builds:
+            if (
+                not isinstance(sample, dict)
+                or not isinstance(sample.get("target"), str)
+                or not isinstance(sample.get("urls"), list)
+            ):
+                raise StandardError(f"{at}: each examples.builds item needs target + urls")
+
+        return Check(
+            slug=slug,
+            id=check_id,
+            kind=kind,
+            message=message,
+            paths=tuple(paths),
+            allow_status=tuple(allow),
             examples=examples,
         )
 
