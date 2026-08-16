@@ -221,9 +221,40 @@ def run_resolve_check(
     return findings
 
 
+def build_paths(check: Check, url: str) -> list[str]:
+    """Absolute URLs for this check's paths, on the target's own origin."""
+    parts = urlparse(url)
+    origin = f"{parts.scheme}://{parts.netloc}"
+    return [origin + path for path in check.paths]
+
+
+def run_paths_check(
+    check: Check, url: str, severity: str, pause: float = LINK_PAUSE
+) -> list[Finding]:
+    """A URL nobody links to is a URL nothing else can check.
+
+    Everything else in this sweep reads the page it fetched. Only this check can
+    catch the address printed on a conference QR code going dead, because that
+    address has no inbound link, no analytics until someone tries it, and no
+    crawler path to find it.
+    """
+    findings: list[Finding] = []
+    for target in build_paths(check, url):
+        code, note = status_of(target)
+        if code not in check.allow_status:
+            detail = f"HTTP {code} — {target}" if code else f"{note or 'no response'} — {target}"
+            findings.append(
+                Finding(url, check.slug, check.id, severity, check.message, detail)
+            )
+        time.sleep(pause)
+    return findings
+
+
 def run_check(check: Check, url: str, body: str, severity: str, **kw) -> list[Finding]:
     if check.kind == "resolve_urls":
         return run_resolve_check(check, url, body, severity, **kw)
+    if check.kind == "require_paths":
+        return run_paths_check(check, url, severity, **kw)
     return run_regex_check(check, url, body, severity)
 
 
@@ -236,6 +267,16 @@ def self_test(standards: list[Standard]) -> list[str]:
     problems: list[str] = []
     for standard in standards:
         for check in standard.checks:
+            if check.kind == "require_paths":
+                for i, sample in enumerate(check.examples["builds"]):
+                    got = build_paths(check, sample["target"])
+                    want = sample["urls"]
+                    if got != want:
+                        problems.append(
+                            f"{check.ref} builds[{i}]: expected {want}, got {got}"
+                        )
+                continue
+
             if check.kind == "resolve_urls":
                 for i, sample in enumerate(check.examples["extracts"]):
                     got = extract_urls(check, sample["html"])

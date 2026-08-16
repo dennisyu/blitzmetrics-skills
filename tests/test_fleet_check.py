@@ -310,3 +310,67 @@ class TargetScopingTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RequirePathsTests(unittest.TestCase):
+    """The only check that can catch a URL nothing on the site links to."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.dir = Path(self._tmp.name)
+        self.addCleanup(self._tmp.cleanup)
+
+    def check(self, **overrides):
+        base = {
+            "id": "short-paths",
+            "kind": "require_paths",
+            "paths": ["/install/", "/skills/"],
+            "message": "spoken path is dead",
+            "examples": {"builds": [{"target": "https://x.test/", "urls": []}]},
+        }
+        return build([{**base, **overrides}], self.dir).checks[0]
+
+    def test_paths_join_onto_the_target_origin_not_its_path(self):
+        check = self.check()
+        self.assertEqual(
+            fleet_check.build_paths(check, "https://site.test/deep/page/?a=1"),
+            ["https://site.test/install/", "https://site.test/skills/"],
+        )
+
+    def test_a_dead_spoken_path_is_reported(self):
+        check = self.check()
+        original = fleet_check.status_of
+        fleet_check.status_of = lambda url: (404, "") if "skills" in url else (200, "")
+        try:
+            found = fleet_check.run_paths_check(
+                check, "https://site.test/", "error", pause=0
+            )
+        finally:
+            fleet_check.status_of = original
+        self.assertEqual(len(found), 1)
+        self.assertIn("/skills/", found[0].detail)
+        self.assertIn("HTTP 404", found[0].detail)
+
+    def test_a_redirect_counts_as_resolving(self):
+        check = self.check()
+        original = fleet_check.status_of
+        fleet_check.status_of = lambda url: (301, "")
+        try:
+            found = fleet_check.run_paths_check(
+                check, "https://site.test/", "error", pause=0
+            )
+        finally:
+            fleet_check.status_of = original
+        self.assertEqual(found, [])
+
+    def test_relative_paths_are_rejected_at_parse_time(self):
+        from scripts.standards_lib import StandardError
+
+        with self.assertRaises(StandardError):
+            self.check(paths=["install/"])
+
+    def test_builds_examples_are_required(self):
+        from scripts.standards_lib import StandardError
+
+        with self.assertRaises(StandardError):
+            self.check(examples={})

@@ -802,3 +802,31 @@ is that your site did that.
   never as done.
 - Quote the evidence in the report: the URL, the status code, and the string you found.
 <!-- shared-rule:verify-by-opening-the-live-artifact:end -->
+
+<!-- shared-rule:spoken-urls-must-resolve:start -->
+## Every URL we say out loud resolves
+
+- **A URL spoken from a stage, printed on a QR code, or read into a podcast has no
+  inbound link.** No crawler finds it, no internal link audit sees it, and no analytics
+  records it until a human types it and fails. It is the one class of URL that dies
+  completely silently, and the people who hit the 404 are the warmest audience we ever
+  get.
+- **Every hub domain answers the same short paths.** `/install/`, `/skills/` and
+  `/activate/` resolve on every site we tell an audience to visit — 200, or a 301 to the
+  page that actually serves that intent. Never a 404.
+- **Say it once, spell it the same way everywhere.** If the talk says "slash install",
+  every hub answers `/install/`. Do not rely on one domain having a page while another
+  has a redirect and a third has nothing.
+- **A short path is a promise, so keep it even after the page moves.** When the
+  destination is renamed, repoint the redirect in the same change. The short path
+  outlives every page it has ever pointed at.
+- **Redirect within the domain the audience was told to visit** where a suitable page
+  exists. A cross-domain hop from a QR code loses the brand impression at the exact
+  moment it was earned.
+- **Check it from outside, logged out.** An editor screen saying "saved" is not a
+  resolving URL, and a page cache can serve a stale 404 long after the rule exists.
+  See `verify-by-opening-the-live-artifact`.
+- Adding a spoken path to a talk, a slide or a business card means adding it to this
+  rule's `paths` list in the same week. That is the whole maintenance cost, and it is
+  what stops this being rediscovered every few months.
+<!-- shared-rule:spoken-urls-must-resolve:end -->
