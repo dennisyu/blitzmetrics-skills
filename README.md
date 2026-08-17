@@ -1,6 +1,6 @@
 # BlitzMetrics Skills for Claude
 
-The canonical marketplace for the 27 BlitzMetrics and Local Service Spotlight
+The canonical marketplace for the 28 BlitzMetrics and Local Service Spotlight
 skills used across authority, content, client operations, and quality assurance.
 
 ## Install
@@ -46,10 +46,10 @@ Most people should install `blitzmetrics-everything`.
 
 | Bundle | What it covers |
 |---|---|
-| `blitzmetrics-everything` | All 27 skills |
+| `blitzmetrics-everything` | All 28 skills |
 | `authority-and-reputation` | Knowledge Panel, AI search, reviews, and proof |
 | `content-engine` | Articles, video, repurposing, and distribution |
-| `client-operations` | Cadence, access, reporting, and audits |
+| `client-operations` | Onboarding, cadence, access, reporting, and audits |
 | `quality-and-standards` | Nine Triangles, verification, QA, judgment, and the registry |
 
 ## Skills, agents, and scheduled jobs
@@ -71,7 +71,7 @@ heroes are immersive, and the rule about rules: capture what you learn in the
 same session.
 
 `scripts/sync_shared_rules.py` stamps each rule verbatim into `AGENTS.md` and all
-27 `SKILL.md` files, so the rules arrive with the pack even though `standards/`
+28 `SKILL.md` files, so the rules arrive with the pack even though `standards/`
 itself is not distributed. CI rejects a pull request when even one copy is
 missing or stale.
 
