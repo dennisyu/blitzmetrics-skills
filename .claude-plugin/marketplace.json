@@ -6,12 +6,12 @@
   },
   "metadata": {
     "description": "BlitzMetrics / Local Service Spotlight skills for Claude \u2014 personal brand, authority, content, and client operations.",
-    "version": "1.1.1"
+    "version": "1.1.2"
   },
   "plugins": [
     {
       "name": "blitzmetrics-everything",
-      "description": "Everything we use, in one install \u2014 all 27 BlitzMetrics / Local Service Spotlight skills. Start here; this is what most people want.",
+      "description": "Everything we use, in one install \u2014 all 28 BlitzMetrics / Local Service Spotlight skills. Start here; this is what most people want.",
       "source": "./",
       "strict": false,
       "skills": [
@@ -32,6 +32,7 @@
         "./skills/measurement-analytics",
         "./skills/model-judgment",
         "./skills/nine-triangles",
+        "./skills/one-session-client-onboarding",
         "./skills/positive-mentions-harvester",
         "./skills/recursive-self-improvement-qa",
         "./skills/reputation-gap-analyzer",
@@ -75,10 +76,11 @@
     },
     {
       "name": "client-operations",
-      "description": "Run the account \u2014 cadence, access, reporting, audits. (8 skills)",
+      "description": "Run the account \u2014 onboarding, cadence, access, reporting, audits. (9 skills)",
       "source": "./",
       "strict": false,
       "skills": [
+        "./skills/one-session-client-onboarding",
         "./skills/client-relationship-cadence",
         "./skills/client-access-checklist",
         "./skills/weekly-brand-maa",
