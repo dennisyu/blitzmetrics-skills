@@ -1,0 +1,141 @@
+<div class="apk">
+<style>
+.apk{--ink:#0f2440;--blue:#1f6feb;--blue2:#2563eb;--amber:#f59e0b;--orange:#ea7317;--green:#16a34a;--red:#dc2626;--slate:#334155;--mut:#64748b;--line:#e2e8f0;--bg:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--slate);line-height:1.65;font-size:18px;max-width:820px;margin:0 auto}
+.apk p{margin:0 0 1.05em}
+.apk h2{color:var(--ink);font-size:1.62em;line-height:1.2;margin:1.9em 0 .55em;font-weight:800;letter-spacing:-.01em}
+.apk h3{color:var(--ink);font-size:1.18em;margin:1.3em 0 .4em;font-weight:700}
+.apk strong{color:var(--ink)}
+.apk .lead{font-size:1.18em;color:var(--ink);font-weight:600;line-height:1.5}
+.apk .punch{font-size:1.15em;color:var(--ink);font-weight:800;margin:.2em 0 1.05em}
+.apk a{color:var(--blue2);text-decoration:none;border-bottom:1px solid #bcd0f7}
+.apk a:hover{border-bottom-color:var(--blue2)}
+.apk .callout{background:linear-gradient(180deg,#fffdf6,#fff7e6);border:1px solid #f5d58a;border-left:5px solid var(--amber);border-radius:12px;padding:18px 20px;margin:1.4em 0}
+.apk .callout .k{display:block;font-size:.72em;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);font-weight:800;margin-bottom:4px}
+.apk .master{background:#f0f7ff;border:1px solid #c5d8f6;border-left:5px solid var(--blue2);border-radius:12px;padding:18px 20px;margin:1.4em 0}
+.apk .master .k{display:block;font-size:.72em;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);font-weight:800;margin-bottom:4px}
+.apk ul,.apk ol{margin:0 0 1.1em;padding-left:1.2em}
+.apk li{margin:.35em 0}
+.apk table{width:100%;border-collapse:collapse;margin:1.2em 0 1.4em;font-size:.95em}
+.apk th,.apk td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+.apk th{background:var(--bg);color:var(--ink);font-weight:700}
+.apk .ladder{list-style:none;padding:0;margin:1.2em 0;display:grid;gap:10px}
+.apk .ladder li{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.apk .ladder li.here{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.apk .ladder .rung{display:block;font-size:.72em;letter-spacing:.1em;text-transform:uppercase;color:var(--blue2);font-weight:800}
+.apk .muted{color:var(--mut);font-size:.95em}
+.apk code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em;background:#eef2f7;color:var(--ink);padding:2px 6px;border-radius:5px}
+</style>
+
+<div class="master">
+<span class="k">Skin of the master — not a competing hub</span>
+<p style="margin:0">The canonical page is <a href="https://blitzmetrics.com/build-agents/">How We Build and Maintain AI Agents</a> on BlitzMetrics. The map is <a href="https://blitzmetrics.com/the-system/">The System</a>. This Local Service Spotlight edition keeps that doctrine and retunes the examples for contractors and local service businesses. Runtime fingerprints, skill-count scoreboards, and model-canary receipts stay on the master. We do not invent a second source of truth here.</p>
+</div>
+
+<p class="lead">New here and not technical? Start at <a href="https://blitzmetrics.com/start/">blitzmetrics.com/start</a> — the forty-minute setup, written in plain English. Come back to this page afterward.</p>
+
+<p>Building an agent, the BlitzMetrics way, means documenting a task to a standard so complete that a human or an AI can run it identically — same trigger, same steps, same definition of done. For a plumber that is the estimate follow-up. For HVAC it is the seasonal tune-up campaign. For a roofer it is the storm-lead response. We build agents now because models finally persist: they loop until the work passes QA, hold memory across runs, and improve themselves, so every task you document stops being a wiki page and becomes a worker.</p>
+
+<p>If an agent must carry state between models, first set up <a href="https://blitzmetrics.com/cross-agent-shared-memory/">cross-agent shared memory</a> in an Obsidian/Markdown vault you own.</p>
+
+<p class="punch">That definition is the whole page in two sentences. What follows is how we build agents, how we equip them, and — the part almost everyone skips — how we keep them current as Claude, Gemini, and OpenAI’s models leap forward every few months.</p>
+
+<h2>What an agent actually is here</h2>
+<p>Not a dashboard demo. Not a chatbot wrapper. An agent is a task documented to the definitive article standard with a companion <code>skill.md</code> — a machine-readable SOP that carries:</p>
+<ul>
+<li><strong>Frontmatter</strong> — permanent name, category, Content Factory stage, the definitive article it implements, and an honest status.</li>
+<li><strong>“Use this when”</strong> — the trigger, in one line.</li>
+<li><strong>Inputs</strong> — everything needed before starting. No hidden prerequisites.</li>
+<li><strong>Steps</strong> — the real process, imperative and concrete.</li>
+<li><strong>Definition of done</strong> — an objective QA checklist, not “make it good.”</li>
+<li><strong>Example and links</strong> — at least one documented real run, plus links up to its hub article and across to sibling skills.</li>
+</ul>
+<p>Hand that file to a new CSR and they can run the follow-up. Hand it to an AI agent and it runs the task the same way. The instructions outrank the operator — which is exactly what makes the output consistent.</p>
+<p>One documented task is a <strong>skill</strong>. A library of skills is a toolkit. It becomes a workforce only when named <strong>agents</strong> run those skills with the right context, tools, access, schedules, and execution receipts. Ours runs the <a href="https://blitzmetrics.com/content-factory/">Content Factory</a> — Produce, Process, Post, Promote — the engine that turns one real job into articles, clips, and ads.</p>
+
+<div class="callout">
+<span class="k">Skill vs plugin vs agent vs job</span>
+<p style="margin:0">A <strong>skill</strong> is the documented method. A <strong>plugin</strong> (or pack) distributes one or more skills and may add tools. An <strong>agent</strong> is the worker that combines a role, model, skill, context, tools, permissions, and definition of done. A scheduled <strong>job</strong> decides when that worker runs. A <strong>receipt</strong> proves what actually happened. Installing a pack does no work. Work happens when a job runs the right skill against the right context, checks its output, and leaves a receipt the next worker can inspect.</p>
+</div>
+
+<h2>The proof: 239 tasks you can browse and download</h2>
+<p>We didn’t write the philosophy first and hope. We documented our entire operation: <strong>239 tasks across 13 categories</strong> — from digital plumbing to Dollar a Day to website QA — mapping to 22 definitive articles. As of the master’s last published count, 119 are complete, 97 need work, and 23 are gaps. Those statuses are public on purpose: an honest scoreboard is what makes a library improvable, and every red gap is a work order, not an embarrassment.</p>
+<p>All of it is live on the <a href="https://blitzmetrics.com/task-library/">Task Library Dashboard</a>: search the full SOP text, read any skill, copy it, or download all 239 in one free zip. The dashboard is the what. The master hub is the how and the why. The local-service on-ramp is the <a href="https://localservicespotlight.com/skill-packs/">Skill Pack Library</a> on this site — Business Authority and Entrepreneur packs hosted here, plus the vertical editions.</p>
+<p class="muted">Kept current on the master — updated August 12, 2026 for the latest persistent agents (Claude Fable 5, OpenAI, Google). Rebuilt from the source skills through a controlled release path. If a number on this page and a number on the master disagree, the master wins.</p>
+
+<h2>How we build an agent: the loop</h2>
+<p>Every agent in the library comes from the same five-beat loop. A local-service example, so it is not abstract: the Friday “who did we serve this week, and who still needs a review ask?” pass.</p>
+<ol>
+<li><strong>Do.</strong> Run the task for real. Sit with the CSR or the owner. Watch how they actually pull the week’s jobs, which customers they text, and what they skip. You can’t document what you haven’t done — steps written from imagination produce agents that fail in production.</li>
+<li><strong>Document.</strong> Write the <code>skill.md</code> to the standard above. The steps mirror what you actually did, not what you aspire to do.</li>
+<li><strong>QA.</strong> Grade the file against its own Definition of done, line by line. If reasonable people could argue about whether the task is finished, the checklist isn’t done.</li>
+<li><strong>Example.</strong> Publish a meta-article documenting one real run — proof, not promises — linked back to the skill and its hub.</li>
+<li><strong>Improve.</strong> Feed what the run taught you back into the skill, following the update protocol in Knowledge System Maintenance. The next run starts from a better document.</li>
+</ol>
+<p>Then it repeats — and here is the compounding part: agents now run the loop on themselves. Each run documents itself, QAs itself, and proposes its own improvements. We call this recursive self-improvement, and it is why the library gets sharper every week instead of staler.</p>
+<p class="punch">Done right, documentation isn’t a record of the work. It is the work — and it does the next round on its own.</p>
+
+<h2>How we keep agents current</h2>
+<p>This is the section that separates a living system from a folder of dead SOPs. The models running these skills improve every few months, and every improvement changes what “done” can mean. So we continuously update our skill files and agents to take advantage of the newest capabilities. When a frontier capability lands, we don’t admire it. We re-equip the library.</p>
+<table>
+<thead><tr><th>What changed in the models</th><th>What we changed in the agents</th></tr></thead>
+<tbody>
+<tr><td>Long-horizon persistence</td><td>Agents loop until the Definition of done passes. Ninety percent finished is a draft, not a deliverable — the same way a half-written estimate is not a sent estimate.</td></tr>
+<tr><td>Memory across runs</td><td>Skills instruct the agent to read prior runs and upstream outputs first. Never start from scratch twice. Last Friday’s review list is an input, not a memory test.</td></tr>
+<tr><td>Self-verification</td><td>The agent grades its own output against the skill’s QA checklist, line by line, before reporting done.</td></tr>
+<tr><td>Near-zero cost of completeness</td><td>Full coverage by default: edge cases, error paths, the test, the doc — the whole thing.</td></tr>
+</tbody>
+</table>
+<p>That last row has a name. Garry Tan’s essay “Boil the Ocean” calls the turn: “don’t boil the ocean” was good advice when implementation was expensive, and it is obsolete now that AI compresses implementation 10–100x. Our version of the rule: with AI, the marginal cost of completeness is near zero — so do the whole thing, do it right, and ship the finished product, not a plan.</p>
+<p>And because “we keep agents current” is a claim anyone can make, we date everything. Every update is logged, every run leaves a meta-article, and the dashboard carries the changelog. The proof of currency is a paper trail, not a promise. The live runtime scoreboard — Claude vs Codex vs Grok, the 27-skill marketplace pack, the hash fingerprints — lives on the <a href="https://blitzmetrics.com/build-agents/">master</a>. This page does not duplicate those receipts.</p>
+
+<h2>One operating system, three model runtimes</h2>
+<p>We are not building a different marketing brain for every AI company, and we are not building a different brain for every trade. We keep the reusable business logic in one versioned library of <code>SKILL.md</code> folders, then add a thin runtime wrapper for Claude, ChatGPT and Codex, or Grok. The procedure, examples, templates, and QA standard should remain the same. Packaging, permissions, connectors, agent files, schedules, and update mechanics are allowed to differ.</p>
+<p>A plumber in Phoenix and an HVAC shop in Minnesota can run the same Content Factory skill. The context changes — the customer names, the job photos, the Google Business Profile — the method does not.</p>
+<p>Three owned layers stay independent of the model:</p>
+<table>
+<thead><tr><th>Owned layer</th><th>What it contains</th><th>What still varies by runtime</th></tr></thead>
+<tbody>
+<tr><td>Knowledge and context</td><td>Verified facts, relationships, goals, decisions, evidence, and working state kept in user-owned, governed files rather than trapped in one vendor’s chat history.</td><td>Each runtime has its own context window, memory features, file access, and retrieval behavior.</td></tr>
+<tr><td>Skills and standards</td><td>The versioned <code>SKILL.md</code> procedures, references, examples, and definitions of done that specify how work should be performed.</td><td>Claude, ChatGPT/Codex, and Grok package, discover, invoke, and update those same methods differently.</td></tr>
+<tr><td>Governance and write-back</td><td>The owner, approval gates, evidence states, receipts, and reviewed path by which a lesson from a real run becomes a canonical source change.</td><td>Credentials, permission controls, scheduler features, and execution logs remain specific to the runtime; the governance contract does not.</td></tr>
+</tbody>
+</table>
+<p>The model is not the source of truth. The source starts with real work: job photos, invoices, reviews, Google Business Profile access, interviews, and the judgment of people who have done the thing. We document that work as an SOP, turn the repeatable portion into a skill, and keep the supporting references beside it.</p>
+<p>Personal and project context should live in user-owned Markdown files or another governed source the authorized agent can read. Then the agent adds the execution layer: an owner, a trigger, the necessary tools and access, a destination for the output, an objective definition of done, and a receipt. That is why a skill is a function while an agent is a person-like role, and why persistent agents need a schedule, QA loop, and durable working files.</p>
+<p>The five states are different: <strong>available, installed, activated, scheduled, and observed</strong>. A GitHub commit proves availability. An installation record proves installation. A fresh runtime trace proves activation. A scheduler record proves scheduling. A completed run with inspectable output proves execution. We do not use one as evidence for another.</p>
+
+<h2>From skills to a workforce that earns</h2>
+<p>Your expertise today is tribal knowledge — it lives in your head and your best people’s heads, and it leaves when they do. Documented to this standard, it becomes skills. Skills become agents. Agents deploy first on your own customer work — every audit, every campaign, every report running at senior-operator quality — then beyond your shop.</p>
+<p>This is positive-sum. When intelligence gets cheap, the work doesn’t shrink — the amount of work worth doing explodes. Operators we work with, like <strong>Marko Sipila at HVAC Quote</strong> and <strong>Zach Peyton at Superior Fence &amp; Rail</strong>, were never short on demand; they were short on trained people. Those two names are from the master, not a new claim. Agents give a first-year apprentice the checklists that used to take a decade to earn, and the human graduates to judgment — choosing the goals, calling what’s true, and deciding what gets amplified. That is the engine behind the mission of creating a million jobs: not the same work with fewer people, but far more work with more people, each one operating at a higher level.</p>
+
+<h2>A worked example: DealCon</h2>
+<p>One hands-on application from the master, so you can see the system land. We do not have a separate local-service workshop receipt to substitute, so we keep the documented one and say so.</p>
+<p>At the DealCon workshop, every attendee scans a QR code at dennisyu.com/dealcon and installs a 10-skill personal-brand system — strategist, proof harvester, Knowledge Panel plumbing, Dollar a Day, Content Factory, recursive QA — on their own Claude in about 60 seconds. Every one of those skills is built to the exact standard on the master and kept current for the latest persistent agents.</p>
+<p>DealCon is one room. The system is for everyone: agencies documenting delivery, contractors documenting estimates and follow-up, founders documenting the sales motion only they know how to run. Same standard, your tasks. For this network the install door is your vertical’s Set Up Claude page and the <a href="https://localservicespotlight.com/skill-packs/">Skill Pack Library</a>.</p>
+
+<h2>How to start</h2>
+<ol>
+<li>Pick one repeatable task. Your most frequent, not your hardest — the estimate follow-up, the review ask, the Friday report.</li>
+<li>Document it to the standard — frontmatter, trigger, inputs, steps that mirror reality.</li>
+<li>Add a Definition of done. Objective and checkable, so the agent can grade itself.</li>
+<li>Run it on a persistent agent. Let it loop until the checklist passes.</li>
+<li>Log a meta-article of the run as the skill’s first example.</li>
+<li>Improve the skill from what the run taught you. Then pick the next task.</li>
+</ol>
+<p>Ten cycles in, you will feel the compounding. And you don’t have to start from a blank page: go to the <a href="https://blitzmetrics.com/task-library/">Task Library Dashboard</a>, browse all 239 skills, download the whole library free, or install the <a href="https://localservicespotlight.com/skill-packs/">Business Authority pack</a> from this site.</p>
+<p class="punch">Document the task. Equip the agent. Keep it current. That is the whole system.</p>
+<p>To publish to WordPress without handing an agent your real password, use an <a href="https://localservicespotlight.com/ai-agent-application-password/">Application Password</a>. The agent never gets the login or the 2FA, and you can revoke the key in one click.</p>
+
+<h2>Where this sits in the system</h2>
+<p>Context is what the worker knows. A skill is the method it follows. A pack is a folder of methods. None of them does any work alone. Work happens when a job runs the right skill against the right context on a schedule, checks its output, and leaves a receipt the next worker can inspect.</p>
+<ol class="ladder">
+<li><span class="rung">1. Context</span> The verified facts, goals, evidence, decisions, and working state kept in user-owned Markdown, Obsidian, Drive, or Git so any authorized model can pick up the same work.</li>
+<li><span class="rung">2. Skill</span> One task, written down to a standard, so an agent can run it without you in the room. There are 239 of them.</li>
+<li><span class="rung">3. Pack</span> Those skills bundled into a download you install in one paste. On this site: the <a href="https://localservicespotlight.com/skill-packs/">Skill Pack Library</a>.</li>
+<li class="here"><span class="rung">4. Agent — you are here</span> A named role with a job description — not a chat window you retype every morning. Master: <a href="https://blitzmetrics.com/build-agents/">blitzmetrics.com/build-agents/</a>.</li>
+<li><span class="rung">5. Job</span> A schedule, a QA cycle, and somewhere to keep working files. Miss any of the three and nothing runs twice.</li>
+<li><span class="rung">6. Proof</span> Every finished run written up in public, and the lesson pushed back into the skill. The registry of public pieces is the <a href="https://localservicespotlight.com/asset-tracker/">Asset Tracker</a>.</li>
+</ol>
+<p>The map: <a href="https://blitzmetrics.com/the-system/">The System</a> · every asset: <a href="https://localservicespotlight.com/asset-tracker/">Asset Tracker</a> · the sites: <a href="https://localservicespotlight.com/spotlight-network/">Spotlight Network</a> · next door: <a href="https://blitzmetrics.com/persistent-agents/">Persistent agents</a>.</p>
+<p class="muted">Local Service Spotlight edition of the BlitzMetrics master. Same doctrine. Vertical examples. Links up, never sideways as a competing hub. If you need the live model-runtime scoreboard, the 27-skill marketplace pack, or the hash fingerprints, read the master.</p>
+</div>
