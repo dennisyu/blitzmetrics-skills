@@ -1,6 +1,6 @@
 # Skill inventory — canonical facts and per-environment evidence
 
-Last canonical repository audit: 6 August 2026.
+Last canonical repository audit: 16 August 2026.
 
 This file separates what the marketplace makes **available** from what is actually
 **installed, enabled, tested, scheduled, or observed**. Never infer one state from
@@ -12,10 +12,11 @@ another.
 |---|---|
 | Repository | `https://github.com/dennisyu/blitzmetrics-skills` |
 | Marketplace manifest | `.claude-plugin/marketplace.json` |
-| Skills in `blitzmetrics-everything` | 27 |
+| Skills in `blitzmetrics-everything` | 28 |
 | Topical bundles | 4 |
 | Validation | Pull-request and main-branch GitHub workflow |
 | Contribution path | Branch → checks → review → merge |
+| Newest Available skill | `personal-brand-people-directory` (16 Aug 2026). Available after merge. Not Installed on any account until a receipt exists. |
 
 This repository is now the identifiable source of truth. The install guide at
 `https://localservicespotlight.com/install/` is the member-facing front door, not
@@ -25,13 +26,13 @@ a competing copy of the skill files.
 
 | Bundle | Skills available |
 |---|---:|
-| `blitzmetrics-everything` | 27 |
+| `blitzmetrics-everything` | 28 |
 | `authority-and-reputation` | 7 |
-| `content-engine` | 6 |
+| `content-engine` | 7 |
 | `client-operations` | 8 |
 | `quality-and-standards` | 6 |
 
-The topical totals overlap. They are selections over the same 27 directories.
+The topical totals overlap. They are selections over the same 28 directories.
 
 ## Per-account installation register
 
@@ -45,6 +46,12 @@ account/workspace and attach a receipt from `ACCEPTANCE.md`.
 Older claims that Dennis had six account skills and two team plugins were a
 point-in-time account snapshot, not marketplace or fleet state. They must not be
 used as current truth without a new receipt.
+
+`personal-brand-people-directory` is **Available** in this marketplace after merge.
+It is not Installed, Enabled, Tested, Scheduled, or Observed on any account until
+a named-account receipt says so. Next application: Derek Moneyberg `/people/`
+cards on https://dennisyu.com/derek/people/ only — not moneyberg.com or
+derekmoneyberg.com until Dennis says yes.
 
 ## Scheduled-job register
 
@@ -79,6 +86,8 @@ Use these states:
 6. Run a harmless end-to-end canary on one Spotlight site before fleet rollout.
 7. Reconcile the fleet by commit/version; do not use file timestamps or agent
    summaries as a substitute.
+8. Run `python3 scripts/sync_shared_rules.py` on `personal-brand-people-directory`
+   so house-rule blocks are stamped before treating the skill as complete.
 
 Update this document when canonical facts change. Update the private operational
 register after every firing. Report diffs and failed assertions, not just totals.
