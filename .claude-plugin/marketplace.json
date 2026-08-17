@@ -6,12 +6,12 @@
   },
   "metadata": {
     "description": "BlitzMetrics / Local Service Spotlight skills for Claude \u2014 personal brand, authority, content, and client operations.",
-    "version": "1.1.1"
+    "version": "1.1.2"
   },
   "plugins": [
     {
       "name": "blitzmetrics-everything",
-      "description": "Everything we use, in one install \u2014 all 27 BlitzMetrics / Local Service Spotlight skills. Start here; this is what most people want.",
+      "description": "Everything we use, in one install \u2014 all 29 BlitzMetrics / Local Service Spotlight skills. Start here; this is what most people want.",
       "source": "./",
       "strict": false,
       "skills": [
@@ -21,6 +21,7 @@
         "./skills/business-website-agent",
         "./skills/client-access-checklist",
         "./skills/client-relationship-cadence",
+        "./skills/clickable-diagram-entities",
         "./skills/content-agent",
         "./skills/content-factory",
         "./skills/definitive-article-writer",
@@ -28,6 +29,7 @@
         "./skills/evidence-verification",
         "./skills/geo-visibility-audit",
         "./skills/grokipedia-authority",
+        "./skills/how-i-use-grok-bot",
         "./skills/knowledge-panel-entity-seo",
         "./skills/measurement-analytics",
         "./skills/model-judgment",
@@ -91,7 +93,7 @@
     },
     {
       "name": "quality-and-standards",
-      "description": "Keep the work honest \u2014 canonical frameworks, verification, QA, judgment, the registry. (6 skills)",
+      "description": "Keep the work honest \u2014 canonical frameworks, verification, QA, judgment, the registry. (8 skills)",
       "source": "./",
       "strict": false,
       "skills": [
@@ -100,7 +102,9 @@
         "./skills/model-judgment",
         "./skills/boil-the-ocean",
         "./skills/skill-registry",
-        "./skills/nine-triangles"
+        "./skills/nine-triangles",
+        "./skills/clickable-diagram-entities",
+        "./skills/how-i-use-grok-bot"
       ]
     }
   ]
