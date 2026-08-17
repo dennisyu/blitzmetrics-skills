@@ -12,7 +12,7 @@ another.
 |---|---|
 | Repository | `https://github.com/dennisyu/blitzmetrics-skills` |
 | Marketplace manifest | `.claude-plugin/marketplace.json` |
-| Skills in `blitzmetrics-everything` | 27 |
+| Skills in `blitzmetrics-everything` | 29 |
 | Topical bundles | 4 |
 | Validation | Pull-request and main-branch GitHub workflow |
 | Contribution path | Branch → checks → review → merge |
@@ -25,13 +25,13 @@ a competing copy of the skill files.
 
 | Bundle | Skills available |
 |---|---:|
-| `blitzmetrics-everything` | 27 |
+| `blitzmetrics-everything` | 29 |
 | `authority-and-reputation` | 7 |
 | `content-engine` | 6 |
 | `client-operations` | 8 |
-| `quality-and-standards` | 6 |
+| `quality-and-standards` | 8 |
 
-The topical totals overlap. They are selections over the same 27 directories.
+The topical totals overlap. They are selections over the same 29 directories.
 
 ## Per-account installation register
 
