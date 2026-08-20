@@ -22,6 +22,19 @@ KEBAB = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 LOCAL_REFERENCE = re.compile(
     r"(?<![\w/])((?:references|scripts|assets)/[A-Za-z0-9_.\-/]+)"
 )
+CURRENT_SKILL_COUNT = (
+    re.compile(
+        r"\ball\s+(\d+)\s+(?:(?:expected|available|distributed)\s+)?"
+        r"skill(?:s|\s+files)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(r"\bpack\s+contains\s+(\d+)\s+skills\b", re.IGNORECASE),
+    re.compile(r"\bsame\s+(\d+)\s+directories\b", re.IGNORECASE),
+    re.compile(
+        r"Skills in `blitzmetrics-everything`\s*\|\s*(\d+)\b",
+        re.IGNORECASE,
+    ),
+)
 
 
 def expected_blocks(root: Path) -> tuple[list[tuple[str, str]], list[str]]:
@@ -78,7 +91,9 @@ def validate(root: Path) -> list[str]:
         return ["marketplace.json must contain a non-empty plugins array"]
 
     plugin_names: set[str] = set()
+    bundle_counts: dict[str, int] = {}
     everything: list[str] | None = None
+    everything_description = ""
     for index, plugin in enumerate(plugins):
         if not isinstance(plugin, dict):
             errors.append(f"plugins[{index}] must be an object")
@@ -98,6 +113,22 @@ def validate(root: Path) -> list[str]:
             continue
         if len(skills) != len(set(skills)):
             errors.append(f"plugin {name!r} lists a skill more than once")
+        if isinstance(name, str):
+            bundle_counts[name] = len(skills)
+        description = plugin.get("description")
+        if not isinstance(description, str) or not description:
+            errors.append(f"plugin {name!r} must have a description")
+        elif name != "blitzmetrics-everything":
+            described_count = re.search(r"\((\d+)\s+skills\)\s*$", description)
+            if not described_count:
+                errors.append(
+                    f"plugin {name!r} description must end with its derived skill count"
+                )
+            elif int(described_count.group(1)) != len(skills):
+                errors.append(
+                    f"plugin {name!r} description advertises "
+                    f"{described_count.group(1)} skills but lists {len(skills)}"
+                )
         for skill_ref in skills:
             if not isinstance(skill_ref, str) or not skill_ref.startswith("./skills/"):
                 errors.append(f"plugin {name!r} has invalid skill path: {skill_ref!r}")
@@ -109,6 +140,7 @@ def validate(root: Path) -> list[str]:
             if everything is not None:
                 errors.append("blitzmetrics-everything must appear exactly once")
             everything = skills
+            everything_description = str(plugin.get("description", ""))
 
     if everything is None:
         errors.append("missing required blitzmetrics-everything plugin")
@@ -124,6 +156,37 @@ def validate(root: Path) -> list[str]:
         errors.append(f"skill is not in blitzmetrics-everything: {missing}")
     for stale in sorted(everything_set - actual_refs):
         errors.append(f"blitzmetrics-everything has a stale skill path: {stale}")
+
+    count_in_description = re.search(
+        r"\ball\s+(\d+)\b[^.]*\bskills\b",
+        everything_description,
+        flags=re.IGNORECASE,
+    )
+    if count_in_description and int(count_in_description.group(1)) != len(skill_dirs):
+        errors.append(
+            "blitzmetrics-everything description advertises "
+            f"{count_in_description.group(1)} skills but found {len(skill_dirs)}"
+        )
+
+    metadata = manifest.get("metadata")
+    source_version = metadata.get("version") if isinstance(metadata, dict) else None
+    if not isinstance(source_version, str) or not source_version:
+        errors.append("marketplace metadata.version is required")
+    grok_path = root / ".grok-plugin" / "plugin.json"
+    try:
+        grok = json.loads(grok_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"cannot read .grok-plugin/plugin.json: {exc}")
+        grok = {}
+    if grok.get("name") != "blitzmetrics-everything":
+        errors.append("Grok adapter name must be blitzmetrics-everything")
+    if grok.get("skills") != "./skills/":
+        errors.append("Grok adapter must read the canonical ./skills/ directory")
+    if source_version and grok.get("version") != source_version:
+        errors.append(
+            "adapter version drift: Claude marketplace is "
+            f"{source_version!r}, Grok adapter is {grok.get('version')!r}"
+        )
 
     blocks, block_errors = expected_blocks(root)
     errors.extend(block_errors)
@@ -179,6 +242,43 @@ def validate(root: Path) -> list[str]:
         errors.append(
             f"README advertises {advertised.group(1)} skills but found {len(skill_dirs)}"
         )
+    current_fact_files = (
+        root / "README.md",
+        root / "CONTRIBUTING.md",
+        root / "ACCEPTANCE.md",
+        root / "HOW-KNOWLEDGE-PROPAGATES.md",
+        root / "skills" / "skill-registry" / "SKILL.md",
+        root / "skills" / "skill-registry" / "references" / "inventory.md",
+    )
+    for path in current_fact_files:
+        if not path.is_file():
+            errors.append(f"missing current-fact document: {path.relative_to(root)}")
+            continue
+        text = path.read_text(encoding="utf-8")
+        for pattern in CURRENT_SKILL_COUNT:
+            for match in pattern.finditer(text):
+                if int(match.group(1)) != len(skill_dirs):
+                    errors.append(
+                        f"{path.relative_to(root)} advertises {match.group(1)} current "
+                        f"skills but found {len(skill_dirs)}"
+                    )
+
+    inventory_path = root / "skills" / "skill-registry" / "references" / "inventory.md"
+    if inventory_path.is_file():
+        inventory_text = inventory_path.read_text(encoding="utf-8")
+        for bundle_name, expected_count in bundle_counts.items():
+            row = re.search(
+                rf"^\|\s*`{re.escape(bundle_name)}`\s*\|\s*(\d+)\s*\|\s*$",
+                inventory_text,
+                flags=re.MULTILINE,
+            )
+            if not row:
+                errors.append(f"inventory is missing a count row for {bundle_name}")
+            elif int(row.group(1)) != expected_count:
+                errors.append(
+                    f"inventory advertises {row.group(1)} skills for {bundle_name} "
+                    f"but manifest lists {expected_count}"
+                )
     return sorted(set(errors))
 
 

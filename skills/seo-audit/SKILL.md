@@ -485,9 +485,11 @@ Learned August 3, 2026.
   shipped a black button. The rule was never in `standards/`, so it never reached the
   skills, so it was not there to be read.
 - When anyone — the client, the account owner, an audit, or your own failure — states a
-  rule that should hold next time, **your job is not to remember it. It is to write
-  `standards/<slug>.md` before the session ends.** Memory does not survive a session
-  boundary. A file does.
+  rule that should hold next time, **your job is not to remember it. Capture it before the
+  session ends.** A direct instruction can become a proposed `standards/<slug>.md` with
+  provenance. A causal claim such as “this tactic improves sales” also needs the outcome
+  receipt required by `report-business-impact-not-volume`; otherwise it is a hypothesis,
+  not canon.
 - Scaffold it in one command, which forces every field including where the rule came
   from:
 
@@ -497,9 +499,16 @@ Learned August 3, 2026.
   ```
 
 - Then write the rule, run `python3 scripts/sync_shared_rules.py`, and open the pull
-  request. The sync copies the rule into `AGENTS.md` and every distributed `SKILL.md`,
-  so it reaches every agent and every member who installed the pack. Nobody has to be
-  told about it.
+  request. The sync copies the candidate into `AGENTS.md` and every distributed
+  `SKILL.md`. That proves source parity only. It reaches a person after merge and
+  surface-specific sync; it becomes working capability only after a fresh-session
+  activation receipt. Never call source consistency “propagated everywhere.”
+- **Every substantive run record needs a learning disposition:** `proposed`, `applied`,
+  `rejected`, or `none` with a reason. Link the affected skill/standard and source/resulting
+  commit. If the record contains a reusable lesson but no disposition, the loop is open.
+- Keep private facts, credentials, client URLs, and raw revenue receipts in the private run
+  record. Publish the sanitized, reusable rule and enough non-sensitive evidence for another
+  agent to evaluate it. “Build in public” does not mean leak client data.
 - **Give the rule a machine check whenever one is honest.** A `checks` block in the
   header compiles straight into the live fleet sweep, so a violation on a published page
   is caught by a schedule instead of by a person noticing. Every check must carry
@@ -515,6 +524,9 @@ Learned August 3, 2026.
   out loud.** Two standards that disagree are worse than one that is wrong, because
   every agent that reads both will pick whichever it happened to see last. Write the
   reconciliation into the newer rule and flag it to the account owner for confirmation.
+- A harvester may draft the branch and pull request; it must not silently merge a learning
+  into canonical instructions. Independent QA, repository checks, and an attributable
+  canary keep one persuasive but wrong run from teaching the entire fleet.
 - The order is Checklist → Content → Software. Write the checkable rule first, publish
   the article that teaches it second, and let the sweep be generated from the rule
   rather than hand-written beside it. Writing the article first is how rules get lost:
@@ -846,14 +858,26 @@ is that your site did that.
 <!-- shared-rule:report-business-impact-not-volume:start -->
 ## Report business impact, never volume
 
-- **Count outcomes, not output.** Posts published, words written and tasks closed are
-  activity. Calls, booked jobs, leads and revenue are results.
-- **Trace the chain and show it**: published thing → ranking or traffic → call or lead →
-  booked job → revenue. Where the chain breaks, say where it breaks rather than reporting
-  the last link that looked good.
-- **Impressions and clicks are context, not the headline.** Never lead with them.
-- If the business impact cannot be measured yet, say that plainly and fix the measurement
-  first — see `analytics-on-every-page`.
+- **Use the deepest verified result, and let it overrule every shallower signal:**
+  retained customer or collected/recognized revenue and gross profit → closed sale or
+  completed job → qualified booking or deposit → qualified lead or connected call →
+  conversion → traffic, rankings, reach, and engagement → things produced. A ranking gain
+  with fewer profitable jobs is not a win. More posts with no measured demand are activity.
+- **Trace the chain and show the break:** intervention → exposure → response → qualified
+  demand → sale/job → revenue and customer outcome. Never silently relabel call clicks as
+  calls, contacts as qualified leads, pipeline value as revenue, or an unknown value as zero.
+- **Diagnostics diagnose; they do not prove business impact.** Views, impressions, clicks,
+  engagement, traffic, rankings, and output may explain an outcome or start an experiment.
+  They cannot overrule a contradictory downstream result.
+- Before calling a process better, record its source commit or version, baseline, comparison
+  window, metric definition and source, result, attribution limits, sample size, plausible
+  alternatives, and guardrails such as refunds, retention, capacity, margin, and customer
+  quality. Where practical, use a holdout or matched comparison.
+- A single run may create a **proposal** or **canary**. Promote a business-effectiveness rule
+  only from verified downstream evidence; hold or revert it when stronger evidence disagrees.
+  Reliability and safety rules may use their native outcomes, but must not claim sales impact.
+- If business impact is not connected yet, say **not connected**, fix measurement, and make
+  that the next action. Do not turn the last available diagnostic into a success claim.
 <!-- shared-rule:report-business-impact-not-volume:end -->
 
 <!-- shared-rule:verify-by-opening-the-live-artifact:start -->

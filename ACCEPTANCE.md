@@ -21,7 +21,8 @@ Do not record passwords, tokens, or private client data here.
 2. Add `https://github.com/dennisyu/blitzmetrics-skills` as a marketplace.
 3. Confirm all five bundles appear.
 4. Install `blitzmetrics-everything`.
-5. Confirm all 27 expected skills are listed and enabled.
+5. Derive the expected inventory from `.claude-plugin/marketplace.json`, then confirm
+   every listed skill is present and enabled.
 6. Start a fresh chat and use a literal trigger phrase from one selected skill.
 7. Confirm the selected skill activates and its output matches its contract.
 8. Restart Claude, return to a fresh chat, and repeat the activation check.
@@ -63,16 +64,17 @@ A job is **Scheduled** when its definition exists. It becomes **Observed** only
 after a firing leaves a receipt. Alert when `now` is later than `next expected +
 grace period` and no new success or failure receipt exists.
 
-## D. Claude/Codex separation of duties
+## D. Multi-agent separation of duties
 
-- **Claude executes** the production workflow and writes a run receipt.
-- **Codex audits** the repository, receipts, failures, and claimed state.
+- The **execution agent** runs the production workflow and writes an immutable receipt.
+- A **different-context auditor**—another model, agent, or clean session—checks the
+  repository, receipts, failures, and claimed state without inheriting the conclusion.
 - **A human merges** marketplace changes and approves changes to production
   schedules or credentials.
 
-Claude must not grade its own run as healthy from prose alone. Codex must not edit
-the same production file or schedule while Claude is executing it. Use a branch,
-job lock, and stable run ID so one agent can propose and the other can verify.
+The execution agent must not grade its own run as healthy from prose alone. The
+auditor must not edit the same production file or schedule during execution. Use a
+branch, job lock, and stable run ID so one agent can propose and the other can verify.
 
 ## E. Silent media-playback canary
 
@@ -104,8 +106,8 @@ Run after adding or amending anything in `standards/`.
 1. `python3 scripts/sync_shared_rules.py --check` exits 0.
 2. `python3 scripts/validate_marketplace.py` exits 0 — this checks *every* rule
    in *every* skill, not one hardcoded rule.
-3. Count the copies and record the number, e.g.
-   `grep -rl "shared-rule:<slug>:start" skills/ | wc -l` returns 27.
+3. Count the copies and compare that number with the skills to which the standard's
+   `applies_to` scope resolves. Do not put the expected number in prose.
 4. On a canary account, sync the commit and start a fresh chat. Ask the agent to
    state the house rule without naming the file. Record the reply verbatim.
 
@@ -123,10 +125,52 @@ prove the repository is consistent, which is not the same claim.
 8. Confirm at least one known-bad fixture is caught. A sweep that has never
    failed has not been shown to work.
 
-**Status vocabulary applies here too.** A rule in `standards/` is **Available**.
-A rule stamped into the skills is **Installed**. A rule an agent restates on a
-canary account is **Tested**. A sweep in the Friday fleet audit is **Scheduled**.
-Only a completed run with a timestamped report is **Observed**.
+**Status vocabulary applies here too.** A rule in a merged `standards/` commit is
+**Available**. A named environment reporting the accepted commit is **Synced**.
+Permission to invoke it is **Enabled**. A fresh-session restatement is **Activated**.
+A Friday fleet-audit definition is **Scheduled**. Only a completed run with a
+timestamped report is **Observed**; canary assertions plus a recorded rollback make
+it **Accepted**.
 
 Record the commit SHA, the fleet file used, counts of blocking/warning/not-swept,
 and the tester. Do not record client URLs here if the list is not public.
+
+## G. Cross-runtime adapter and cold-start acceptance
+
+Run this separately for Claude, Codex, Grok, Cursor, ChatGPT, or any other named
+surface. “Portable” means the source can be adapted; “working” requires this receipt.
+
+1. Record canonical Git commit, source-tree hash, adapter/package version, build time,
+   and a sorted skill-inventory hash. Reject a dirty or untraceable build.
+2. Confirm the adapter inventory equals the canonical manifest. A private add-on may be
+   layered separately, but the receipt must name it and must not masquerade as canonical.
+3. Install or sync into one named canary environment. Record the commit/version the
+   environment actually reports—not the filename or version you expected it to load.
+4. Start a clean session. Trigger each changed skill and one changed shared rule without
+   supplying their text. Save prompt, response, runtime, account/workspace, tester, and time.
+5. If scheduled, observe one real firing and its expected artifact or unedited failure.
+6. Mark the ladder exactly: Available → Synced → Enabled → Activated → Scheduled →
+   Observed → Accepted. Stop at the last evidenced state.
+
+Repository CI currently validates the Claude manifest and Grok adapter parity. It does
+not prove a Codex, Cursor, ChatGPT, Claude, or Grok account loaded the change.
+
+## H. Business-outcome promotion receipt
+
+Before promoting a recursive improvement, validate its private JSON receipt with:
+
+```bash
+python3 scripts/validate_outcome_receipt.py <receipt.json>
+```
+
+The receipt must identify source commit and skill; hypothesis and intervention;
+baseline and comparison window; primary metric, definition, source, result, quality,
+sample, and attribution window; guardrail counter-metrics; alternative explanations;
+evidence; and a `propose`, `canary`, `promote`, `hold`, or `revert` decision.
+
+For `business-effectiveness`, promotion requires a verified business outcome or
+qualified-demand result. A diagnostic-only result may propose or canary, never promote.
+Operational reliability and safety may use their native verified outcomes, but their
+receipts must not imply that sales increased. Independent QA checks the underlying
+evidence; the JSON validator checks the claim is structurally honest, not that the CRM
+or accounting record is true.

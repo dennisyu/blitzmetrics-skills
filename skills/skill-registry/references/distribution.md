@@ -4,6 +4,25 @@ Most failures happen after a skill is written. A repository can be valid while a
 member never installed it, a schedule can exist without firing, and an agent can
 report success without checking the expected artifact.
 
+## Canonical source and adapter matrix
+
+The portable source is `skills/*/SKILL.md`, the generated `AGENTS.md`, and the
+accepted Git commit. An adapter tells one runtime how to discover that source. It
+does not retrain a model and it does not prove an account loaded the files.
+
+| Surface | Adapter or delivery route | Repository status | Proof still required |
+|---|---|---|---|
+| Claude | `.claude-plugin/marketplace.json` | Canonical adapter; official validator in CI | Named-account sync, cold-start activation, scheduled firing |
+| Grok | `.grok-plugin/plugin.json` | Reads `./skills/`; version parity enforced in CI | Named-account install/refresh and cold-start receipt |
+| Codex | Surface-specific plugin/skill packaging | No canonical adapter in this repository yet | Clean build from accepted commit, inventory parity, installed SHA, cold-start receipt |
+| Cursor | Git checkout plus supported workspace/global rule and skill wiring | Portable source available; no canonical installer here | Loaded commit/rule paths and clean-session activation |
+| ChatGPT or a custom GPT | Supported workspace skill/plugin or uploaded knowledge wrapper | Wrapper is not canonical and may be a snapshot | Snapshot commit, refresh action, clean-session activation |
+| Other agents | Git/Markdown import that preserves each `SKILL.md` contract | Compatible in principle | Surface-specific install and observed-run receipt |
+
+Custom bots and GPTs may remain useful interfaces. Treat them as replaceable wrappers
+over a versioned skill. Never let their private prompt or uploaded snapshot become a
+second source of truth.
+
 ## Preferred path for groups
 
 Use the GitHub marketplace for shared skills:
@@ -17,9 +36,10 @@ Maintainer changes: branch → pull request → checks → merge
 Do not send members to GitHub's `/upload/main` URL. It is a maintainer upload form,
 not an installer, and it encourages direct writes to the canonical branch.
 
-The marketplace gives every member the same update channel. Do not promise that
-every third-party update applies unattended: that depends on Claude surface and
-settings. Record **manual sync verified** and **auto-update verified** separately.
+The marketplace gives Claude members the same source channel. Do not promise that
+any third-party update applies unattended: that depends on surface and settings.
+Record **manual sync verified** and **auto-update verified** separately for every
+named runtime and account.
 
 ## File delivery fallback
 
@@ -46,19 +66,20 @@ It rejects unsafe ZIP traversal paths and never modifies the input.
 
 ## The evidence ladder
 
-Use exactly these terms in reports:
+Use exactly these states in reports. A link or file reaching someone is a delivery
+event, not evidence that the runtime changed state.
 
 | State | Required proof |
 |---|---|
-| Available | File is in a merged, validated marketplace commit |
-| Delivered | Link or file reached the recipient |
-| Installed | Named account/workspace shows the bundle |
+| Available | File is in a merged, validated canonical commit |
+| Synced | Named account/workspace reports the accepted commit/version |
 | Enabled | Named account/workspace permits its use |
-| Tested | Fresh chat triggers the expected skill behavior |
+| Activated | Fresh session triggers the expected skill behavior |
 | Scheduled | Job definition exists with an owner and next run |
 | Observed | Timestamped firing has an output or an unedited failure |
+| Accepted | Observed canary assertions passed and rollback is recorded |
 
-Do not report `Delivered` as `Installed`, `Scheduled` as `Observed`, or a passing
+Do not report a delivery event as `Synced`, `Scheduled` as `Observed`, or a passing
 repository check as a passing account test.
 
 ## What an install guide must answer
@@ -91,7 +112,7 @@ same state. Detailed checks are in the repository root `ACCEPTANCE.md`.
 
 - Repository and official marketplace validators pass.
 - Pull request is reviewed; no direct-to-main upload was used.
-- Fresh-account install and fresh-chat activation have receipts.
-- Update propagation is tested on the relevant Claude surface.
+- Fresh-account install and fresh-session activation have receipts.
+- Update propagation is tested on every claimed runtime and surface.
 - Every recurring job has an owner, runtime, exact skill version, next expected
   run, durable receipt, and missed-run alert.

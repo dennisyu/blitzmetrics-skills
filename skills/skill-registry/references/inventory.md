@@ -1,10 +1,10 @@
 # Skill inventory — canonical facts and per-environment evidence
 
-Last canonical repository audit: 16 August 2026.
+Last canonical repository audit: 20 August 2026.
 
-This file separates what the marketplace makes **available** from what is actually
-**installed, enabled, tested, scheduled, or observed**. Never infer one state from
-another.
+This file separates what the marketplace makes **Available** from what is actually
+**Synced, Enabled, Activated, Scheduled, Observed, or Accepted**. Never infer one
+state from another.
 
 ## Canonical marketplace
 
@@ -16,12 +16,14 @@ another.
 | Topical bundles | 4 |
 | Validation | Pull-request and main-branch GitHub workflow |
 | Contribution path | Branch → checks → review → merge |
+| Portable source | `skills/*/SKILL.md` plus generated `AGENTS.md` |
+| Adapter parity in CI | Claude manifest and Grok adapter version/inventory path |
 
 This repository is now the identifiable source of truth. The install guide at
 `https://localservicespotlight.com/install/` is the member-facing front door, not
 a competing copy of the skill files.
 
-`one-session-client-onboarding` is Available after merge only, not Installed.
+`one-session-client-onboarding` is Available after merge only, not Synced.
 It is the agent-run one-session onboard: prefill GCT, confirm plus access, first
 Friday MAA. Humans are not the routing layer.
 
@@ -37,14 +39,20 @@ Friday MAA. Humans are not the routing layer.
 
 The topical totals overlap. They are selections over the same 28 directories.
 
-## Per-account installation register
+## Per-environment installation register
 
 Repository inspection cannot determine this table. Add a row only from the named
 account/workspace and attach a receipt from `ACCEPTANCE.md`.
 
-| Account/workspace | Surface | Bundle | Commit/version | Installed | Enabled | Fresh-chat tested | Receipt |
+| Account/workspace | Surface | Bundle | Commit/version | Synced | Enabled | Fresh-session activated | Receipt |
 |---|---|---|---|---|---|---|---|
 | _Not yet evidenced_ | — | — | — | Unknown | Unknown | Unknown | — |
+
+The Codex package active during the 20 August audit did **not** match canonical
+`main`: it omitted a canonical skill, added a private skill, and reported a newer
+version than its source content. That is a live deployment drift finding, not an
+accepted adapter. Keep the package path and account details in the private receipt;
+publish only aggregate coverage and sanitized failures here.
 
 Older claims that Dennis had six account skills and two team plugins were a
 point-in-time account snapshot, not marketplace or fleet state. They must not be
@@ -83,6 +91,8 @@ Use these states:
 6. Run a harmless end-to-end canary on one Spotlight site before fleet rollout.
 7. Reconcile the fleet by commit/version; do not use file timestamps or agent
    summaries as a substitute.
+8. Build a canonical Codex adapter from a clean accepted commit, or continue to label
+   Codex support unverified. Do the same for Cursor and ChatGPT before claiming parity.
 
 Update this document when canonical facts change. Update the private operational
 register after every firing. Report diffs and failed assertions, not just totals.
