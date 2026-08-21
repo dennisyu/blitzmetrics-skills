@@ -138,9 +138,10 @@ description: The Software Subscription Audit — a quarterly (scheduled) money-f
   ```
 
 - Then write the rule, run `python3 scripts/sync_shared_rules.py`, and open the pull
-  request. The sync copies the rule into `AGENTS.md` and every distributed `SKILL.md`,
-  so it reaches every agent and every member who installed the pack. Nobody has to be
-  told about it.
+  request. The sync copies the rule into `AGENTS.md` and each applicable distributed
+  `SKILL.md`, so every newly built artifact carries it. Existing installations receive
+  it only after a verified sync/update and fresh-chat activation test; source
+  availability is not installation.
 - **Give the rule a machine check whenever one is honest.** A `checks` block in the
   header compiles straight into the live fleet sweep, so a violation on a published page
   is caught by a schedule instead of by a person noticing. Every check must carry

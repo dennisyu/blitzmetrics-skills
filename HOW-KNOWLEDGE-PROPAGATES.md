@@ -7,8 +7,9 @@ repository, read this one.*
 
 ## The goal
 
-**Something learned once should become something every agent checks
-automatically, forever, without anyone having to remember it.**
+**Something learned once should become something every applicable agent checks
+after the accepted source has been distributed and activated, without a human
+having to re-brief the rule on every job.**
 
 That is the whole objective. Not "write it down." Not "tell the team." Those
 both depend on a human remembering at the exact moment it matters, and that
@@ -16,8 +17,8 @@ human is usually mid-task, three hours in, with the rule nowhere in sight.
 
 The test of whether we have achieved it is simple:
 
-> A rule is stated on Monday. On Friday, an agent nobody briefed — working for
-> someone we have never met, on a site we have never seen — declines to break it.
+> A rule is stated on Monday. On Friday, an agent nobody briefed — running an
+> accepted, verified distribution that contains the rule — declines to break it.
 
 If that happens without a person in the loop, the machinery works. If it does
 not, the machinery is decoration.
@@ -63,16 +64,18 @@ file, one rule, plain English — the black-button rule is a page of text saying
 what to do, why, and how to check. That file is the *only* place the rule is
 written down. There is no second copy anyone maintains.
 
-**Skills are the envelopes.** The pack contains 27 skills — content factory, SEO
-audit, weekly brand MAA, and so on. Each one is a self-contained folder. When
+**Skills are the envelopes.** The pack contains a manifest-driven set of skills
+— content factory, SEO audit, weekly brand MAA, and so on. Each one is a
+self-contained folder. When
 someone installs the pack from a QR code at a conference, what lands on their
 machine is those folders. **They do not get the `standards/` directory. They do
 not get this repository.** So a rule that merely *links* to the standards folder
 would ride along until it reached them and then evaporate.
 
-**So we stamp the rule into every envelope.** One command —
+**So we stamp the rule into every applicable envelope.** One command —
 `python3 scripts/sync_shared_rules.py` — reads every file in `standards/` and
-copies its text, word for word, into `AGENTS.md` and into all 27 skill files. It
+copies its text into `AGENTS.md` and the applicable skill files, based on the
+standard's scope. It
 marks each copy with an invisible tag so it knows which text it owns:
 
 ```
@@ -81,18 +84,21 @@ marks each copy with an invisible tag so it knows which text it owns:
 <!-- shared-rule:no-black-buttons:end -->
 ```
 
-Nobody types those copies and nobody edits them. The command writes them. Today
-that is **10 rules × 28 files = 280 copies**, all generated, all identical to
-their source.
+Nobody types those copies and nobody edits them. The command writes them. The
+repository validator reports the current standard and skill counts; evergreen
+prose does not duplicate them.
 
-**The build refuses to let a copy go stale.** Every time a change is proposed,
-an automatic check re-runs the stamp and compares. If one copy differs from the
-source by a single character, the check fails and the change cannot be merged.
-Drift is not caught late; it is impossible.
+**The build detects a stale copy.** Repository validation re-runs the stamp and
+compares generated blocks. If a copy differs from the source, the validation
+check fails. Contributors use the pull-request route and must not merge a
+failing change. The current GitHub ruleset prevents branch rewrite, but it does
+not yet require this check, so enforcement is a policy plus CI rather than an
+impossible state.
 
-**The result:** adding a house rule to the entire fleet — and to every person who
-ever installed the pack — is *dropping one markdown file into `standards/` and
-running one command.* No code change. No editing 27 files. Nothing to remember.
+**The result:** adding a house rule to current distribution artifacts is
+*dropping one markdown file into `standards/`, running one command, and merging a
+validated pull request.* No hand-editing generated copies. Installed runtimes
+receive it only after a verified sync/update and fresh-chat activation test.
 
 ---
 
@@ -111,12 +117,12 @@ different things**, which is exactly Content · Checklist · Software:
    the rule text,           the same words,           the machine checks
    stamped into             read by a person          in the file header,
    AGENTS.md and            before they touch         compiled into the
-   all 27 skills            a site                    live fleet sweep
+   applicable skills        a site                    live fleet sweep
         │                        │                        │
         ▼                        ▼                        ▼
-   every agent              every person             every published page
-   that reads any           doing site work          swept on a schedule
-   skill, anywhere
+   every updated agent      every person             every published page
+   whose loaded skill       doing site work          swept on a schedule
+   carries the rule
 ```
 
 The header of each standard carries the patterns that detect a violation in real
@@ -221,6 +227,14 @@ problem it claims to solve.
 - **Enforcement stops at published HTML.** Rules about how an agent behaves — mute
   before playback, capture what you learn — reach every skill but nothing verifies
   obedience. Distribution is solved; verification is not.
+- **Ordinary field learnings still target a retired source tree.** The legacy
+  `Skill-Learnings/` harvester updates old pack folders, not this canonical
+  marketplace. Until it is replaced by a pull-request-producing ingester, a
+  learning is shared only when someone proposes it directly against the current
+  skill or standard source and completes validation, sync, and activation proof.
+- **Installed copies do not update themselves.** A merged source change rebuilds
+  the candidate artifacts; each target still needs a sync/update receipt and a
+  fresh-chat activation test.
 - **A rule can still be wrong.** Nothing here makes a rule correct, only
   consistent. `no-autoplay-with-sound` narrows a published rule to reconcile it
   with the hero standard, and it says so in the file and needs confirming.
@@ -229,14 +243,15 @@ problem it claims to solve.
 
 ## The short version, for the stage
 
-> We keep every rule we have learned in one folder, one file per rule. A script
-> stamps every one of those rules into every skill we ship, so when you install
-> the pack the rules come with it — you do not have to know they exist. The build
-> refuses to merge if any copy has drifted. And the same file that states the rule
+> We keep every accepted house rule in one folder, one file per rule. A script
+> stamps each rule into the applicable skills, so a newly built pack carries the
+> rules its skills need. Validation fails if a generated copy has drifted. And
+> the same file that states the rule
 > also contains the test for it, so the rule and the thing that checks the rule
 > can never disagree.
 >
-> Adding a new rule to everyone, everywhere, is dropping one file in a folder.
+> Adding a new rule to the source is dropping one file in a folder. Reaching a
+> runtime still requires verified distribution, sync, and activation.
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: recursive-self-improvement-qa
-description: Make any agent improve itself — run the task, write the run up as a meta article, QA against the definitive article, rewrite the SOP sharper, republish. The Task Library loop that compounds the whole skill set. Use after any skill runs, or to turn a recurring task into a self-improving skill.
+description: Make an agent and its method improve from verified runs — capture a private receipt, QA against the canonical skill and parent concept, propose reusable corrections, validate distribution, and publish public proof only when approved and useful. Use after a skill runs or when turning recurring work into a self-improving process.
 ---
 
 # Recursive Self-Improvement QA
@@ -8,16 +8,16 @@ description: Make any agent improve itself — run the task, write the run up as
 **Use this when** you want agents and SOPs that get sharper every run instead of going stale. The loop behind "one page per agent." Step 10 of the Local Service Spotlight method — the skill that improves the other nine.
 
 ## Inputs
-- The skill/SOP that just ran, and its definitive article — the canonical instructions for the task.
+- The canonical skill/SOP that just ran and its parent definitive concept, when one applies.
 - The actual output of the most recent run, including whatever went sideways.
-- Previous meta articles for this skill, if any — the loop's memory.
+- Previous internal run receipts and any approved public meta-articles for this skill.
 
 ## The loop
-1. **Do** the task exactly per the SOP. No improvising — deviations are data.
-2. **Document** the run as a *meta article*: what happened, what worked, what broke, where the agent had to guess. The agent writes its own definitive article.
+1. **Do** the task under the current human request, safety boundaries, and canonical method. Record necessary deviations as data; do not hide them.
+2. **Document** every substantive organization run in the private internal receipt: what happened, what worked, what broke, where the agent guessed, and the next action. Write a public meta-article only when the run is approved, public-safe, non-duplicative, and useful as reusable proof.
 3. **QA** against the canonical instructions with the checklist below. Every deviation and gap gets flagged, not excused.
-4. **Rewrite** the SOP to remove the exact ambiguity behind each deviation. One fix per flag.
-5. **Publish** the updated definitive article — version it (v1.1, v1.2) — and run again. Every loop, the skill needs less of you.
+4. **Propose** a narrow correction at the current canonical source. A reusable cross-skill rule belongs in `standards/`; a task-specific correction belongs in that skill. Use a branch and pull request; never write to a legacy pack copy.
+5. **Validate and distribute** the candidate: sync generated rules, run repository checks, obtain review, rebuild the distribution after merge, and prove activation in a fresh chat. Publish or revise a public definitive article only when the user has authorized publication.
 
 ## The QA checklist — run it every time
 - Did the output match what the definitive article promised? Where, exactly, did it differ?
@@ -30,9 +30,9 @@ description: Make any agent improve itself — run the task, write the run up as
 - Did this run produce anything worth productizing — a reusable template, prompt, or standard?
 
 ## The Task Library model
-This loop at scale is the Local Service Spotlight Task Library: 1,000+ tasks, each one a skill.md tied to a definitive article with an SOP and a QA checklist.
+This loop at scale is the Local Service Spotlight Task Library: a changing registry of atomic tasks. Each task needs one runnable task page or skill and maps to a parent definitive concept when one applies. A definitive article is a major concept or governing method, not a quota of duplicate pages for every atomic task.
 - **Workers** execute the checklist. **Managers** enforce it. **The architect** revises the system when flags repeat.
-- One page per task, one URL per page — and every run makes the page better.
+- One task record per task, one canonical skill source per slug, and one public URL per major concept.
 - That's how a library compounds instead of rotting: the documentation IS the asset.
 
 ## When to run it
@@ -41,9 +41,10 @@ This loop at scale is the Local Service Spotlight Task Library: 1,000+ tasks, ea
 - Before a sale or audit: the sharpened library is what the buyer is actually paying for.
 
 ## Output
-- A meta article for the run — what happened, with every deviation flagged.
+- A private internal run receipt for every substantive organization job.
+- An approved public meta-article only when the run passes the publication test.
 - A QA punch-list: one fix per flag, each assigned.
-- The improved skill.md, versioned and republished.
+- A reviewed proposal against the canonical skill or standard, plus validation and activation receipts. A public article revision is conditional on authorization.
 
 ## For DealCon — agency owners & acquirers
 **If you run an agency:** delivery quality that improves without you is the difference between selling a job and selling a company — a self-improving task library is the asset a buyer pays the multiple for.
@@ -51,15 +52,15 @@ This loop at scale is the Local Service Spotlight Task Library: 1,000+ tasks, ea
 **Your edge:** name the task you've redone from scratch three times this quarter — that's the first skill.md to put in the loop.
 
 ## Run on a persistent agent (Fable 5)
-- **Loop to done:** this skill is the loop the other nine run inside — on a persistent agent it fires automatically after every skill execution, not when someone remembers to ask. Done = every flag has a fix and the SOP is republished, versioned.
+- **Loop to done:** this skill is the loop the other nine run inside. Done = every flag has a disposition, reusable fixes are proposed at the canonical source, checks pass, and distribution/activation state is reported accurately.
 - **Self-verify:** run the QA checklist completely, every time — a skipped line is tomorrow's deviation, and the checklist audits you too.
-- **Compound with memory:** prior meta articles are the loop's memory — read them before judging this run, so versions compound (v1.1, v1.2) instead of resetting.
-- **Log the run:** the meta article isn't overhead here, it IS the output — each one is a worked example added to the library.
+- **Compound with records:** read relevant private receipts and selected public examples before judging this run, so versions compound instead of resetting.
+- **Log the run:** the private receipt is mandatory for a substantive organization job. Public proof is a separate, approval-gated output.
 
 See `boil-the-ocean.md` for the full operating principles.
 
 ## Notes — Dennis's method
-- One page per agent: each agent IS a definitive article that documents and improves itself. The meta article is the agent inspecting its own work.
+- One named agent can have one public hub, but its internal receipts, canonical skills, and selected public examples remain separate artifacts.
 - This is recursive self-improvement applied to marketing ops. The library you installed today should be measurably sharper in 90 days — if it isn't, the loop isn't running.
 - Boil the ocean on the checklist. Completeness beats good-enough, because every unwritten rule becomes tomorrow's deviation.
 - Standardize, then improve: you can't sharpen a process that changes shape every run. SOP first, loop second.
@@ -70,12 +71,12 @@ See `boil-the-ocean.md` for the full operating principles.
 
 ## Learned in the field
 
-*Appended automatically by the self-improvement loop (Skill-Learnings/): dated lessons from real runs. Newest at the bottom.*
+*Historical lessons imported from the legacy `Skill-Learnings/` pipeline appear below. They preserve provenance but do not define the current write route. New reusable learnings must target this canonical repository through a reviewed branch and pull request.*
 
 <!-- learning:2026-07-18-close-the-loop-every-run -->
 **July 18, 2026** (from: skill-pack-propagation follow-up session with Dennis, July 18, 2026)
 
-Every run that executes this or any skill must END by filing what it learned: drop a note in Skill-Learnings/inbox/ (id, date, source, skills, lesson) at the project root. The harvest → propagate pipeline turns those notes into re-dated skills, rebuilt packs, and a refreshed public directory — multiple pack updates per day is the healthy signal. If the packs have not changed in a week, treat THAT as the defect: find where lessons are dying (not being filed, not harvested, or not propagated) and fix the pipeline, not just the symptom.
+**Superseded August 21, 2026.** Do not file new learnings into the legacy `Skill-Learnings/inbox/` path. Every substantive organization run writes a private `agent-runtime/agent-notes/` receipt. A reusable learning becomes a branch and pull request against the current canonical skill or standard; after merge it still requires a rebuilt distribution and activation receipt. A public meta-article remains conditional.
 
 <!-- learning:2026-07-18-zero-work-is-a-signal -->
 **July 18, 2026** (from: pack-propagation pipeline audit, July 18, 2026)
@@ -2585,9 +2586,10 @@ Learned August 3, 2026.
   ```
 
 - Then write the rule, run `python3 scripts/sync_shared_rules.py`, and open the pull
-  request. The sync copies the rule into `AGENTS.md` and every distributed `SKILL.md`,
-  so it reaches every agent and every member who installed the pack. Nobody has to be
-  told about it.
+  request. The sync copies the rule into `AGENTS.md` and each applicable distributed
+  `SKILL.md`, so every newly built artifact carries it. Existing installations receive
+  it only after a verified sync/update and fresh-chat activation test; source
+  availability is not installation.
 - **Give the rule a machine check whenever one is honest.** A `checks` block in the
   header compiles straight into the live fleet sweep, so a violation on a published page
   is caught by a schedule instead of by a person noticing. Every check must carry
