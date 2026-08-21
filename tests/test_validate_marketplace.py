@@ -1,3 +1,4 @@
+import json
 import shutil
 import tempfile
 import unittest
@@ -73,6 +74,104 @@ class MarketplaceValidatorTests(unittest.TestCase):
                     "no-black-buttons" in error
                     for error in errors
                 ),
+                errors,
+            )
+
+    def test_adapter_version_drift_fails(self):
+        with tempfile.TemporaryDirectory() as temp_name:
+            copied = Path(temp_name) / "repository"
+            shutil.copytree(REPOSITORY, copied, ignore=shutil.ignore_patterns(".git"))
+            path = copied / ".grok-plugin" / "plugin.json"
+            manifest = json.loads(path.read_text(encoding="utf-8"))
+            manifest["version"] = "0.0.0"
+            path.write_text(json.dumps(manifest) + "\n", encoding="utf-8")
+
+            errors = validate(copied)
+
+            self.assertTrue(any("adapter version drift" in error for error in errors), errors)
+
+    def test_stale_current_skill_count_outside_readme_fails(self):
+        with tempfile.TemporaryDirectory() as temp_name:
+            copied = Path(temp_name) / "repository"
+            shutil.copytree(REPOSITORY, copied, ignore=shutil.ignore_patterns(".git"))
+            acceptance = copied / "ACCEPTANCE.md"
+            acceptance.write_text(
+                acceptance.read_text(encoding="utf-8")
+                + "\nThe pack contains 999 skills.\n",
+                encoding="utf-8",
+            )
+
+            errors = validate(copied)
+
+            self.assertTrue(
+                any("ACCEPTANCE.md advertises 999 current skills" in error for error in errors),
+                errors,
+            )
+
+    def test_topical_bundle_description_count_drift_fails(self):
+        with tempfile.TemporaryDirectory() as temp_name:
+            copied = Path(temp_name) / "repository"
+            shutil.copytree(REPOSITORY, copied, ignore=shutil.ignore_patterns(".git"))
+            path = copied / ".claude-plugin" / "marketplace.json"
+            manifest = json.loads(path.read_text(encoding="utf-8"))
+            manifest["plugins"][1]["description"] = manifest["plugins"][1][
+                "description"
+            ].replace("(7 skills)", "(99 skills)")
+            path.write_text(json.dumps(manifest) + "\n", encoding="utf-8")
+
+            errors = validate(copied)
+
+            self.assertTrue(
+                any(
+                    "description advertises 99 skills but lists 7" in error
+                    for error in errors
+                ),
+                errors,
+            )
+
+    def test_inventory_bundle_count_drift_fails(self):
+        with tempfile.TemporaryDirectory() as temp_name:
+            copied = Path(temp_name) / "repository"
+            shutil.copytree(REPOSITORY, copied, ignore=shutil.ignore_patterns(".git"))
+            path = copied / "skills" / "skill-registry" / "references" / "inventory.md"
+            path.write_text(
+                path.read_text(encoding="utf-8").replace(
+                    "| `authority-and-reputation` | 7 |",
+                    "| `authority-and-reputation` | 99 |",
+                ),
+                encoding="utf-8",
+            )
+
+            errors = validate(copied)
+
+            self.assertTrue(
+                any(
+                    "inventory advertises 99 skills for authority-and-reputation"
+                    in error
+                    for error in errors
+                ),
+                errors,
+            )
+
+    def test_deprecated_repo_or_pack_name_outside_migration_fails(self):
+        with tempfile.TemporaryDirectory() as temp_name:
+            copied = Path(temp_name) / "repository"
+            shutil.copytree(REPOSITORY, copied, ignore=shutil.ignore_patterns(".git"))
+            path = copied / "CONTRIBUTING.md"
+            path.write_text(
+                path.read_text(encoding="utf-8")
+                + "\nUse dennisyu/blitzmetrics-skills and blitzmetrics-everything.\n",
+                encoding="utf-8",
+            )
+
+            errors = validate(copied)
+
+            self.assertTrue(
+                any("deprecated identifier 'dennisyu/blitzmetrics-skills'" in e for e in errors),
+                errors,
+            )
+            self.assertTrue(
+                any("deprecated identifier 'blitzmetrics-everything'" in e for e in errors),
                 errors,
             )
 

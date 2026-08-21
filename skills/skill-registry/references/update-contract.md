@@ -8,14 +8,20 @@ updates without agents overwriting one another.
 ```text
 Source:  GitHub main branch
 Change:  branch → pull request → automated checks → human merge
-Install: Claude marketplace repository URL
-Update:  compare commit → canary sync → activation test → cohort rollout
+Adapt:   clean build from accepted commit → inventory/version hash parity
+Install: surface-supported marketplace, plugin, workspace rule, or skill route
+Update:  compare commit → canary sync → fresh-session activation → cohort rollout
 Proof:   immutable receipt per account/site/run
 ```
 
 The canonical repository is
 `https://github.com/dennisyu/local-service-spotlight-skills`. A ZIP is a dated snapshot and
 must include its source commit; it is not the update channel.
+
+Every adapter/package receipt must carry `source_commit`, source-tree hash, build
+time, adapter version, and sorted skill-inventory hash. Build from a clean detached
+accepted commit. A local cache with extra/missing skills is a declared overlay or a
+drift failure; it is never silently relabeled canonical.
 
 ## Scheduled update checker
 
@@ -28,7 +34,7 @@ Run weekly at a named local time and owner. The checker must:
    changes, and scheduled prompts that call those names.
 4. Run `python3 scripts/validate_marketplace.py`, repository tests, and Claude's
    marketplace validator on the candidate.
-5. Sync one canary account/site. Start a fresh chat and trigger every changed skill
+5. Sync one canary account/site. Start a fresh session and trigger every changed skill
    with a literal phrase from its description.
 6. Promote only after the canary receipt passes. Roll out in small cohorts, stopping
    on the first failed or missing receipt.
@@ -63,6 +69,11 @@ agent reports `waiting_on_lock`; it does not start a competing deployment.
 | Accepted | Canary/cohort assertions passed and rollback target was recorded |
 
 Never report Accepted from a prose summary. Compute it from receipts.
+
+For a recursive-improvement release, repository acceptance is necessary but not
+sufficient. Validate the outcome receipt with
+`scripts/validate_outcome_receipt.py`. A diagnostic-only movement may advance to a
+canary; it cannot promote a business-effectiveness claim.
 
 ## Failure and rollback
 

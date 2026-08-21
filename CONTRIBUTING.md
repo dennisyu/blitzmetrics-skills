@@ -1,6 +1,7 @@
 # Contributing safely
 
-This repository is the canonical source for the Local Service Spotlight Claude marketplace.
+This repository is the canonical public source for portable Local Service Spotlight
+skills and their model-specific adapters.
 A green-looking agent report is not proof that a change reached a user or ran on
 schedule. Changes therefore move through a branch, automated checks, review, and
 an acceptance receipt.
@@ -54,11 +55,23 @@ Then write the rule, add machine checks if an honest one exists, and sync:
 
 ```bash
 python3 scripts/fleet_check.py --self-test    # proves the checks actually fire
-python3 scripts/sync_shared_rules.py          # stamps it into all 27 skills
+python3 scripts/sync_shared_rules.py          # stamps it into every applicable skill
 ```
 
 `--from` is required. Provenance is how we see which channels leak: if a source
 never appears in `captured_from`, that source is not being captured.
+
+A direct instruction can propose a standard from provenance. A claim that a tactic
+improves business performance must also carry an outcome receipt. Views, rankings,
+traffic, engagement, and things produced can justify a test; they cannot promote a
+business-effectiveness rule. Validate a receipt before review:
+
+```bash
+python3 scripts/validate_outcome_receipt.py path/to/private-receipt.json
+```
+
+Keep client-specific receipts private. Put the sanitized reusable rule, decision,
+and non-sensitive evidence in the pull request.
 
 Adding a rule is a file drop — no code change, no bundle edit. Plain language
 walkthrough: [HOW-KNOWLEDGE-PROPAGATES.md](HOW-KNOWLEDGE-PROPAGATES.md).
@@ -85,14 +98,15 @@ it reports every site clean forever and looks exactly like a working check.
 ## What status words mean
 
 - **Available:** present in the merged marketplace.
-- **Installed:** visible in the named Claude account or workspace.
-- **Enabled:** Claude is allowed to use it there.
-- **Tested:** a fresh chat activated it and produced expected evidence.
+- **Synced:** the named environment reports the accepted source commit/version.
+- **Enabled:** the named agent surface is allowed to use it there.
+- **Activated:** a fresh session invoked it and produced expected evidence.
 - **Scheduled:** a job definition exists.
 - **Observed:** a scheduled firing produced a timestamped output or failure.
+- **Accepted:** the observed canary passed its assertions and has a rollback target.
 
 Never substitute one state for another. In particular, `Scheduled` does not mean
-`Observed`, and `Available` does not mean `Installed`.
+`Observed`, and `Available` does not mean `Synced`.
 
 ## Release notes for members
 

@@ -1,11 +1,13 @@
-# Local Service Spotlight Skills for Claude
+# Local Service Spotlight Skills for Agents
 
-The canonical marketplace for the 28 Local Service Spotlight skills used across
-authority, content, client operations, and quality assurance.
+The canonical public source for all 28 Local Service Spotlight skills used across
+authority, content, measurement, client operations, and quality assurance. The
+method lives in portable Markdown. Model-specific manifests are adapters over that
+source, not competing copies.
 
 ## Install
 
-Members should start with the illustrated guide:
+Claude members should start with the illustrated guide:
 [localservicespotlight.com/install](https://localservicespotlight.com/install/).
 When Claude asks for the marketplace repository, paste:
 
@@ -13,7 +15,10 @@ When Claude asks for the marketplace repository, paste:
 https://github.com/dennisyu/local-service-spotlight-skills
 ```
 
-Then install `lss-everything`.
+Then install `lss-everything`. Other runtimes use the same `skills/`
+directories through their supported Git, plugin, workspace-rule, or file workflow.
+See the adapter and receipt matrix in
+[`skills/skill-registry/references/distribution.md`](skills/skill-registry/references/distribution.md).
 
 If you already added `https://github.com/dennisyu/blitzmetrics-skills` or
 installed `blitzmetrics-everything`, remove that marketplace and add this one.
@@ -23,14 +28,28 @@ GitHub redirects the old repository URL. Claude still needs a fresh install of
 The guide and repository have different jobs:
 
 - The **install guide** tells a nontechnical member where to click and how to test.
-- This **GitHub repository** is the source Claude reads and maintainers review.
+- This **GitHub repository** is the source maintainers review and adapters package.
 - GitHub's `/upload/main` page is for maintainers and is not an install link.
 
-The repository is one update channel, so members do not need a new ZIP for every
-release. Sync behavior varies by Claude surface and settings: third-party
-marketplace auto-update may need to be enabled, or a member may need to choose
-**Sync** or **Update**. An update is verified only after the account shows the new
-commit/version and a fresh chat passes an activation test.
+The repository is one release channel, so members do not need a new ZIP for every
+release. Sync behavior varies by runtime, surface, and settings. A pull-request
+branch is only **Candidate**; a merged, validated commit proves **Available**. An
+update is verified only after the named environment reports the accepted
+commit/version and a fresh session passes an activation test. A scheduled job is
+verified only after an observed firing leaves a receipt.
+
+## One source, several adapters
+
+| Layer | Current source | What repository validation proves |
+|---|---|---|
+| Portable behavior | `skills/*/SKILL.md` plus generated `AGENTS.md` | Every declared skill and shared rule is present and internally consistent |
+| Claude | `.claude-plugin/marketplace.json` | Marketplace structure and inventory validate |
+| Grok | `.grok-plugin/plugin.json` | Adapter points at the same skills and has version parity |
+| Codex, Cursor, ChatGPT, and other agents | Surface-specific install or packaging outside this repository | Nothing about a named account until its commit and cold-start receipt are recorded |
+
+Never describe a vendor wrapper, uploaded knowledge snapshot, local cache, or custom
+bot as canonical. It can be replaced without losing the method; the reviewed skill
+and its source commit are the durable asset.
 
 ## What was installed
 
@@ -42,8 +61,9 @@ Start a new chat and ask in plain language. For example:
 >
 > “How do I show up in ChatGPT?”
 
-Claude should select the relevant skill. Seeing the plugin in a list proves it is
-installed; a successful fresh-chat trigger proves that skill is working.
+Claude should select the relevant skill. Seeing the plugin in a list proves only
+that the package is visible. A named environment reporting the accepted commit
+proves **Synced**; a successful fresh-chat trigger proves **Activated**.
 
 ## Bundles
 
@@ -59,7 +79,7 @@ Most people should install `lss-everything`.
 
 ## Skills, agents, and scheduled jobs
 
-- A **skill** is a written recipe Claude can use when asked.
+- A **skill** is a written recipe an agent can use when asked.
 - An **agent** carries out a multi-step assignment using skills and tools.
 - A **scheduled job** tells an agent when to run.
 - A **receipt** is timestamped evidence that a run succeeded or failed.
@@ -75,10 +95,10 @@ sound, no popup on load, every link and entity claim resolves, personal-brand
 heroes are immersive, and the rule about rules: capture what you learn in the
 same session.
 
-`scripts/sync_shared_rules.py` stamps each rule verbatim into `AGENTS.md` and all
-28 `SKILL.md` files, so the rules arrive with the pack even though `standards/`
-itself is not distributed. CI rejects a pull request when even one copy is
-missing or stale.
+`scripts/sync_shared_rules.py` stamps each applicable rule verbatim into `AGENTS.md`
+and the distributed `SKILL.md` files, so the rules arrive with the pack even though
+`standards/` itself is not distributed. CI rejects a pull request when even one
+copy is missing or stale.
 
 The same file also carries the patterns that detect a violation in real HTML, and
 `scripts/fleet_check.py` compiles them into a live sweep:

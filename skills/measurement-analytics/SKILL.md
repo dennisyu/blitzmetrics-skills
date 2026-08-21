@@ -59,7 +59,12 @@ have been tested.
 5. **Pull the funnel numbers:** landing-page visits · unique leads · qualified leads
    · booked estimates · sales · collected/recognized revenue · ad spend · tracked
    calls · GBP intent · search performance and external rankings.
-6. **Compute the five verdicts.** Treat the rates below as starting hypotheses,
+6. **Check fulfillment before prescribing more demand.** Record usable capacity,
+   utilization, staffing/coverage, close rate, average order or job value, gross margin,
+   backlog/service time, cancellations/refunds, and the client's ability to fulfill the
+   next increment. If capacity or economics are the constraint, traffic and lead growth
+   are supporting diagnostics—not the recommended action. Fix the limiting stage first.
+7. **Compute the five verdicts.** Treat the rates below as starting hypotheses,
    not universal facts; replace them with the client's accepted vertical-specific
    targets when those exist.
    - **Opt-in rate** vs 25% default hypothesis (35% stretch) — below the accepted target after enough traffic → investigate the landing page.
@@ -67,14 +72,14 @@ have been tested.
    - **Cost per lead** = spend ÷ ad-page opt-ins.
    - **Self-liquidation** = attributed front-end revenue ÷ measured ad spend. ≥1.0 means attributed front-end revenue covered measured ad spend; it does not make acquisition, fulfillment, overhead, or attribution risk free. Treat scale as a proposal requiring the client's guardrails. <1.0 → name the likely leaking stage and hold scale.
    - **Cost per buyer** = spend ÷ front-end buyers (watch the trend, not the single week).
-7. **Respect data discipline:** use the client's accepted minimum sample. If none
+8. **Respect data discipline:** use the client's accepted minimum sample. If none
    exists, use 100 visits as a conservative default and label smaller samples
    `collecting data`. Compare like periods and definitions. Explain every >30%
    change or flag it for investigation.
-8. **Write MAA:** show the metric and source, analysis, action, owner, deadline, and
+9. **Write MAA:** show the metric and source, analysis, action, owner, deadline, and
    success measure. Hand scale/hold to `dollar-a-day-strategist` and the weakest
    stage to `sales-every-day`, but stage changes for human approval.
-9. **Close the run:** write the report, validation assertions, raw-artifact paths,
+10. **Close the run:** write the report, validation assertions, raw-artifact paths,
    source receipts, and next expected run. Release the lock. Never send or modify ads
    from this measurement run.
 
@@ -87,6 +92,7 @@ CALLS     GBP call clicks ___ · tracked calls ___ · answered ___
 LEADS     unique ___ · qualified ___ · bookings ___ · cost/qualified lead $___
 REVENUE   sales ___ · collected/recognized $___ · take-rate ___%
 VERDICT   self-liquidation: $___ revenue vs $___ spend = ___  → SCALE / HOLD / FIX <stage>
+CAPACITY  usable ___ · utilization ___ · close rate ___ · AOV/ARO $___ · margin ___ · backlog/refunds ___
 MAA       metric/source → analysis → action/owner/deadline/success measure
 GAPS      not connected · failed assertions · missing receipts · attribution caveats
 ```
@@ -110,6 +116,8 @@ first firing leaves its receipts and expected report.
 - Every expected source produced a success or failure receipt for the same run ID.
 - Period, timezone, metric definition, vendor, account, and attribution settings are visible.
 - The five verdicts name whether their benchmarks are client-accepted or default hypotheses, and insufficient samples are never judged.
+- A demand recommendation is blocked when verified capacity, fulfillment, margin, or
+  customer-quality evidence identifies a deeper constraint.
 - Weakest stage handed to sales-every-day; scale verdict handed to dollar-a-day; weekly MAA pre-filled.
 - Zero actions taken on ads, CRM, or funnels — this agent measures; its siblings propose; a human approves.
 
@@ -445,9 +453,11 @@ in the same change, and confirm the verifier actually fails before you trust it 
   shipped a black button. The rule was never in `standards/`, so it never reached the
   skills, so it was not there to be read.
 - When anyone — the client, the account owner, an audit, or your own failure — states a
-  rule that should hold next time, **your job is not to remember it. It is to write
-  `standards/<slug>.md` before the session ends.** Memory does not survive a session
-  boundary. A file does.
+  rule that should hold next time, **your job is not to remember it. Capture it before the
+  session ends.** A direct instruction can become a proposed `standards/<slug>.md` with
+  provenance. A causal claim such as “this tactic improves sales” also needs the outcome
+  receipt required by `report-business-impact-not-volume`; otherwise it is a hypothesis,
+  not canon.
 - Scaffold it in one command, which forces every field including where the rule came
   from:
 
@@ -457,9 +467,16 @@ in the same change, and confirm the verifier actually fails before you trust it 
   ```
 
 - Then write the rule, run `python3 scripts/sync_shared_rules.py`, and open the pull
-  request. The sync copies the rule into `AGENTS.md` and every distributed `SKILL.md`,
-  so it reaches every agent and every member who installed the pack. Nobody has to be
-  told about it.
+  request. The sync copies the candidate into `AGENTS.md` and every distributed
+  `SKILL.md`. That proves source parity only. It reaches a person after merge and
+  surface-specific sync; it becomes working capability only after a fresh-session
+  activation receipt. Never call source consistency “propagated everywhere.”
+- **Every substantive run record needs a learning disposition:** `proposed`, `applied`,
+  `rejected`, or `none` with a reason. Link the affected skill/standard and source/resulting
+  commit. If the record contains a reusable lesson but no disposition, the loop is open.
+- Keep private facts, credentials, client URLs, and raw revenue receipts in the private run
+  record. Publish the sanitized, reusable rule and enough non-sensitive evidence for another
+  agent to evaluate it. “Build in public” does not mean leak client data.
 - **Give the rule a machine check whenever one is honest.** A `checks` block in the
   header compiles straight into the live fleet sweep, so a violation on a published page
   is caught by a schedule instead of by a person noticing. Every check must carry
@@ -475,6 +492,9 @@ in the same change, and confirm the verifier actually fails before you trust it 
   out loud.** Two standards that disagree are worse than one that is wrong, because
   every agent that reads both will pick whichever it happened to see last. Write the
   reconciliation into the newer rule and flag it to the account owner for confirmation.
+- A harvester may draft the branch and pull request; it must not silently merge a learning
+  into canonical instructions. Independent QA, repository checks, and an attributable
+  canary keep one persuasive but wrong run from teaching the entire fleet.
 - The order is Checklist → Content → Software. Write the checkable rule first, publish
   the article that teaches it second, and let the sweep be generated from the rule
   rather than hand-written beside it. Writing the article first is how rules get lost:
@@ -585,14 +605,26 @@ in the same change, and confirm the verifier actually fails before you trust it 
 <!-- shared-rule:report-business-impact-not-volume:start -->
 ## Report business impact, never volume
 
-- **Count outcomes, not output.** Posts published, words written and tasks closed are
-  activity. Calls, booked jobs, leads and revenue are results.
-- **Trace the chain and show it**: published thing → ranking or traffic → call or lead →
-  booked job → revenue. Where the chain breaks, say where it breaks rather than reporting
-  the last link that looked good.
-- **Impressions and clicks are context, not the headline.** Never lead with them.
-- If the business impact cannot be measured yet, say that plainly and fix the measurement
-  first — see `analytics-on-every-page`.
+- **Use the deepest verified result, and let it overrule every shallower signal:**
+  retained customer or collected/recognized revenue and gross profit → closed sale or
+  completed job → qualified booking or deposit → qualified lead or connected call →
+  conversion → traffic, rankings, reach, and engagement → things produced. A ranking gain
+  with fewer profitable jobs is not a win. More posts with no measured demand are activity.
+- **Trace the chain and show the break:** intervention → exposure → response → qualified
+  demand → sale/job → revenue and customer outcome. Never silently relabel call clicks as
+  calls, contacts as qualified leads, pipeline value as revenue, or an unknown value as zero.
+- **Diagnostics diagnose; they do not prove business impact.** Views, impressions, clicks,
+  engagement, traffic, rankings, and output may explain an outcome or start an experiment.
+  They cannot overrule a contradictory downstream result.
+- Before calling a process better, record its source commit or version, baseline, comparison
+  window, metric definition and source, result, attribution limits, sample size, plausible
+  alternatives, and guardrails such as refunds, retention, capacity, margin, and customer
+  quality. Where practical, use a holdout or matched comparison.
+- A single run may create a **proposal** or **canary**. Promote a business-effectiveness rule
+  only from verified downstream evidence; hold or revert it when stronger evidence disagrees.
+  Reliability and safety rules may use their native outcomes, but must not claim sales impact.
+- If business impact is not connected yet, say **not connected**, fix measurement, and make
+  that the next action. Do not turn the last available diagnostic into a success claim.
 <!-- shared-rule:report-business-impact-not-volume:end -->
 
 <!-- shared-rule:verify-by-opening-the-live-artifact:start -->

@@ -14,16 +14,17 @@ Know which one you are touching. They propagate very differently.
 | # | System | What it proves | What it does not prove | Who can write to it |
 |---|---|---|---|---|
 | 1 | **Canonical GitHub marketplace** | A skill is available in a validated commit | Any account installed or synced it | Maintainers, by reviewed pull request |
-| 2 | **Installed plugins and account skills** | A named account can see the capability | A fresh chat can activate it correctly | The account/workspace owner |
+| 2 | **Runtime adapters and installed skills** | A named environment reports a commit/version | A fresh session can activate it correctly | The account/workspace owner |
 | 3 | **Cloud scheduled tasks** | A schedule exists for one cloud account | A firing succeeded | Authorized scheduler tools |
 | 4 | **Local Cowork scheduled jobs** | A schedule exists on one machine | Cloud health or another machine's state | The desktop app on that machine |
 | 5 | **Fleet copies and run receipts** | A site has a version and a run left evidence | The rest of the fleet matches it | The deployment job and receipt store |
 
-**System 1 is the only canonical source.** The member install guide is the front
-door, while `https://github.com/dennisyu/local-service-spotlight-skills` is the source Claude
-subscribes to. Account skills are per-person. If a capability matters to more than
-one person, put it in the marketplace and verify each target environment with a
-receipt.
+**System 1 is the only canonical executable source.** The member install guide is
+the front door, while `https://github.com/dennisyu/local-service-spotlight-skills`
+is the portable source and adapters package. A local cache, custom GPT, Grokbot,
+workspace rule, or uploaded skill is a deployed copy. If a capability matters to
+more than one person, put it in the repository and verify each target environment
+with a receipt.
 
 ## Intake gate — run this for every new skill
 
@@ -33,9 +34,9 @@ Do not consider a skill "done" until all seven pass.
 2. **Is it under the canonical repository's `skills/` directory** — not a loose file or chat attachment?
 3. **Is it listed in `lss-everything`** and every appropriate topical bundle?
 4. **Did repository and official marketplace validation pass on a pull request?** Never publish from `/upload/main`.
-5. **Can a fresh chat activate it?** Test a literal trigger phrase from the description and save the receipt.
+5. **Can a fresh session activate it on every claimed runtime?** Test a literal trigger phrase from the description and save the surface-specific receipt.
 6. **Can a scheduled job activate it?** Name the exact skill in a complete standalone prompt and verify the first firing, not just the schedule definition.
-7. **Is its state recorded accurately** in `references/inventory.md` and the operational register — Available, Installed, Enabled, Tested, Scheduled, or Observed?
+7. **Is its state recorded accurately** in `references/inventory.md` and the operational register — Available, Synced, Enabled, Activated, Scheduled, Observed, or Accepted?
 
 If a step cannot be completed in this session, **say so explicitly and name who has to do it.** Reporting a skill as "shipped" when it is sitting in a chat thread is the specific failure this gate exists to prevent.
 
@@ -47,14 +48,14 @@ not an install. → `references/distribution.md`
 
 The short version:
 
-- **Use the GitHub marketplace for groups.** Send members to the install guide,
-  then give Claude the canonical repository URL. Use `.plugin` instead of `.zip`
-  only for direct-file fallback. Convert legacy packs with
+- **Use the canonical GitHub source for groups.** Send Claude members to the install
+  guide; use the supported adapter for other agents and record its source commit.
+  Use `.plugin` instead of `.zip` only for direct-file fallback. Convert legacy packs with
   `scripts/pack2plugin.py`.
-- **Say the install step out loud every time you deliver one.** "This is
-  delivered, not installed — accept the card above."
-- **Report only the state evidenced.** Delivered, installed, enabled, tested,
-  scheduled, and observed are separate states.
+- **Say the install step out loud every time you deliver one.** "This file reached
+  you, but it is not Synced or Activated — complete the install/sync step above."
+- **Report only the state evidenced.** Available, Synced, Enabled, Activated,
+  Scheduled, Observed, and Accepted are separate states.
 - **Link the install guide** from every place a file can be downloaded.
 
 ## Updating packs regularly
@@ -64,7 +65,7 @@ authoring: a scheduled checker compares the environment's accepted commit with
 GitHub `main`, validates a candidate, and deploys to one canary. It never rewrites a
 skill or commits to `main`.
 
-Promote a candidate only after a fresh-chat activation receipt passes for every
+Promote a candidate only after a fresh-session activation receipt passes for every
 changed skill. Roll out in small cohorts with one publisher, one environment lock,
 stable release/run IDs, a separate auditor, and the prior accepted commit recorded
 for rollback. A no-change week still writes a receipt so silence cannot be confused
@@ -95,7 +96,8 @@ schedule or credential changes.
 
 ## Reconciliation — run monthly, or when something feels missing
 
-1. List the canonical marketplace commit and all 27 available skills.
+1. List the canonical marketplace commit and derive the available skill inventory from
+   `.claude-plugin/marketplace.json`; never maintain the count in prose.
 2. List what each target account and fleet site actually reports as its commit/version and installed skills.
 3. Diff them. **Every target behind the canonical commit is a propagation failure; every untracked local skill is an orphan.**
 4. For each recurring scheduled job, confirm the skill it names still exists under that exact name. Renaming a skill silently breaks every job that calls it.
@@ -192,9 +194,11 @@ For scheduled marketplace checks, canary rollout, locks, receipts, and rollback:
   shipped a black button. The rule was never in `standards/`, so it never reached the
   skills, so it was not there to be read.
 - When anyone — the client, the account owner, an audit, or your own failure — states a
-  rule that should hold next time, **your job is not to remember it. It is to write
-  `standards/<slug>.md` before the session ends.** Memory does not survive a session
-  boundary. A file does.
+  rule that should hold next time, **your job is not to remember it. Capture it before the
+  session ends.** A direct instruction can become a proposed `standards/<slug>.md` with
+  provenance. A causal claim such as “this tactic improves sales” also needs the outcome
+  receipt required by `report-business-impact-not-volume`; otherwise it is a hypothesis,
+  not canon.
 - Scaffold it in one command, which forces every field including where the rule came
   from:
 
@@ -204,9 +208,16 @@ For scheduled marketplace checks, canary rollout, locks, receipts, and rollback:
   ```
 
 - Then write the rule, run `python3 scripts/sync_shared_rules.py`, and open the pull
-  request. The sync copies the rule into `AGENTS.md` and every distributed `SKILL.md`,
-  so it reaches every agent and every member who installed the pack. Nobody has to be
-  told about it.
+  request. The sync copies the candidate into `AGENTS.md` and every distributed
+  `SKILL.md`. That proves source parity only. It reaches a person after merge and
+  surface-specific sync; it becomes working capability only after a fresh-session
+  activation receipt. Never call source consistency “propagated everywhere.”
+- **Every substantive run record needs a learning disposition:** `proposed`, `applied`,
+  `rejected`, or `none` with a reason. Link the affected skill/standard and source/resulting
+  commit. If the record contains a reusable lesson but no disposition, the loop is open.
+- Keep private facts, credentials, client URLs, and raw revenue receipts in the private run
+  record. Publish the sanitized, reusable rule and enough non-sensitive evidence for another
+  agent to evaluate it. “Build in public” does not mean leak client data.
 - **Give the rule a machine check whenever one is honest.** A `checks` block in the
   header compiles straight into the live fleet sweep, so a violation on a published page
   is caught by a schedule instead of by a person noticing. Every check must carry
@@ -222,6 +233,9 @@ For scheduled marketplace checks, canary rollout, locks, receipts, and rollback:
   out loud.** Two standards that disagree are worse than one that is wrong, because
   every agent that reads both will pick whichever it happened to see last. Write the
   reconciliation into the newer rule and flag it to the account owner for confirmation.
+- A harvester may draft the branch and pull request; it must not silently merge a learning
+  into canonical instructions. Independent QA, repository checks, and an attributable
+  canary keep one persuasive but wrong run from teaching the entire fleet.
 - The order is Checklist → Content → Software. Write the checkable rule first, publish
   the article that teaches it second, and let the sweep be generated from the rule
   rather than hand-written beside it. Writing the article first is how rules get lost:
@@ -332,14 +346,26 @@ For scheduled marketplace checks, canary rollout, locks, receipts, and rollback:
 <!-- shared-rule:report-business-impact-not-volume:start -->
 ## Report business impact, never volume
 
-- **Count outcomes, not output.** Posts published, words written and tasks closed are
-  activity. Calls, booked jobs, leads and revenue are results.
-- **Trace the chain and show it**: published thing → ranking or traffic → call or lead →
-  booked job → revenue. Where the chain breaks, say where it breaks rather than reporting
-  the last link that looked good.
-- **Impressions and clicks are context, not the headline.** Never lead with them.
-- If the business impact cannot be measured yet, say that plainly and fix the measurement
-  first — see `analytics-on-every-page`.
+- **Use the deepest verified result, and let it overrule every shallower signal:**
+  retained customer or collected/recognized revenue and gross profit → closed sale or
+  completed job → qualified booking or deposit → qualified lead or connected call →
+  conversion → traffic, rankings, reach, and engagement → things produced. A ranking gain
+  with fewer profitable jobs is not a win. More posts with no measured demand are activity.
+- **Trace the chain and show the break:** intervention → exposure → response → qualified
+  demand → sale/job → revenue and customer outcome. Never silently relabel call clicks as
+  calls, contacts as qualified leads, pipeline value as revenue, or an unknown value as zero.
+- **Diagnostics diagnose; they do not prove business impact.** Views, impressions, clicks,
+  engagement, traffic, rankings, and output may explain an outcome or start an experiment.
+  They cannot overrule a contradictory downstream result.
+- Before calling a process better, record its source commit or version, baseline, comparison
+  window, metric definition and source, result, attribution limits, sample size, plausible
+  alternatives, and guardrails such as refunds, retention, capacity, margin, and customer
+  quality. Where practical, use a holdout or matched comparison.
+- A single run may create a **proposal** or **canary**. Promote a business-effectiveness rule
+  only from verified downstream evidence; hold or revert it when stronger evidence disagrees.
+  Reliability and safety rules may use their native outcomes, but must not claim sales impact.
+- If business impact is not connected yet, say **not connected**, fix measurement, and make
+  that the next action. Do not turn the last available diagnostic into a success claim.
 <!-- shared-rule:report-business-impact-not-volume:end -->
 
 <!-- shared-rule:verify-by-opening-the-live-artifact:start -->

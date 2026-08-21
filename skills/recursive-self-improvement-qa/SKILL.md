@@ -11,13 +11,30 @@ description: Make any agent improve itself — run the task, write the run up as
 - The skill/SOP that just ran, and its definitive article — the canonical instructions for the task.
 - The actual output of the most recent run, including whatever went sideways.
 - Previous meta articles for this skill, if any — the loop's memory.
+- The source commit/version and a pre-run hypothesis: what behavior changed, which
+  outcome should move, over what window, and what result would make us keep, hold, or
+  revert the change.
+- The deepest available outcome receipt: baseline and comparison; metric definition,
+  source and owner; attribution limits; sample size; guardrails; and `not connected`
+  wherever the chain to bookings, sales, revenue, retention, or customer quality breaks.
 
 ## The loop
-1. **Do** the task exactly per the SOP. No improvising — deviations are data.
-2. **Document** the run as a *meta article*: what happened, what worked, what broke, where the agent had to guess. The agent writes its own definitive article.
-3. **QA** against the canonical instructions with the checklist below. Every deviation and gap gets flagged, not excused.
-4. **Rewrite** the SOP to remove the exact ambiguity behind each deviation. One fix per flag.
-5. **Publish** the updated definitive article — version it (v1.1, v1.2) — and run again. Every loop, the skill needs less of you.
+1. **Define the test before the result.** Name the intervention, baseline, primary
+   outcome, counter-metric, window, attribution limit, and keep/hold/revert threshold.
+2. **Do** the task exactly per the SOP. Record deviations; do not hide them by rewriting
+   the intended procedure after the fact.
+3. **Document** the run as a *meta article*: what happened, what worked, what broke,
+   where the agent guessed, and the source receipts behind every material claim.
+4. **QA** against the canonical instructions and outcome contract below. Every deviation,
+   missing source, contradictory downstream result, and gap gets flagged, not excused.
+5. **Decide honestly:** `propose`, `canary`, `promote`, `hold`, or `revert`. One run can
+   always propose. A business-effectiveness claim is promoted only from verified downstream
+   evidence; views, rankings, traffic, engagement, and output alone cannot do it.
+6. **Rewrite** the SOP to remove the exact ambiguity behind each supported deviation.
+   Keep unsupported ideas in the hypothesis queue. One fix per flag.
+7. **Publish for review** on a versioned branch, run repository checks, and test the
+   candidate in a fresh session. Merge, sync, and scheduled execution are later receipt
+   states, not consequences of writing the file.
 
 ## The QA checklist — run it every time
 - Did the output match what the definitive article promised? Where, exactly, did it differ?
@@ -28,6 +45,16 @@ description: Make any agent improve itself — run the task, write the run up as
 - Is every fact sourced, and every name spelled exactly as the entity is spelled everywhere else?
 - Voice check: direct, concrete, second person, no fluff. Cut every sentence that doesn't instruct.
 - Did this run produce anything worth productizing — a reusable template, prompt, or standard?
+- What is the deepest verified result: customer outcome/retention/profit or revenue →
+  closed job/sale → qualified booking → qualified lead/connected call → conversion →
+  traffic/rank/engagement → activity? Did a downstream result contradict the headline?
+- Are baseline, comparison window, source, definition, attribution limits, sample size,
+  alternatives, capacity, margin, refunds/retention, and customer-quality guardrails visible?
+- Does the decision say `not connected` where evidence stops? If only a diagnostic moved,
+  did we create a measurement task instead of declaring the process better?
+- Is the learning disposition linked from the private run record to the proposed/applied
+  skill or standard and source/resulting commits? If there is no reusable learning, is the
+  reason explicit?
 
 ## The Task Library model
 This loop at scale is the Local Service Spotlight Task Library: 1,000+ tasks, each one a skill.md tied to a definitive article with an SOP and a QA checklist.
@@ -43,7 +70,9 @@ This loop at scale is the Local Service Spotlight Task Library: 1,000+ tasks, ea
 ## Output
 - A meta article for the run — what happened, with every deviation flagged.
 - A QA punch-list: one fix per flag, each assigned.
-- The improved skill.md, versioned and republished.
+- An outcome receipt and decision: propose, canary, promote, hold, or revert.
+- The candidate skill/standard on a review branch, plus source parity and fresh-session
+  acceptance receipts. Do not call it republished or propagated before those states exist.
 
 ## For DealCon — agency owners & acquirers
 **If you run an agency:** delivery quality that improves without you is the difference between selling a job and selling a company — a self-improving task library is the asset a buyer pays the multiple for.
@@ -2573,9 +2602,11 @@ Learned August 3, 2026.
   shipped a black button. The rule was never in `standards/`, so it never reached the
   skills, so it was not there to be read.
 - When anyone — the client, the account owner, an audit, or your own failure — states a
-  rule that should hold next time, **your job is not to remember it. It is to write
-  `standards/<slug>.md` before the session ends.** Memory does not survive a session
-  boundary. A file does.
+  rule that should hold next time, **your job is not to remember it. Capture it before the
+  session ends.** A direct instruction can become a proposed `standards/<slug>.md` with
+  provenance. A causal claim such as “this tactic improves sales” also needs the outcome
+  receipt required by `report-business-impact-not-volume`; otherwise it is a hypothesis,
+  not canon.
 - Scaffold it in one command, which forces every field including where the rule came
   from:
 
@@ -2585,9 +2616,16 @@ Learned August 3, 2026.
   ```
 
 - Then write the rule, run `python3 scripts/sync_shared_rules.py`, and open the pull
-  request. The sync copies the rule into `AGENTS.md` and every distributed `SKILL.md`,
-  so it reaches every agent and every member who installed the pack. Nobody has to be
-  told about it.
+  request. The sync copies the candidate into `AGENTS.md` and every distributed
+  `SKILL.md`. That proves source parity only. It reaches a person after merge and
+  surface-specific sync; it becomes working capability only after a fresh-session
+  activation receipt. Never call source consistency “propagated everywhere.”
+- **Every substantive run record needs a learning disposition:** `proposed`, `applied`,
+  `rejected`, or `none` with a reason. Link the affected skill/standard and source/resulting
+  commit. If the record contains a reusable lesson but no disposition, the loop is open.
+- Keep private facts, credentials, client URLs, and raw revenue receipts in the private run
+  record. Publish the sanitized, reusable rule and enough non-sensitive evidence for another
+  agent to evaluate it. “Build in public” does not mean leak client data.
 - **Give the rule a machine check whenever one is honest.** A `checks` block in the
   header compiles straight into the live fleet sweep, so a violation on a published page
   is caught by a schedule instead of by a person noticing. Every check must carry
@@ -2603,6 +2641,9 @@ Learned August 3, 2026.
   out loud.** Two standards that disagree are worse than one that is wrong, because
   every agent that reads both will pick whichever it happened to see last. Write the
   reconciliation into the newer rule and flag it to the account owner for confirmation.
+- A harvester may draft the branch and pull request; it must not silently merge a learning
+  into canonical instructions. Independent QA, repository checks, and an attributable
+  canary keep one persuasive but wrong run from teaching the entire fleet.
 - The order is Checklist → Content → Software. Write the checkable rule first, publish
   the article that teaches it second, and let the sweep be generated from the rule
   rather than hand-written beside it. Writing the article first is how rules get lost:
@@ -2713,14 +2754,26 @@ Learned August 3, 2026.
 <!-- shared-rule:report-business-impact-not-volume:start -->
 ## Report business impact, never volume
 
-- **Count outcomes, not output.** Posts published, words written and tasks closed are
-  activity. Calls, booked jobs, leads and revenue are results.
-- **Trace the chain and show it**: published thing → ranking or traffic → call or lead →
-  booked job → revenue. Where the chain breaks, say where it breaks rather than reporting
-  the last link that looked good.
-- **Impressions and clicks are context, not the headline.** Never lead with them.
-- If the business impact cannot be measured yet, say that plainly and fix the measurement
-  first — see `analytics-on-every-page`.
+- **Use the deepest verified result, and let it overrule every shallower signal:**
+  retained customer or collected/recognized revenue and gross profit → closed sale or
+  completed job → qualified booking or deposit → qualified lead or connected call →
+  conversion → traffic, rankings, reach, and engagement → things produced. A ranking gain
+  with fewer profitable jobs is not a win. More posts with no measured demand are activity.
+- **Trace the chain and show the break:** intervention → exposure → response → qualified
+  demand → sale/job → revenue and customer outcome. Never silently relabel call clicks as
+  calls, contacts as qualified leads, pipeline value as revenue, or an unknown value as zero.
+- **Diagnostics diagnose; they do not prove business impact.** Views, impressions, clicks,
+  engagement, traffic, rankings, and output may explain an outcome or start an experiment.
+  They cannot overrule a contradictory downstream result.
+- Before calling a process better, record its source commit or version, baseline, comparison
+  window, metric definition and source, result, attribution limits, sample size, plausible
+  alternatives, and guardrails such as refunds, retention, capacity, margin, and customer
+  quality. Where practical, use a holdout or matched comparison.
+- A single run may create a **proposal** or **canary**. Promote a business-effectiveness rule
+  only from verified downstream evidence; hold or revert it when stronger evidence disagrees.
+  Reliability and safety rules may use their native outcomes, but must not claim sales impact.
+- If business impact is not connected yet, say **not connected**, fix measurement, and make
+  that the next action. Do not turn the last available diagnostic into a success claim.
 <!-- shared-rule:report-business-impact-not-volume:end -->
 
 <!-- shared-rule:verify-by-opening-the-live-artifact:start -->

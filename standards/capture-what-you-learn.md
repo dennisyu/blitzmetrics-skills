@@ -3,7 +3,7 @@
   "title": "Capture what you learn as a standard, in the same session",
   "severity": "error",
   "captured": "2026-08-16",
-  "captured_from": "Dennis Yu, Cowork session, 2026-08-16: 'our goal is recursive self-improvement ... as I learn stuff, it propagates out for everyone else to be able to benefit from it ... that way, we don't keep losing things that I tell you are important to put into our centralized knowledge.' Written after tracing why a rule published on 2026-05-17 was still being broken by agents on 2026-08-15.",
+  "captured_from": "Dennis Yu, Cowork session, 2026-08-16: 'our goal is recursive self-improvement ... as I learn stuff, it propagates out for everyone else to be able to benefit from it ... that way, we don't keep losing things that I tell you are important to put into our centralized knowledge.' Written after tracing why a rule published on 2026-05-17 was still being broken by agents on 2026-08-15. Extended in Codex, 2026-08-20, after comparing 291 private agent notes with 127 applied learning notes and finding no automatic link between the two systems.",
   "applies_to": ["agent-behaviour"]
 }
 ---
@@ -17,9 +17,11 @@
   shipped a black button. The rule was never in `standards/`, so it never reached the
   skills, so it was not there to be read.
 - When anyone — the client, the account owner, an audit, or your own failure — states a
-  rule that should hold next time, **your job is not to remember it. It is to write
-  `standards/<slug>.md` before the session ends.** Memory does not survive a session
-  boundary. A file does.
+  rule that should hold next time, **your job is not to remember it. Capture it before the
+  session ends.** A direct instruction can become a proposed `standards/<slug>.md` with
+  provenance. A causal claim such as “this tactic improves sales” also needs the outcome
+  receipt required by `report-business-impact-not-volume`; otherwise it is a hypothesis,
+  not canon.
 - Scaffold it in one command, which forces every field including where the rule came
   from:
 
@@ -29,9 +31,16 @@
   ```
 
 - Then write the rule, run `python3 scripts/sync_shared_rules.py`, and open the pull
-  request. The sync copies the rule into `AGENTS.md` and every distributed `SKILL.md`,
-  so it reaches every agent and every member who installed the pack. Nobody has to be
-  told about it.
+  request. The sync copies the candidate into `AGENTS.md` and every distributed
+  `SKILL.md`. That proves source parity only. It reaches a person after merge and
+  surface-specific sync; it becomes working capability only after a fresh-session
+  activation receipt. Never call source consistency “propagated everywhere.”
+- **Every substantive run record needs a learning disposition:** `proposed`, `applied`,
+  `rejected`, or `none` with a reason. Link the affected skill/standard and source/resulting
+  commit. If the record contains a reusable lesson but no disposition, the loop is open.
+- Keep private facts, credentials, client URLs, and raw revenue receipts in the private run
+  record. Publish the sanitized, reusable rule and enough non-sensitive evidence for another
+  agent to evaluate it. “Build in public” does not mean leak client data.
 - **Give the rule a machine check whenever one is honest.** A `checks` block in the
   header compiles straight into the live fleet sweep, so a violation on a published page
   is caught by a schedule instead of by a person noticing. Every check must carry
@@ -47,6 +56,9 @@
   out loud.** Two standards that disagree are worse than one that is wrong, because
   every agent that reads both will pick whichever it happened to see last. Write the
   reconciliation into the newer rule and flag it to the account owner for confirmation.
+- A harvester may draft the branch and pull request; it must not silently merge a learning
+  into canonical instructions. Independent QA, repository checks, and an attributable
+  canary keep one persuasive but wrong run from teaching the entire fleet.
 - The order is Checklist → Content → Software. Write the checkable rule first, publish
   the article that teaches it second, and let the sweep be generated from the rule
   rather than hand-written beside it. Writing the article first is how rules get lost:
