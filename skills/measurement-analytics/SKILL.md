@@ -125,7 +125,7 @@ first firing leaves its receipts and expected report.
 → sales-every-day (acts on the weakest stage) → dollar-a-day-strategist (scales only on a green verdict) → weekly-brand-maa (the report becomes the MAA) → content-agent (feeds the traffic) → recursive-self-improvement-qa
 
 ---
-*Built by Dennis Yu (BlitzMetrics / Local Service Spotlight). Measure every stage, so the daily selling is aimed — and the lead gen pays for itself.*
+*Built by Dennis Yu (Local Service Spotlight). Measure every stage, so the daily selling is aimed — and the lead gen pays for itself.*
 
 ## Learned in the field
 

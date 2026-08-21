@@ -333,7 +333,7 @@ standard, fleet-wide:
 - A call-to-action button must use the site's brand colour, never black. Black buttons
   camouflage against dark heroes, navigation and footers, carry no brand signal, and
   measurably lose conversions. This is the single most repeated finding across hundreds
-  of BlitzMetrics website audits.
+  of Local Service Spotlight website audits.
 - Nobody ships a black button on purpose. It is the default in every builder —
   Gutenberg's `has-black-background-color` preset, Elementor's dark fill, Astra starter
   themes, any Bootstrap-derived `btn-dark`. It looks correct on the white editor canvas
@@ -350,8 +350,8 @@ standard, fleet-wide:
   `bg-black`, or an applied `has-black-background-color` class.
 - An element may keep a black fill only with a documented exemption class where black
   genuinely belongs — a logo lockup, an icon button on a dark rail. Mark it with the
-  fleet's existing exemption class, `bm-keep-black` on BlitzMetrics properties and
-  `lss-keep-black` on Local Service Spotlight, so the sweep can see the exemption was
+  fleet's existing exemption class, `bm-keep-black` or `lss-keep-black`,
+  so the sweep can see the exemption was
   deliberate. Exempt one element, never a default.
 - Full reasoning and the enforcement-plugin pattern:
   https://blitzmetrics.com/why-we-dont-use-black-buttons/

@@ -1,6 +1,6 @@
 ---
 name: video-repurposing-agent
-description: Watch a YouTube channel every day, judge which new videos deserve repurposing, and turn the winners into published articles on the right site (personal brand, company, or both) — written to BlitzMetrics standards, graded to A- by jennifer, cross-linked per the Content Factory hub rules. Use when a client or member has a YouTube channel and wants it feeding their sites without anyone watching the uploads page.
+description: Watch a YouTube channel every day, judge which new videos deserve repurposing, and turn the winners into published articles on the right site (personal brand, company, or both) — written to Local Service Spotlight standards, graded to A- by jennifer, cross-linked per the Content Factory hub rules. Use when a client or member has a YouTube channel and wants it feeding their sites without anyone watching the uploads page.
 rule-scopes: published-html, design-review
 ---
 
@@ -56,7 +56,7 @@ In order of preference: the video's caption track (prefer a manually-uploaded tr
 Hand the cleaned transcript + client card to `definitive-article-writer` (Brandon) with the tier's spec. Non-negotiables:
 - Embed the source video at the top with one sentence of provenance; answer the article's question in the first paragraph.
 - 6–12 verb-led H2s for a long video; paragraphs ≤5 lines; preserve real quotes (E-E-A-T Experience).
-- **Entity Linking Decision Tree** — route every named entity: in-network person → their personal-brand site; in-network company → their site; out-of-network person/company or any tool/concept → the BlitzMetrics article on it, else plain text; Dennis Yu → dennisyu.com. Anchor text 3–6 descriptive words; link each entity on first mention only; 3+ in-network links on STRONG.
+- **Entity Linking Decision Tree** — route every named entity: in-network person → their personal-brand site; in-network company → their site; out-of-network person/company or any tool/concept → the public canonical article on it, else plain text; Dennis Yu → dennisyu.com. Anchor text 3–6 descriptive words; link each entity on first mention only; 3+ in-network links on STRONG.
 - Every article links UP to its hub (Content Factory rule) and sideways to 2–3 sibling articles; when we run both sites, link across them.
 - Featured image = the video's own maxres thumbnail (`i.ytimg.com/vi/{id}/maxresdefault.jpg`) — a real frame, never a text-only card and never stock (blog-card thumbnails standard).
 - Evergreen: no dates-as-news, no limited-time promos.
@@ -83,7 +83,7 @@ Append one run report: videos found / skipped (with reasons) / articles shipped 
 ## Notes — Dennis's method
 - The proof pattern is Marko Sipila's: phone-shot conference interviews → HVAC Quote's YouTube → repurposed articles → $1/day behind winners → 300+ customers. This agent is that loop with the human watching removed.
 - Daniel Goodrich proved the watch-loop economics on Escape Fitness (May 2026): 247 episodes inventoried, transcript via the captions API, first article A- in two revisions, 251 of 10,000 free daily units. His three-skill split (orchestrator / writer / grader) is preserved here as steps 1–5 / 6 / 7.
-- One credential can serve a whole managed fleet: clients invite a shared BlitzMetrics access email as YouTube Studio collaborator (Editor), and the same OAuth token reads captions on every channel. Members installing self-serve skip OAuth entirely — the keyless path runs day one.
+- One credential can serve a whole managed fleet: clients invite a shared Local Service Spotlight access email as YouTube Studio collaborator (Editor), and the same OAuth token reads captions on every channel. Members installing self-serve skip OAuth entirely — the keyless path runs day one.
 - Pair the output with `dollar-a-day-strategist`: the article that wins organically is the one that earns the $1/day.
 
 ## Definitive article & pairings
@@ -358,7 +358,7 @@ standard, fleet-wide:
 - A call-to-action button must use the site's brand colour, never black. Black buttons
   camouflage against dark heroes, navigation and footers, carry no brand signal, and
   measurably lose conversions. This is the single most repeated finding across hundreds
-  of BlitzMetrics website audits.
+  of Local Service Spotlight website audits.
 - Nobody ships a black button on purpose. It is the default in every builder —
   Gutenberg's `has-black-background-color` preset, Elementor's dark fill, Astra starter
   themes, any Bootstrap-derived `btn-dark`. It looks correct on the white editor canvas
@@ -375,8 +375,8 @@ standard, fleet-wide:
   `bg-black`, or an applied `has-black-background-color` class.
 - An element may keep a black fill only with a documented exemption class where black
   genuinely belongs — a logo lockup, an icon button on a dark rail. Mark it with the
-  fleet's existing exemption class, `bm-keep-black` on BlitzMetrics properties and
-  `lss-keep-black` on Local Service Spotlight, so the sweep can see the exemption was
+  fleet's existing exemption class, `bm-keep-black` or `lss-keep-black`,
+  so the sweep can see the exemption was
   deliberate. Exempt one element, never a default.
 - Full reasoning and the enforcement-plugin pattern:
   https://blitzmetrics.com/why-we-dont-use-black-buttons/

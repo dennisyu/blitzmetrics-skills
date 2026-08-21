@@ -15,7 +15,7 @@ Proof:   immutable receipt per account/site/run
 ```
 
 The canonical repository is
-`https://github.com/dennisyu/blitzmetrics-skills`. A ZIP is a dated snapshot and
+`https://github.com/dennisyu/local-service-spotlight-skills`. A ZIP is a dated snapshot and
 must include its source commit; it is not the update channel.
 
 Every adapter/package receipt must carry `source_commit`, source-tree hash, build

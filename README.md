@@ -1,9 +1,9 @@
-# BlitzMetrics Skills for Agents
+# Local Service Spotlight Skills for Agents
 
-The canonical public source for all 28 BlitzMetrics and Local Service Spotlight
-skills used across authority, content, measurement, client operations, and quality
-assurance. The method lives in portable Markdown. Model-specific manifests are
-adapters over that source, not competing copies.
+The canonical public source for all 28 Local Service Spotlight skills used across
+authority, content, measurement, client operations, and quality assurance. The
+method lives in portable Markdown. Model-specific manifests are adapters over that
+source, not competing copies.
 
 ## Install
 
@@ -12,13 +12,18 @@ Claude members should start with the illustrated guide:
 When Claude asks for the marketplace repository, paste:
 
 ```text
-https://github.com/dennisyu/blitzmetrics-skills
+https://github.com/dennisyu/local-service-spotlight-skills
 ```
 
-Then install `blitzmetrics-everything`. Other runtimes use the same `skills/`
+Then install `lss-everything`. Other runtimes use the same `skills/`
 directories through their supported Git, plugin, workspace-rule, or file workflow.
 See the adapter and receipt matrix in
 [`skills/skill-registry/references/distribution.md`](skills/skill-registry/references/distribution.md).
+
+If you already added `https://github.com/dennisyu/blitzmetrics-skills` or
+installed `blitzmetrics-everything`, remove that marketplace and add this one.
+GitHub redirects the old repository URL. Claude still needs a fresh install of
+`lss-everything` because plugin names are keyed in the account.
 
 The guide and repository have different jobs:
 
@@ -61,11 +66,11 @@ proves **Synced**; a successful fresh-chat trigger proves **Activated**.
 
 ## Bundles
 
-Most people should install `blitzmetrics-everything`.
+Most people should install `lss-everything`.
 
 | Bundle | What it covers |
 |---|---|
-| `blitzmetrics-everything` | All 28 skills |
+| `lss-everything` | All 28 skills |
 | `authority-and-reputation` | Knowledge Panel, AI search, reviews, and proof |
 | `content-engine` | Articles, video, repurposing, and distribution |
 | `client-operations` | Onboarding, cadence, access, reporting, and audits |

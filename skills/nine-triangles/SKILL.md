@@ -34,7 +34,7 @@ the framework from search snippets or memory.
 - Do not redistribute paid course material. Provide the operational names and
   workflow here, then link to the authorized course or definitive article for the
   full curriculum.
-- When two BlitzMetrics sources disagree, name the discrepancy and follow the
+- When two Local Service Spotlight sources disagree, name the discrepancy and follow the
   authority order in the reference. Never silently choose the wording that makes a
   clean-looking answer.
 

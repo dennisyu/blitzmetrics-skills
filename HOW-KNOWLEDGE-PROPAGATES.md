@@ -235,14 +235,14 @@ and tests. The standard now travels inside every applicable skill.
 
 ### One spoken-path rule became content, checklist, and software
 
-[Commit `6f8012a`](https://github.com/dennisyu/blitzmetrics-skills/commit/6f8012a44e282ad093b2d0048aea02402a462633)
+[Commit `6f8012a`](https://github.com/dennisyu/local-service-spotlight-skills/commit/6f8012a44e282ad093b2d0048aea02402a462633)
 turned “every URL said aloud must resolve” into a reusable standard, executable
 checks, and fixes for actual 404 paths. One rule produced the teaching content,
 pre-flight checklist, and machine sweep.
 
 ### Live onboarding became a reusable skill
 
-[Commit `c48602a`](https://github.com/dennisyu/blitzmetrics-skills/commit/c48602a215ef0990401b97fac6cb8d0d8313a534)
+[Commit `c48602a`](https://github.com/dennisyu/local-service-spotlight-skills/commit/c48602a215ef0990401b97fac6cb8d0d8313a534)
 converted a live onboarding thread into `one-session-client-onboarding`: the agent
 prefills the Goals–Content–Targeting brief, the client confirms and grants access,
 and the first Friday MAA becomes the certainty date. This is the good form of

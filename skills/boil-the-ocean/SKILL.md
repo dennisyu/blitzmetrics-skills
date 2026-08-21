@@ -70,7 +70,7 @@ Rule of thumb after this month: pick the cheapest tier that clears the bar, turn
 - The source idea: https://garryslist.org/posts/boil-the-ocean — Garry Tan, "Boil the ocean" (Feb 2026)
 - Keeping the library current: https://blitzmetrics.com/knowledge-system-maintenance
 - The engine the skills run on: https://blitzmetrics.com/content-factory/
-- The standard at scale — the BlitzMetrics Task Library: https://blitzmetrics.com/task-library-dashboard/
+- The standard at scale — the Task Library: https://blitzmetrics.com/task-library-dashboard/
 - Applies to: all ten skills, `personal-brand-strategist` through `recursive-self-improvement-qa`.
 
 ## Learned in the field

@@ -18,9 +18,9 @@ Do not record passwords, tokens, or private client data here.
 ## A. Fresh-account marketplace install
 
 1. Start with an account or workspace that does not already have this marketplace.
-2. Add `https://github.com/dennisyu/blitzmetrics-skills` as a marketplace.
+2. Add `https://github.com/dennisyu/local-service-spotlight-skills` as a marketplace.
 3. Confirm all five bundles appear.
-4. Install `blitzmetrics-everything`.
+4. Install `lss-everything`.
 5. Derive the expected inventory from `.claude-plugin/marketplace.json`, then confirm
    every listed skill is present and enabled.
 6. Start a fresh chat and use a literal trigger phrase from one selected skill.

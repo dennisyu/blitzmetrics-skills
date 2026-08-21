@@ -1,6 +1,6 @@
 ---
 name: "skill-registry"
-description: "Keep every BlitzMetrics / Local Service Spotlight skill centrally available and activatable. Use when adding a new skill, auditing the skill inventory, wiring a skill into a scheduled job or agent, reconciling what is installed against the canonical pack, or when someone asks 'is this skill part of our framework', 'where do our skills live', 'why isn't this skill running', or 'add this to the skill pack'."
+description: "Keep every Local Service Spotlight skill centrally available and activatable. Use when adding a new skill, auditing the skill inventory, wiring a skill into a scheduled job or agent, reconciling what is installed against the canonical pack, or when someone asks 'is this skill part of our framework', 'where do our skills live', 'why isn't this skill running', or 'add this to the skill pack'."
 ---
 
 # Skill Registry
@@ -20,10 +20,11 @@ Know which one you are touching. They propagate very differently.
 | 5 | **Fleet copies and run receipts** | A site has a version and a run left evidence | The rest of the fleet matches it | The deployment job and receipt store |
 
 **System 1 is the only canonical executable source.** The member install guide is
-the front door, while `https://github.com/dennisyu/blitzmetrics-skills` is the
-portable source adapters package. A local cache, custom GPT, Grokbot, workspace rule,
-or uploaded skill is a deployed copy. If a capability matters to more than one
-person, put it in the repository and verify each target environment with a receipt.
+the front door, while `https://github.com/dennisyu/local-service-spotlight-skills`
+is the portable source and adapters package. A local cache, custom GPT, Grokbot,
+workspace rule, or uploaded skill is a deployed copy. If a capability matters to
+more than one person, put it in the repository and verify each target environment
+with a receipt.
 
 ## Intake gate — run this for every new skill
 
@@ -31,7 +32,7 @@ Do not consider a skill "done" until all seven pass.
 
 1. **Does it exist as a `SKILL.md` with valid frontmatter?** `name` (kebab-case, matching the directory) and a third-person `description` containing the literal phrases someone would actually type.
 2. **Is it under the canonical repository's `skills/` directory** — not a loose file or chat attachment?
-3. **Is it listed in `blitzmetrics-everything`** and every appropriate topical bundle?
+3. **Is it listed in `lss-everything`** and every appropriate topical bundle?
 4. **Did repository and official marketplace validation pass on a pull request?** Never publish from `/upload/main`.
 5. **Can a fresh session activate it on every claimed runtime?** Test a literal trigger phrase from the description and save the surface-specific receipt.
 6. **Can a scheduled job activate it?** Name the exact skill in a complete standalone prompt and verify the first firing, not just the schedule definition.

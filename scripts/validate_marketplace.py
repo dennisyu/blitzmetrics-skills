@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the local BlitzMetrics Claude marketplace without dependencies."""
+"""Validate the local Local Service Spotlight Claude marketplace without dependencies."""
 
 from __future__ import annotations
 
@@ -18,6 +18,7 @@ from standards_lib import (  # noqa: E402
 )
 
 
+EVERYTHING_PLUGIN = "lss-everything"
 KEBAB = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 LOCAL_REFERENCE = re.compile(
     r"(?<![\w/])((?:references|scripts|assets)/[A-Za-z0-9_.\-/]+)"
@@ -31,7 +32,7 @@ CURRENT_SKILL_COUNT = (
     re.compile(r"\bpack\s+contains\s+(\d+)\s+skills\b", re.IGNORECASE),
     re.compile(r"\bsame\s+(\d+)\s+directories\b", re.IGNORECASE),
     re.compile(
-        r"Skills in `blitzmetrics-everything`\s*\|\s*(\d+)\b",
+        rf"Skills in `{EVERYTHING_PLUGIN}`\s*\|\s*(\d+)\b",
         re.IGNORECASE,
     ),
 )
@@ -118,7 +119,7 @@ def validate(root: Path) -> list[str]:
         description = plugin.get("description")
         if not isinstance(description, str) or not description:
             errors.append(f"plugin {name!r} must have a description")
-        elif name != "blitzmetrics-everything":
+        elif name != EVERYTHING_PLUGIN:
             described_count = re.search(r"\((\d+)\s+skills\)\s*$", description)
             if not described_count:
                 errors.append(
@@ -136,14 +137,14 @@ def validate(root: Path) -> list[str]:
             skill_path = root / skill_ref.removeprefix("./")
             if not (skill_path / "SKILL.md").is_file():
                 errors.append(f"plugin {name!r} references missing {skill_ref}/SKILL.md")
-        if name == "blitzmetrics-everything":
+        if name == EVERYTHING_PLUGIN:
             if everything is not None:
-                errors.append("blitzmetrics-everything must appear exactly once")
+                errors.append(f"{EVERYTHING_PLUGIN} must appear exactly once")
             everything = skills
             everything_description = str(plugin.get("description", ""))
 
     if everything is None:
-        errors.append("missing required blitzmetrics-everything plugin")
+        errors.append(f"missing required {EVERYTHING_PLUGIN} plugin")
         everything_set: set[str] = set()
     else:
         everything_set = set(everything)
@@ -153,9 +154,9 @@ def validate(root: Path) -> list[str]:
     ) if (root / "skills").is_dir() else []
     actual_refs = {f"./skills/{path.name}" for path in skill_dirs}
     for missing in sorted(actual_refs - everything_set):
-        errors.append(f"skill is not in blitzmetrics-everything: {missing}")
+        errors.append(f"skill is not in {EVERYTHING_PLUGIN}: {missing}")
     for stale in sorted(everything_set - actual_refs):
-        errors.append(f"blitzmetrics-everything has a stale skill path: {stale}")
+        errors.append(f"{EVERYTHING_PLUGIN} has a stale skill path: {stale}")
 
     count_in_description = re.search(
         r"\ball\s+(\d+)\b[^.]*\bskills\b",
@@ -164,7 +165,7 @@ def validate(root: Path) -> list[str]:
     )
     if count_in_description and int(count_in_description.group(1)) != len(skill_dirs):
         errors.append(
-            "blitzmetrics-everything description advertises "
+            f"{EVERYTHING_PLUGIN} description advertises "
             f"{count_in_description.group(1)} skills but found {len(skill_dirs)}"
         )
 
@@ -178,8 +179,8 @@ def validate(root: Path) -> list[str]:
     except (OSError, json.JSONDecodeError) as exc:
         errors.append(f"cannot read .grok-plugin/plugin.json: {exc}")
         grok = {}
-    if grok.get("name") != "blitzmetrics-everything":
-        errors.append("Grok adapter name must be blitzmetrics-everything")
+    if grok.get("name") != EVERYTHING_PLUGIN:
+        errors.append(f"Grok adapter name must be {EVERYTHING_PLUGIN}")
     if grok.get("skills") != "./skills/":
         errors.append("Grok adapter must read the canonical ./skills/ directory")
     if source_version and grok.get("version") != source_version:

@@ -10,9 +10,9 @@ state from another.
 
 | Field | Current fact |
 |---|---|
-| Repository | `https://github.com/dennisyu/blitzmetrics-skills` |
+| Repository | `https://github.com/dennisyu/local-service-spotlight-skills` |
 | Marketplace manifest | `.claude-plugin/marketplace.json` |
-| Skills in `blitzmetrics-everything` | 28 after merge of `one-session-client-onboarding` |
+| Skills in `lss-everything` | 28 after merge of `one-session-client-onboarding` |
 | Topical bundles | 4 |
 | Validation | Pull-request and main-branch GitHub workflow |
 | Contribution path | Branch → checks → review → merge |
@@ -31,7 +31,7 @@ Friday MAA. Humans are not the routing layer.
 
 | Bundle | Skills available |
 |---|---:|
-| `blitzmetrics-everything` | 28 |
+| `lss-everything` | 28 |
 | `authority-and-reputation` | 7 |
 | `content-engine` | 6 |
 | `client-operations` | 9 |
