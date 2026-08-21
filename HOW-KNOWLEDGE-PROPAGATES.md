@@ -178,6 +178,13 @@ when only the source repository changed.
 
 ## How the same source reaches different agents
 
+The canonical executable source is
+[`dennisyu/local-service-spotlight-skills`](https://github.com/dennisyu/local-service-spotlight-skills).
+Every immediate `skills/<slug>/SKILL.md` defines one skill. The aggregate pack is
+`lss-everything`, a manifest selection over those same 28 directories—not another
+copy. On a Mac that already has the clone, `~/Projects/blitzmetrics-skills/skills`
+is the same source tree; the older local folder name is not the repository identity.
+
 The durable behavior lives in `skills/*/SKILL.md` and shared rules generated into
 `AGENTS.md` and the skills. Adapters are thin discovery and packaging layers:
 
