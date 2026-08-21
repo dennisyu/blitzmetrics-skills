@@ -153,6 +153,28 @@ class MarketplaceValidatorTests(unittest.TestCase):
                 errors,
             )
 
+    def test_deprecated_repo_or_pack_name_outside_migration_fails(self):
+        with tempfile.TemporaryDirectory() as temp_name:
+            copied = Path(temp_name) / "repository"
+            shutil.copytree(REPOSITORY, copied, ignore=shutil.ignore_patterns(".git"))
+            path = copied / "CONTRIBUTING.md"
+            path.write_text(
+                path.read_text(encoding="utf-8")
+                + "\nUse dennisyu/blitzmetrics-skills and blitzmetrics-everything.\n",
+                encoding="utf-8",
+            )
+
+            errors = validate(copied)
+
+            self.assertTrue(
+                any("deprecated identifier 'dennisyu/blitzmetrics-skills'" in e for e in errors),
+                errors,
+            )
+            self.assertTrue(
+                any("deprecated identifier 'blitzmetrics-everything'" in e for e in errors),
+                errors,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

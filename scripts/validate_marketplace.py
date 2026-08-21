@@ -19,6 +19,14 @@ from standards_lib import (  # noqa: E402
 
 
 EVERYTHING_PLUGIN = "lss-everything"
+DEPRECATED_IDENTIFIERS = (
+    "dennisyu/blitzmetrics-skills",
+    "blitzmetrics-everything",
+)
+README_MIGRATION_ALLOWLIST = """If you already added `https://github.com/dennisyu/blitzmetrics-skills` or
+installed `blitzmetrics-everything`, remove that marketplace and add this one.
+GitHub redirects the old repository URL. Claude still needs a fresh install of
+`lss-everything` because plugin names are keyed in the account."""
 KEBAB = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 LOCAL_REFERENCE = re.compile(
     r"(?<![\w/])((?:references|scripts|assets)/[A-Za-z0-9_.\-/]+)"
@@ -263,6 +271,20 @@ def validate(root: Path) -> list[str]:
                         f"{path.relative_to(root)} advertises {match.group(1)} current "
                         f"skills but found {len(skill_dirs)}"
                     )
+
+    public_text_files = set(root.rglob("*.md")) | {manifest_path, grok_path}
+    for path in sorted(public_text_files):
+        if not path.is_file() or ".git" in path.parts:
+            continue
+        text = path.read_text(encoding="utf-8")
+        if path == root / "README.md":
+            text = text.replace(README_MIGRATION_ALLOWLIST, "", 1)
+        for deprecated in DEPRECATED_IDENTIFIERS:
+            if deprecated in text:
+                errors.append(
+                    f"{path.relative_to(root)} contains deprecated identifier "
+                    f"{deprecated!r} outside the README migration allowlist"
+                )
 
     inventory_path = root / "skills" / "skill-registry" / "references" / "inventory.md"
     if inventory_path.is_file():
