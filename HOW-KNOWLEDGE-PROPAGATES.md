@@ -167,11 +167,12 @@ For each named environment, record only the state proved:
 
 `Available → Synced → Enabled → Activated → Scheduled → Observed → Accepted`
 
-A GitHub push reaches **Available**. A named environment reporting the accepted
-commit reaches **Synced**. A clean-session trigger reaches **Activated**. A schedule
-definition reaches **Scheduled**. A timestamped firing with its expected artifact
-or unedited error reaches **Observed**. Passing canary assertions with rollback
-recorded reaches **Accepted**.
+A pull-request branch is **Candidate**, outside the release ladder. A merged,
+validated GitHub commit reaches **Available**. A named environment reporting the
+accepted commit reaches **Synced**. A clean-session trigger reaches **Activated**.
+A schedule definition reaches **Scheduled**. A timestamped firing with its expected
+artifact or unedited error reaches **Observed**. Passing canary assertions with
+rollback recorded reaches **Accepted**.
 
 This vocabulary prevents the most dangerous green report: “everything propagated”
 when only the source repository changed.

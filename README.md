@@ -32,10 +32,11 @@ The guide and repository have different jobs:
 - GitHub's `/upload/main` page is for maintainers and is not an install link.
 
 The repository is one release channel, so members do not need a new ZIP for every
-release. Sync behavior varies by runtime, surface, and settings. A GitHub push proves
-only **Available**. An update is verified only after the named environment reports
-the accepted commit/version and a fresh session passes an activation test. A
-scheduled job is verified only after an observed firing leaves a receipt.
+release. Sync behavior varies by runtime, surface, and settings. A pull-request
+branch is only **Candidate**; a merged, validated commit proves **Available**. An
+update is verified only after the named environment reports the accepted
+commit/version and a fresh session passes an activation test. A scheduled job is
+verified only after an observed firing leaves a receipt.
 
 ## One source, several adapters
 
