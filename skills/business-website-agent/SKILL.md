@@ -43,7 +43,7 @@ rule-scopes: published-html, design-review
 1. Draft the homepage and one page per core service from the brief and scored proof only.
 2. Build on the template — one homepage, eight sections, nothing exotic.
 3. Wire Organization + LocalBusiness schema JSON-LD: your site as canonical home, `sameAs` to every profile and directory.
-4. Add About, Reviews, Service-area, Gallery, and Contact pages; publish an accessibility statement in the footer (WCAG 2.2 AA target, honest conformance status, monitored contact email, dated — per the BlitzMetrics accessibility-statement standard).
+4. Add About, Reviews, Service-area, Gallery, and Contact pages; publish an accessibility statement in the footer (WCAG 2.2 AA target, honest conformance status, monitored contact email, dated — per the Local Service Spotlight accessibility-statement standard).
 5. Publish and hand off to `knowledge-panel-entity-seo`.
 
 ## Output
@@ -329,7 +329,7 @@ standard, fleet-wide:
 - A call-to-action button must use the site's brand colour, never black. Black buttons
   camouflage against dark heroes, navigation and footers, carry no brand signal, and
   measurably lose conversions. This is the single most repeated finding across hundreds
-  of BlitzMetrics website audits.
+  of Local Service Spotlight website audits.
 - Nobody ships a black button on purpose. It is the default in every builder —
   Gutenberg's `has-black-background-color` preset, Elementor's dark fill, Astra starter
   themes, any Bootstrap-derived `btn-dark`. It looks correct on the white editor canvas
@@ -346,8 +346,8 @@ standard, fleet-wide:
   `bg-black`, or an applied `has-black-background-color` class.
 - An element may keep a black fill only with a documented exemption class where black
   genuinely belongs — a logo lockup, an icon button on a dark rail. Mark it with the
-  fleet's existing exemption class, `bm-keep-black` on BlitzMetrics properties and
-  `lss-keep-black` on Local Service Spotlight, so the sweep can see the exemption was
+  fleet's existing exemption class, `bm-keep-black` or `lss-keep-black`,
+  so the sweep can see the exemption was
   deliberate. Exempt one element, never a default.
 - Full reasoning and the enforcement-plugin pattern:
   https://blitzmetrics.com/why-we-dont-use-black-buttons/

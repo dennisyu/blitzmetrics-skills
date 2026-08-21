@@ -1,6 +1,6 @@
 # Contributing safely
 
-This repository is the canonical source for the BlitzMetrics Claude marketplace.
+This repository is the canonical source for the Local Service Spotlight Claude marketplace.
 A green-looking agent report is not proof that a change reached a user or ran on
 schedule. Changes therefore move through a branch, automated checks, review, and
 an acceptance receipt.
@@ -29,7 +29,7 @@ release identity; a ZIP filename or modification date is not.
 
 1. Add `skills/<skill-name>/SKILL.md`. The directory and frontmatter `name` must
    be the same stable kebab-case value.
-2. Add `./skills/<skill-name>` to `blitzmetrics-everything` in
+2. Add `./skills/<skill-name>` to `lss-everything` in
    `.claude-plugin/marketplace.json` and any appropriate topical bundle.
 3. Do not rename an existing skill or bundle. Treat a rename as a migration:
    audit scheduled prompts and installed copies first.

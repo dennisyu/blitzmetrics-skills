@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the local BlitzMetrics Claude marketplace without dependencies."""
+"""Validate the local Local Service Spotlight Claude marketplace without dependencies."""
 
 from __future__ import annotations
 
@@ -18,6 +18,7 @@ from standards_lib import (  # noqa: E402
 )
 
 
+EVERYTHING_PLUGIN = "lss-everything"
 KEBAB = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 LOCAL_REFERENCE = re.compile(
     r"(?<![\w/])((?:references|scripts|assets)/[A-Za-z0-9_.\-/]+)"
@@ -105,13 +106,13 @@ def validate(root: Path) -> list[str]:
             skill_path = root / skill_ref.removeprefix("./")
             if not (skill_path / "SKILL.md").is_file():
                 errors.append(f"plugin {name!r} references missing {skill_ref}/SKILL.md")
-        if name == "blitzmetrics-everything":
+        if name == EVERYTHING_PLUGIN:
             if everything is not None:
-                errors.append("blitzmetrics-everything must appear exactly once")
+                errors.append(f"{EVERYTHING_PLUGIN} must appear exactly once")
             everything = skills
 
     if everything is None:
-        errors.append("missing required blitzmetrics-everything plugin")
+        errors.append(f"missing required {EVERYTHING_PLUGIN} plugin")
         everything_set: set[str] = set()
     else:
         everything_set = set(everything)
@@ -121,9 +122,9 @@ def validate(root: Path) -> list[str]:
     ) if (root / "skills").is_dir() else []
     actual_refs = {f"./skills/{path.name}" for path in skill_dirs}
     for missing in sorted(actual_refs - everything_set):
-        errors.append(f"skill is not in blitzmetrics-everything: {missing}")
+        errors.append(f"skill is not in {EVERYTHING_PLUGIN}: {missing}")
     for stale in sorted(everything_set - actual_refs):
-        errors.append(f"blitzmetrics-everything has a stale skill path: {stale}")
+        errors.append(f"{EVERYTHING_PLUGIN} has a stale skill path: {stale}")
 
     blocks, block_errors = expected_blocks(root)
     errors.extend(block_errors)

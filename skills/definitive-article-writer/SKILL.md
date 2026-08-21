@@ -63,7 +63,7 @@ See `boil-the-ocean.md` for the full operating principles.
 - Harry Gold's harryjgold.com started as one Zoom interview — one capture, one canonical hub, everything else orbits it. Dennis's podcast-appearances page runs the same play: 236+ appearances tracked on one URL that every episode links back to.
 - George Paladichuk's NaiL AI shows the niche version: own the definitive page on one tight topic — AI for roofing — and the category cites you by default.
 - Write for the diligence reader. Facts with sources survive a buyer's scrutiny and an AI's retrieval; adjectives survive neither.
-- One URL per task or topic is the backbone of the BlitzMetrics Task Library — and each agent's own documentation is itself a definitive article (see `recursive-self-improvement-qa`).
+- One URL per task or topic is the backbone of the Local Service Spotlight Task Library — and each agent's own documentation is itself a definitive article (see `recursive-self-improvement-qa`).
 
 ## Definitive article & pairings
 - Reference: https://blitzmetrics.com/definitive-article-guide/ · https://dennisyu.com/podcast-appearances/
@@ -97,7 +97,7 @@ one-line disclosure in the deck, not a rewrite.
 <!-- learning:2026-07-20-a-minus-terminator-and-entity-linking -->
 **July 20, 2026** (from: Daniel Goodrich's blog-grader (validated May 28, 2026 on Escape Fitness, grading "per Jennifer rubric") merged into jennifer + the writer chain)
 
-Two rules from the production grader loop, July 20, 2026. First, the A- terminator: A- is the publish bar — when a draft grades A-, it is DONE; never revise past it (an A is reserved for world-class national-publication journalism, and chasing it is how agents fall into infinite revision loops). Revision budgets before human escalation: 3 rounds for a definitive/STRONG piece, 2 for a standard article, 1 for a short post. Second, route every named entity through the Entity Linking Decision Tree: a person in the network links to their personal-brand site; a company in the network links to its site; anything out-of-network — people, tools, concepts — links to the BlitzMetrics article on that topic, else stays plain text; anchor text is 3–6 descriptive words; each entity links on first mention only, never twice. On a personal-brand site write first person in the owner's voice; on a company site write third person — a POV mismatch caps the grade at B.
+Two rules from the production grader loop, July 20, 2026. First, the A- terminator: A- is the publish bar — when a draft grades A-, it is DONE; never revise past it (an A is reserved for world-class national-publication journalism, and chasing it is how agents fall into infinite revision loops). Revision budgets before human escalation: 3 rounds for a definitive/STRONG piece, 2 for a standard article, 1 for a short post. Second, route every named entity through the Entity Linking Decision Tree: a person in the network links to their personal-brand site; a company in the network links to its site; anything out-of-network — people, tools, concepts — links to the public canonical article on that topic, else stays plain text; anchor text is 3–6 descriptive words; each entity links on first mention only, never twice. On a personal-brand site write first person in the owner's voice; on a company site write third person — a POV mismatch caps the grade at B.
 
 <!-- learning:2026-07-28-a-number-about-an-artifact-belongs-to-the-artifact -->
 **July 28, 2026** (from: skill-pack-propagation daily run, July 28, 2026)
@@ -636,7 +636,7 @@ standard, fleet-wide:
 - A call-to-action button must use the site's brand colour, never black. Black buttons
   camouflage against dark heroes, navigation and footers, carry no brand signal, and
   measurably lose conversions. This is the single most repeated finding across hundreds
-  of BlitzMetrics website audits.
+  of Local Service Spotlight website audits.
 - Nobody ships a black button on purpose. It is the default in every builder —
   Gutenberg's `has-black-background-color` preset, Elementor's dark fill, Astra starter
   themes, any Bootstrap-derived `btn-dark`. It looks correct on the white editor canvas
@@ -653,8 +653,8 @@ standard, fleet-wide:
   `bg-black`, or an applied `has-black-background-color` class.
 - An element may keep a black fill only with a documented exemption class where black
   genuinely belongs — a logo lockup, an icon button on a dark rail. Mark it with the
-  fleet's existing exemption class, `bm-keep-black` on BlitzMetrics properties and
-  `lss-keep-black` on Local Service Spotlight, so the sweep can see the exemption was
+  fleet's existing exemption class, `bm-keep-black` or `lss-keep-black`,
+  so the sweep can see the exemption was
   deliberate. Exempt one element, never a default.
 - Full reasoning and the enforcement-plugin pattern:
   https://blitzmetrics.com/why-we-dont-use-black-buttons/

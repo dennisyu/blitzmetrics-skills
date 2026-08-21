@@ -56,7 +56,7 @@ Pull only what the parameters enable; note any source that's unavailable rather 
 - **Audience (live):** read current follower/subscriber counts for each handle (Chrome JS from page data; Google snippet if walled). Record values + week-over-week deltas.
 - **Authority/SEO (Ahrefs MCP, target = domains, mode=subdomains, today):** domain-rating, site-explorer-metrics (org_keywords, org_traffic), top-pages, backlinks-stats, referring-domains (flag NEW domains; legit vs spam). Site Explorer's `date` param rejects future/today's dates on some plans — if you get `"bad date"`, step back 1-2 days until it resolves.
 - **Brand Radar / AI-citation tools specifically:** these need either a saved `report_id` (a Brand Radar project already configured in the Ahrefs dashboard) or `prompts: "ahrefs"` premade prompts — and even then, each `data_source` (chatgpt, google_ai_overviews, grok, etc.) is a separate paid add-on that hard-errors (`Missing addon: Brand Radar [...]`) rather than degrading gracefully if the workspace's plan doesn't include it. Before spending calls on Brand Radar, call `subscription-info-limits-and-usage` (free, no units) to check the plan tier. If the addon's missing, don't retry with different data_source combos — note the gap plainly (per Step 6.5) and move on.
-- **Fetching BlitzMetrics-fleet or other Cloudflare-protected client sites:** raw `curl`/bash fetches return bot-challenge 403s ("Just a moment...") even for plain static pages like sitemaps. Default straight to Chrome MCP (`navigate` + `get_page_text`, or `browser_batch`) for any client-site check — don't burn a round-trip discovering the 403 first.
+- **Fetching Local Service Spotlight fleet or other Cloudflare-protected client sites:** raw `curl`/bash fetches return bot-challenge 403s ("Just a moment...") even for plain static pages like sitemaps. Default straight to Chrome MCP (`navigate` + `get_page_text`, or `browser_batch`) for any client-site check — don't burn a round-trip discovering the 403 first.
 - **Search Console (AUTHORITATIVE when gsc_property set):** clicks, impressions, avg CTR, avg position, top queries + top pages (last 28 days, W-o-W). Use as the primary search-presence signal; fall back to Ahrefs estimates only if GSC isn't reachable.
 - **Agency-roster mode also pulls business outcomes**, per client, comparing the prior 7 days vs. the 7 before that: GA4/Google Ads/CallRail via the Windsor.ai MCP (sessions by channel, conversions, top landing pages, booked-call count by source, ad spend + conversions); GBP rank grid via the Local Falcon MCP (grid average rank, % top 3, % top 10, best/worst points) if a campaign_id is configured; CRM jobs via whatever `crm.access_method` the roster specifies (`api` = call it directly, `csv` = read the newest file in the configured dropbox path, `chrome` = log in via Claude in Chrome and pull the last-7-days report, `unknown` = skip and flag, ask Dennis to confirm). Skip+flag any connector that isn't installed or configured — never abort the whole run over one missing source; note it as an explicit action item ("Connect X — Dennis, by next Friday").
 - **New results/press + Brand SERP:** new mentions (past week), new content the entity published, and whether a Knowledge Panel renders and the entity-home ranks for the entity's name.
@@ -1281,7 +1281,7 @@ standard, fleet-wide:
 - A call-to-action button must use the site's brand colour, never black. Black buttons
   camouflage against dark heroes, navigation and footers, carry no brand signal, and
   measurably lose conversions. This is the single most repeated finding across hundreds
-  of BlitzMetrics website audits.
+  of Local Service Spotlight website audits.
 - Nobody ships a black button on purpose. It is the default in every builder —
   Gutenberg's `has-black-background-color` preset, Elementor's dark fill, Astra starter
   themes, any Bootstrap-derived `btn-dark`. It looks correct on the white editor canvas
@@ -1298,8 +1298,8 @@ standard, fleet-wide:
   `bg-black`, or an applied `has-black-background-color` class.
 - An element may keep a black fill only with a documented exemption class where black
   genuinely belongs — a logo lockup, an icon button on a dark rail. Mark it with the
-  fleet's existing exemption class, `bm-keep-black` on BlitzMetrics properties and
-  `lss-keep-black` on Local Service Spotlight, so the sweep can see the exemption was
+  fleet's existing exemption class, `bm-keep-black` or `lss-keep-black`,
+  so the sweep can see the exemption was
   deliberate. Exempt one element, never a default.
 - Full reasoning and the enforcement-plugin pattern:
   https://blitzmetrics.com/why-we-dont-use-black-buttons/

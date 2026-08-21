@@ -30,7 +30,7 @@ description: Make any agent improve itself — run the task, write the run up as
 - Did this run produce anything worth productizing — a reusable template, prompt, or standard?
 
 ## The Task Library model
-This loop at scale is the BlitzMetrics Task Library: 1,000+ tasks, each one a skill.md tied to a definitive article with an SOP and a QA checklist.
+This loop at scale is the Local Service Spotlight Task Library: 1,000+ tasks, each one a skill.md tied to a definitive article with an SOP and a QA checklist.
 - **Workers** execute the checklist. **Managers** enforce it. **The architect** revises the system when flags repeat.
 - One page per task, one URL per page — and every run makes the page better.
 - That's how a library compounds instead of rotting: the documentation IS the asset.

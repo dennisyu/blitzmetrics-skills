@@ -1,7 +1,7 @@
 ---
 name: seo-audit
-description: Run a full technical + content + authority SEO audit on any site and score it out of 100 on the seven-component BlitzMetrics SEO & Growth rubric, with every finding tied to a URL a stranger can open. Use when a client asks "how is my SEO", when a site is about to be rebuilt, when a monthly re-audit is due, or before promising anyone a ranking outcome. Produces a dated score, a delta against the last run, and a fix list ordered by cost-to-fix — not a list of everything that is wrong.
-author: Dennis Yu — BlitzMetrics / Local Service Spotlight
+description: Run a full technical + content + authority SEO audit on any site and score it out of 100 on the seven-component Local Service Spotlight SEO & Growth rubric, with every finding tied to a URL a stranger can open. Use when a client asks "how is my SEO", when a site is about to be rebuilt, when a monthly re-audit is due, or before promising anyone a ranking outcome. Produces a dated score, a delta against the last run, and a fix list ordered by cost-to-fix — not a list of everything that is wrong.
+author: Dennis Yu — Local Service Spotlight
 references:
   - https://blitzmetrics.com/quickaudit/
   - https://blitzmetrics.com/website-qa-audit/
@@ -37,7 +37,7 @@ whether those four specific things changed.
 
 ## The rubric — seven components, 100 points
 
-These weights are the standing BlitzMetrics SEO & Growth score. They live **here** and
+These weights are the standing Local Service Spotlight SEO & Growth score. They live **here** and
 nowhere else. Any job that needs them reads this file. (Until 2026-08-02 they existed only
 inside one scheduled task's parameter block, which meant no other audit could be compared to
 it and nobody could find the definition — the exact failure this file exists to end.)
@@ -638,7 +638,7 @@ standard, fleet-wide:
 - A call-to-action button must use the site's brand colour, never black. Black buttons
   camouflage against dark heroes, navigation and footers, carry no brand signal, and
   measurably lose conversions. This is the single most repeated finding across hundreds
-  of BlitzMetrics website audits.
+  of Local Service Spotlight website audits.
 - Nobody ships a black button on purpose. It is the default in every builder —
   Gutenberg's `has-black-background-color` preset, Elementor's dark fill, Astra starter
   themes, any Bootstrap-derived `btn-dark`. It looks correct on the white editor canvas
@@ -655,8 +655,8 @@ standard, fleet-wide:
   `bg-black`, or an applied `has-black-background-color` class.
 - An element may keep a black fill only with a documented exemption class where black
   genuinely belongs — a logo lockup, an icon button on a dark rail. Mark it with the
-  fleet's existing exemption class, `bm-keep-black` on BlitzMetrics properties and
-  `lss-keep-black` on Local Service Spotlight, so the sweep can see the exemption was
+  fleet's existing exemption class, `bm-keep-black` or `lss-keep-black`,
+  so the sweep can see the exemption was
   deliberate. Exempt one element, never a default.
 - Full reasoning and the enforcement-plugin pattern:
   https://blitzmetrics.com/why-we-dont-use-black-buttons/

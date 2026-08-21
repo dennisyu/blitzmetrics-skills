@@ -9,7 +9,7 @@
 ## Propagation impact
 
 - [ ] No skill or bundle names were changed
-- [ ] `blitzmetrics-everything` contains every directory under `skills/`
+- [ ] `lss-everything` contains every directory under `skills/`
 - [ ] Shared rules were synchronized into every distributed skill
 - [ ] Any rule this work taught us is captured in `standards/` **in this PR**,
       with `captured_from` naming where it was said
