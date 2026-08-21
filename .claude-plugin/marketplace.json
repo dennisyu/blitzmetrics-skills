@@ -1,17 +1,17 @@
 {
-  "name": "blitzmetrics",
+  "name": "local-service-spotlight",
   "owner": {
     "name": "Dennis Yu",
     "email": "dennis@blitzmetrics.com"
   },
   "metadata": {
-    "description": "BlitzMetrics / Local Service Spotlight skills for Claude \u2014 personal brand, authority, content, and client operations.",
-    "version": "1.1.2"
+    "description": "Local Service Spotlight skills for Claude \u2014 personal brand, authority, content, and client operations.",
+    "version": "1.2.0"
   },
   "plugins": [
     {
-      "name": "blitzmetrics-everything",
-      "description": "Everything we use, in one install \u2014 all 28 BlitzMetrics / Local Service Spotlight skills. Start here; this is what most people want.",
+      "name": "lss-everything",
+      "description": "Everything we use, in one install \u2014 all 28 Local Service Spotlight skills. Start here; this is what most people want.",
       "source": "./",
       "strict": false,
       "skills": [

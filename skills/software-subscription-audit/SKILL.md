@@ -49,7 +49,7 @@ description: The Software Subscription Audit — a quarterly (scheduled) money-f
 → sales-every-day (fund the winners) → dollar-a-day-strategist → measurement-analytics (one watches what comes in, this watches what quietly goes out) → recursive-self-improvement-qa
 
 ---
-*Built by Dennis Yu (BlitzMetrics / Local Service Spotlight), from a real 19 Jul 2026 audit. The agent finds the money; you keep the judgment.*
+*Built by Dennis Yu (Local Service Spotlight), from a real 19 Jul 2026 audit. The agent finds the money; you keep the judgment.*
 
 <!-- shared-rule:silent-media-playback:start -->
 ## Silent media playback

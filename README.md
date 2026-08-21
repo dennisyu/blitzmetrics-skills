@@ -1,7 +1,7 @@
-# BlitzMetrics Skills for Claude
+# Local Service Spotlight Skills for Claude
 
-The canonical marketplace for the 28 BlitzMetrics and Local Service Spotlight
-skills used across authority, content, client operations, and quality assurance.
+The canonical marketplace for the 28 Local Service Spotlight skills used across
+authority, content, client operations, and quality assurance.
 
 ## Install
 
@@ -10,10 +10,15 @@ Members should start with the illustrated guide:
 When Claude asks for the marketplace repository, paste:
 
 ```text
-https://github.com/dennisyu/blitzmetrics-skills
+https://github.com/dennisyu/local-service-spotlight-skills
 ```
 
-Then install `blitzmetrics-everything`.
+Then install `lss-everything`.
+
+If you already added `https://github.com/dennisyu/blitzmetrics-skills` or
+installed `blitzmetrics-everything`, remove that marketplace and add this one.
+GitHub redirects the old repository URL. Claude still needs a fresh install of
+`lss-everything` because plugin names are keyed in the account.
 
 The guide and repository have different jobs:
 
@@ -42,11 +47,11 @@ installed; a successful fresh-chat trigger proves that skill is working.
 
 ## Bundles
 
-Most people should install `blitzmetrics-everything`.
+Most people should install `lss-everything`.
 
 | Bundle | What it covers |
 |---|---|
-| `blitzmetrics-everything` | All 28 skills |
+| `lss-everything` | All 28 skills |
 | `authority-and-reputation` | Knowledge Panel, AI search, reviews, and proof |
 | `content-engine` | Articles, video, repurposing, and distribution |
 | `client-operations` | Onboarding, cadence, access, reporting, and audits |

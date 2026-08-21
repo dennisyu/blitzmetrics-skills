@@ -57,7 +57,7 @@ from standards_lib import (  # noqa: E402
 
 UA = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/126.0 Safari/537.36 BlitzMetricsFleetCheck/1.0"
+    "(KHTML, like Gecko) Chrome/126.0 Safari/537.36 LSSFleetCheck/1.0"
 )
 EXEMPT_WINDOW = 160
 SNIPPET = 140
